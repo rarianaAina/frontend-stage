@@ -21,7 +21,7 @@ export default function NavBar({ role }: NavBarProps) {
       padding: '20px 40px',
       background: 'transparent',
       position: 'relative',
-      zIndex: 10
+      zIndex: 10,
     }}>
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
         {role === 'client' && (
@@ -53,9 +53,9 @@ export default function NavBar({ role }: NavBarProps) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <div style={{
-          fontSize: '32px',
+          fontSize: '20px',
           fontFamily: 'cursive',
-          color: 'white',
+          color: 'black', // Changer ici pour le texte en noir
           textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
         }}>
           Portail client
@@ -89,7 +89,7 @@ function NavButton({ to, children }: { to: string; children: React.ReactNode }) 
         background: 'rgba(255, 255, 255, 0.25)',
         backdropFilter: 'blur(10px)',
         borderRadius: '25px',
-        color: 'white',
+        color: 'black', // Changer ici pour le texte en noir
         textDecoration: 'none',
         fontSize: '14px',
         fontWeight: '500',

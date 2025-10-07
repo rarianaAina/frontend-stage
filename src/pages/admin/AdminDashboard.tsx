@@ -50,21 +50,21 @@ export default function AdminDashboard() {
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
           gap: '30px',
-          marginBottom: '40px'
+          marginBottom: '20px'
         }}>
           <div style={{ background: 'white', padding: '20px', borderRadius: '15px', height: '300px' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Répartition par statut</h3>
-            <Pie data={statusData} options={{ maintainAspectRatio: false }} />
+            <Pie data={statusData} options={{ maintainAspectRatio: false, responsive: true, aspectRatio: 1}} />
           </div>
 
-          <div style={{ background: '#17a2b8', padding: '20px', borderRadius: '15px', height: '300px' }}>
+          <div style={{ background: '#17a2b8', padding: '20px', borderRadius: '15px', height: '500px' }}>
             <Line data={lineData} options={{
               maintainAspectRatio: false,
               plugins: { legend: { display: false } }
             }} />
           </div>
 
-          <div style={{ background: 'white', padding: '20px', borderRadius: '15px', height: '300px' }}>
+          <div style={{ background: 'white', padding: '20px', borderRadius: '15px', height: '500px' }}>
             <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Répartition par consultant</h3>
             <Pie data={consultantData} options={{ maintainAspectRatio: false }} />
           </div>

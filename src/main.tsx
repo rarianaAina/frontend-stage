@@ -15,6 +15,8 @@ import ConsultantTickets from './pages/consultant/ConsultantTickets'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
 
+import ProtectedRoute from './components/ProtectedRoute'
+
 function App(){
   return (
     <BrowserRouter>
@@ -22,21 +24,81 @@ function App(){
         <Route path="/" element={<Navigate to="/connexion" replace />} />
         <Route path="/connexion" element={<Login />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/mes-demandes" element={<MesDemandes />} />
-        <Route path="/nouvelle-demande" element={<NouvelleDemande />} />
-        <Route path="/ticket/:id" element={<TicketDetails />} />
-        <Route path="/ma-societe" element={<MaSociete />} />
+        {/* Routes Client */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute allowedRoles={['client', 'admin', 'consultant']}>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/mes-demandes" element={
+          <ProtectedRoute allowedRoles={['client']}>
+            <MesDemandes />
+          </ProtectedRoute>
+        } />
+        <Route path="/nouvelle-demande" element={
+          <ProtectedRoute allowedRoles={['client']}>
+            <NouvelleDemande />
+          </ProtectedRoute>
+        } />
+        <Route path="/ticket/:id" element={
+          <ProtectedRoute allowedRoles={['client', 'consultant', 'admin']}>
+            <TicketDetails />
+          </ProtectedRoute>
+        } />
+        <Route path="/ma-societe" element={
+          <ProtectedRoute allowedRoles={['client']}>
+            <MaSociete />
+          </ProtectedRoute>
+        } />
 
-        <Route path="/consultant/tickets" element={<ConsultantTickets />} />
-        <Route path="/consultant/interventions" element={<ConsultantTickets />} />
-        <Route path="/consultant/ticket/:id" element={<TicketDetails />} />
+        {/* Routes Consultant */}
+        <Route path="/consultant/tickets" element={
+          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
+            <ConsultantTickets />
+          </ProtectedRoute>
+        } />
+        <Route path="/consultant/interventions" element={
+          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
+            <ConsultantTickets />
+          </ProtectedRoute>
+        } />
+        <Route path="/consultant/ticket/:id" element={
+          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
+            <TicketDetails />
+          </ProtectedRoute>
+        } />
 
-        <Route path="/admin/demandes" element={<ConsultantTickets />} />
-        <Route path="/admin/interventions" element={<ConsultantTickets />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/configurations" element={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)', fontSize: '24px' }}>Configuration Page - Coming Soon</div>} />
-        <Route path="/admin/gestion-utilisateurs" element={<GestionUtilisateurs />} />
+        {/* Routes Admin */}
+        <Route path="/admin/demandes" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ConsultantTickets />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/interventions" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ConsultantTickets />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/configurations" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)', fontSize: '24px' }}>
+              Configuration Page - Coming Soon
+            </div>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/gestion-utilisateurs" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <GestionUtilisateurs />
+          </ProtectedRoute>
+        } />
+
+        {/* Route de fallback pour les URLs non trouvées */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   )
