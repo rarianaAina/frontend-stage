@@ -3,14 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 // Données d'authentification simulées
 const AUTH_DATA = [
-  { email: 'client1@optimada.com', password: 'password123', code: '1234', role: 'client' },
-  { email: 'client2@optimada.com', password: 'testpass', code: '5678', role: 'client' },
-  { email: 'john.doe@email.com', password: 'john2024', code: '9999', role: 'client' },
-  { email: 'marie.dupont@email.com', password: 'marie123', code: '8888', role: 'client' },
-  { email: 'admin@optimada.com', password: 'admin123', code: '1111', role: 'admin' },
-  { email: 'supervisor@optimada.com', password: 'superpass', code: '2222', role: 'admin' },
-  { email: 'test.user@email.com', password: 'test123', code: '5555', role: 'client' },
-  { email: 'consultant@optimada.com', password: 'demo123', code: '7777', role: 'consultant' }
+  { email: 'client@optimada.com', password: 'client123', code: '1234', role: 'client', name: 'Jean Client' },
+  { email: 'admin@optimada.com', password: 'admin123', code: '1111', role: 'admin', name: 'Admin Principal' },
+  { email: 'consultant@optimada.com', password: 'consultant123', code: '7777', role: 'consultant', name: 'Pierre Consultant' }
 ];
 
 export default function Login() {
@@ -54,13 +49,13 @@ export default function Login() {
 
   const handleVerify = () => {
     const enteredCode = verificationCode.join('');
-    
+
     if (currentUser && enteredCode === currentUser.code) {
       localStorage.setItem('jeton', `token-${Date.now()}`);
       localStorage.setItem('role', currentUser.role);
       localStorage.setItem('email', currentUser.email);
-      
-      // 🔥 REDIRECTION AUTOMATIQUE PAR RÔLE
+      localStorage.setItem('userName', currentUser.name);
+
       switch(currentUser.role) {
         case 'admin':
           navigate('/admin/dashboard');

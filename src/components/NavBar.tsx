@@ -45,6 +45,7 @@ export default function NavBar({ role }: NavBarProps) {
             <NavButton to="/admin/demandes">Demandes</NavButton>
             <NavButton to="/admin/interventions">Interventions</NavButton>
             <NavButton to="/admin/dashboard">Dashboard</NavButton>
+            <NavButton to="/admin/rapports">Rapports</NavButton>
             <NavButton to="/admin/configurations">Configurations</NavButton>
             <NavButton to="/admin/gestion-utilisateurs">Gestion utilisateurs</NavButton>
           </>
@@ -55,11 +56,37 @@ export default function NavBar({ role }: NavBarProps) {
         <div style={{
           fontSize: '20px',
           fontFamily: 'cursive',
-          color: 'black', // Changer ici pour le texte en noir
+          color: 'black',
           textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
         }}>
           Portail client
         </div>
+        <Link
+          to="/profile"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
+            color: 'white',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            textDecoration: 'none',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            transition: 'transform 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          {(localStorage.getItem('userName') || 'U').charAt(0).toUpperCase()}
+        </Link>
         <button
           onClick={handleLogout}
           style={{

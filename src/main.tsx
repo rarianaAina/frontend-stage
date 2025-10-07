@@ -9,11 +9,17 @@ import MesDemandes from './pages/client/MesDemandes'
 import NouvelleDemande from './pages/client/NouvelleDemande'
 import TicketDetails from './pages/client/TicketDetails'
 import MaSociete from './pages/client/MaSociete'
+import Profile from './pages/client/Profile'
 
 import ConsultantTickets from './pages/consultant/ConsultantTickets'
+import ConsultantInterventions from './pages/consultant/ConsultantInterventions'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminDemandes from './pages/admin/AdminDemandes'
+import AdminInterventions from './pages/admin/AdminInterventions'
+import Configurations from './pages/admin/Configurations'
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
+import Rapports from './pages/admin/Rapports'
 
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -50,20 +56,25 @@ function App(){
             <MaSociete />
           </ProtectedRoute>
         } />
+        <Route path="/profile" element={
+          <ProtectedRoute allowedRoles={['client', 'consultant', 'admin']}>
+            <Profile />
+          </ProtectedRoute>
+        } />
 
         {/* Routes Consultant */}
         <Route path="/consultant/tickets" element={
-          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
+          <ProtectedRoute allowedRoles={['consultant']}>
             <ConsultantTickets />
           </ProtectedRoute>
         } />
         <Route path="/consultant/interventions" element={
-          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
-            <ConsultantTickets />
+          <ProtectedRoute allowedRoles={['consultant']}>
+            <ConsultantInterventions />
           </ProtectedRoute>
         } />
         <Route path="/consultant/ticket/:id" element={
-          <ProtectedRoute allowedRoles={['consultant', 'admin']}>
+          <ProtectedRoute allowedRoles={['consultant']}>
             <TicketDetails />
           </ProtectedRoute>
         } />
@@ -71,12 +82,12 @@ function App(){
         {/* Routes Admin */}
         <Route path="/admin/demandes" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <ConsultantTickets />
+            <AdminDemandes />
           </ProtectedRoute>
         } />
         <Route path="/admin/interventions" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <ConsultantTickets />
+            <AdminInterventions />
           </ProtectedRoute>
         } />
         <Route path="/admin/dashboard" element={
@@ -86,14 +97,17 @@ function App(){
         } />
         <Route path="/admin/configurations" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)', fontSize: '24px' }}>
-              Configuration Page - Coming Soon
-            </div>
+            <Configurations />
           </ProtectedRoute>
         } />
         <Route path="/admin/gestion-utilisateurs" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <GestionUtilisateurs />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/rapports" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Rapports />
           </ProtectedRoute>
         } />
 
