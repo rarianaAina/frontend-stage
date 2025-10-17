@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../lib/api'; // À ajuster selon votre structure
 
-// Données d'authentification simulées
+// Données d'authentification simulées (gardées pour le développement)
 const AUTH_DATA = [
   { email: 'client@optimada.com', password: 'client123', code: '1234', role: 'client', name: 'Jean Client' },
   { email: 'admin@optimada.com', password: 'admin123', code: '1111', role: 'admin', name: 'Admin Principal' },
@@ -13,24 +14,75 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showVerification, setShowVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Vérification des identifiants
-    const user = AUTH_DATA.find(user => 
-      user.email === email && user.password === password
-    );
+    try {
+      // Appel au backend
+      const response = await api.post('/auth/connexion', {
+        email: email,
+        motDePasse: password
+      });
 
-    if (user) {
-      setCurrentUser(user);
-      setShowVerification(true);
-    } else {
-      setError('Email ou mot de passe incorrect');
+      console.log('Réponse /auth/connexion:', response); // <-- Ajout log
+      console.log('Status code /auth/connexion:', response.status);
+
+      if (response.status === 200) {
+        const { jeton, email, utilisateurId, nom } = response.data;
+
+        // Stocker le token
+        localStorage.setItem('token', jeton);
+        localStorage.setItem('email', email);
+        console.log('User ID avant parseInt:', utilisateurId);
+        const userId = parseInt(utilisateurId, 10);
+
+        console.log('User ID:', userId);
+        // Récupérer le(s) rôle(s) depuis le backend
+        const rolesResponse = await api.get(`/utilisateur-role/roles/${userId}`);
+        const roles = rolesResponse.data;
+        const mainRole = roles[0] || 'client'; // Prend le premier rôle ou 'client' par défaut
+
+        // Pour la vérification, tu peux garder le code simulé pour l'instant
+        const simulatedUser = AUTH_DATA.find(user => user.email === email) || {
+          email: email,
+          role: mainRole,
+          code: '1234',
+          name: nom || email
+        };
+
+        setCurrentUser({
+          ...simulatedUser,
+          role: mainRole,
+          token: jeton,
+          name: nom || email
+        });
+
+        setShowVerification(true);
+      }
+     
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        
+        setError('Email ou mot de passe incorrect');
+      } else {
+        setError('Erreur de connexion au serveur');
+        // Fallback pour le développement - vérification avec données simulées
+        const user = AUTH_DATA.find(user => 
+          user.email === email && user.password === password
+        );
+        
+        if (user) {
+          setCurrentUser(user);
+          setShowVerification(true);
+        } else {
+          setError('Email ou mot de passe incorrect');
+        }
+      }
     }
   };
 
@@ -51,19 +103,23 @@ export default function Login() {
     const enteredCode = verificationCode.join('');
 
     if (currentUser && enteredCode === currentUser.code) {
-      localStorage.setItem('jeton', `token-${Date.now()}`);
+      // Stocker les informations d'authentification
+      localStorage.setItem('jeton', currentUser.token || `token-${Date.now()}`);
       localStorage.setItem('role', currentUser.role);
       localStorage.setItem('email', currentUser.email);
       localStorage.setItem('userName', currentUser.name);
 
+      console.log('handleVerify - currentUser:', currentUser);
+      console.log('handleVerify - localStorage role:', localStorage.getItem('role'));
+      // Redirection selon le rôle
       switch(currentUser.role) {
-        case 'admin':
+        case 'ADMINISTRATEUR':
           navigate('/admin/dashboard');
           break;
-        case 'consultant':
+        case 'CONSULTANT':
           navigate('/consultant/tickets');
           break;
-        case 'client':
+        case 'CLIENT':
         default:
           navigate('/dashboard');
       }
@@ -91,6 +147,7 @@ export default function Login() {
       setError('');
     }
   };
+
 
   if (showVerification) {
     return (

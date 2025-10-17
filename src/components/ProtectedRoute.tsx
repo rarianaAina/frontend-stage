@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children, allowedRoles = [] }: ProtectedRouteProps) {
   const token = localStorage.getItem('jeton');
-  const role = localStorage.getItem('role');
+  const role = localStorage.getItem('role')?.toLowerCase(); // <-- Ajoute .toLowerCase()
 
   // Si pas de token, rediriger vers login
   if (!token) {
