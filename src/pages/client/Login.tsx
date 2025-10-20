@@ -38,6 +38,7 @@ export default function Login() {
         // Stocker le token
         localStorage.setItem('token', jeton);
         localStorage.setItem('email', email);
+        localStorage.setItem('userId', utilisateurId);
         console.log('User ID avant parseInt:', utilisateurId);
         const userId = parseInt(utilisateurId, 10);
 

@@ -1,6 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
+import { api } from '../../lib/api';
+
+type Produit = {
+  id: number;
+  libelle: string;
+  description?: string;
+  actif: boolean;
+};
+
+type PrioriteTicket = {
+  id: number;
+  code: string;
+  libelle: string;
+}
 
 export default function NouvelleDemande() {
   const navigate = useNavigate();
@@ -10,6 +24,70 @@ export default function NouvelleDemande() {
   const [niveau, setNiveau] = useState('');
   const [accepteConditions, setAccepteConditions] = useState(false);
   const [fichiers, setFichiers] = useState<FileList | null>(null);
+  
+  // États pour les produits
+  const [produits, setProduits] = useState<Produit[]>([]);
+  const [loadingProduits, setLoadingProduits] = useState(true);
+  const [errorProduits, setErrorProduits] = useState('');
+
+  // Etats pour les priorites des tickets
+  const [priorites, setPriorites] = useState<PrioriteTicket[]>([]);
+  const [loadingPriorites, setLoadingPriorites] = useState(true);
+  const [errorPriorites, setErrorPriorites] = useState('');
+
+  // Charger les produits au montage du composant
+  useEffect(() => {
+    const chargerProduits = async () => {
+      try {
+        setLoadingProduits(true);
+        setErrorProduits('');
+        
+        // Utiliser l'endpoint pour les produits actifs
+        const response = await api.get('/produits/actifs');
+        setProduits(response.data);
+        
+        console.log('Produits chargés:', response.data);
+      } catch (err) {
+        console.error('Erreur lors du chargement des produits:', err);
+        setErrorProduits('Erreur lors du chargement des produits');
+        
+        // En cas d'erreur, essayer avec l'endpoint général
+        try {
+          const responseFallback = await api.get('/produits');
+          setProduits(responseFallback.data);
+          setErrorProduits('');
+        } catch (fallbackErr) {
+          console.error('Erreur avec le fallback:', fallbackErr);
+          setErrorProduits('Impossible de charger la liste des produits');
+        }
+      } finally {
+        setLoadingProduits(false);
+      }
+    };
+
+    chargerProduits();
+  }, []);
+
+  // Chargement des priorites
+  useEffect(() => {
+    const fetchPriorites = async () => {
+      try {
+        setLoadingPriorites(true);
+        setErrorPriorites('');
+        const response = await api.get('/prioriteTickets');
+        setPriorites(response.data);
+      }
+      catch (err) {
+        console.error('Erreur lors du chargement des priorités:', err);
+        setErrorPriorites('Erreur lors du chargement des priorités');
+      }
+      finally {
+        setLoadingPriorites(false);
+      }
+    };
+
+    fetchPriorites();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +95,24 @@ export default function NouvelleDemande() {
       alert('Vous devez accepter les conditions');
       return;
     }
+    
+    // Validation supplémentaire
+    if (!logiciel) {
+      alert('Veuillez sélectionner un produit');
+      return;
+    }
+    
+    console.log('Données du formulaire:', {
+      raison,
+      logiciel,
+      description,
+      niveau,
+      fichiers: fichiers ? fichiers.length : 0
+    });
+    
+    // Ici vous enverriez les données à votre API
+    // await api.post('/tickets', { ... });
+    
     navigate('/mes-demandes');
   };
 
@@ -96,12 +192,45 @@ export default function NouvelleDemande() {
                   background: 'white'
                 }}
                 required
+                disabled={loadingProduits}
               >
-                <option value="">Liste déroulante des produits</option>
-                <option value="prod1">Produit 1</option>
-                <option value="prod2">Produit 2</option>
-                <option value="prod3">Produit 3</option>
+                <option value="">
+                  {loadingProduits ? 'Chargement des produits...' : 'Liste déroulante des produits'}
+                </option>
+                
+                {errorProduits ? (
+                  <option value="" disabled>
+                    Erreur de chargement
+                  </option>
+                ) : (
+                  produits
+                    .filter(produit => produit.actif) // Double sécurité
+                    .map((produit) => (
+                      <option key={produit.id} value={produit.id}>
+                        {produit.libelle}
+                      </option>
+                    ))
+                )}
               </select>
+              
+              {/* Messages d'état */}
+              {loadingProduits && (
+                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
+                  Chargement des produits...
+                </p>
+              )}
+              
+              {errorProduits && (
+                <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
+                  {errorProduits}
+                </p>
+              )}
+              
+              {!loadingProduits && !errorProduits && produits.length === 0 && (
+                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
+                  Aucun produit disponible
+                </p>
+              )}
             </div>
 
             <div style={{ marginBottom: '25px' }}>
@@ -129,6 +258,7 @@ export default function NouvelleDemande() {
               />
             </div>
 
+            
             <div style={{ marginBottom: '25px' }}>
               <label style={{
                 display: 'block',
@@ -136,7 +266,7 @@ export default function NouvelleDemande() {
                 fontWeight: '600',
                 color: '#333'
               }}>
-                Niveau :
+                *Niveau de priorité :
               </label>
               <select
                 value={niveau}
@@ -149,13 +279,33 @@ export default function NouvelleDemande() {
                   fontSize: '16px',
                   background: 'white'
                 }}
+                required
               >
-                <option value="">Liste déroulante du niveau d'importance de la demande</option>
-                <option value="bas">Bas</option>
-                <option value="moyen">Moyen</option>
-                <option value="urgent">Urgent</option>
-                <option value="critique">Critique</option>
+                <option value="">
+                  {loadingPriorites ? 'Chargement des priorités...' : 'Sélectionnez la priorité'}
+                </option>
+                {errorPriorites ? (
+                  <option value="" disabled>
+                    Erreur de chargement
+                  </option>
+                ) : (
+                  priorites.map((priorite) => (
+                    <option key={priorite.id} value={priorite.code}>
+                      {priorite.libelle}
+                    </option>
+                  ))
+                )}
               </select>
+              {loadingPriorites && (
+                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
+                  Chargement des priorités...
+                </p>
+              )}
+              {errorPriorites && (
+                <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
+                  {errorPriorites}
+                </p>
+              )}
             </div>
 
             <div style={{ marginBottom: '25px' }}>
@@ -228,8 +378,9 @@ export default function NouvelleDemande() {
                 fontWeight: '600',
                 cursor: 'pointer'
               }}
+              disabled={loadingProduits}
             >
-              Soumettre
+              {loadingProduits ? 'Chargement...' : 'Soumettre'}
             </button>
           </form>
         </div>
