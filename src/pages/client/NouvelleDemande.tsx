@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// pages/NouvelleDemande.tsx
+import { useState } from 'react';
 import NavBar from '../../components/NavBar';
-import { api } from '../../lib/api';
+import { useNouvelleDemande } from '../../hooks/demandes/useNouvelleDemande';
+import { SelectProduit } from '../../components/formsDemande/SelectProduit';
+import { SelectPriorite } from '../../components/formsDemande/SelectPriorite';
+import { InputFichiers } from '../../components/formsDemande/InputFichiers';
 
-type Produit = {
-  id: number;
-  libelle: string;
-  description?: string;
-  actif: boolean;
-};
-
-type PrioriteTicket = {
-  id: number;
-  code: string;
-  libelle: string;
-}
 
 export default function NouvelleDemande() {
-  const navigate = useNavigate();
   const [raison, setRaison] = useState('');
   const [logiciel, setLogiciel] = useState('');
   const [description, setDescription] = useState('');
@@ -25,95 +15,22 @@ export default function NouvelleDemande() {
   const [accepteConditions, setAccepteConditions] = useState(false);
   const [fichiers, setFichiers] = useState<FileList | null>(null);
   
-  // États pour les produits
-  const [produits, setProduits] = useState<Produit[]>([]);
-  const [loadingProduits, setLoadingProduits] = useState(true);
-  const [errorProduits, setErrorProduits] = useState('');
+  const { soumettreDemande, loading } = useNouvelleDemande();
 
-  // Etats pour les priorites des tickets
-  const [priorites, setPriorites] = useState<PrioriteTicket[]>([]);
-  const [loadingPriorites, setLoadingPriorites] = useState(true);
-  const [errorPriorites, setErrorPriorites] = useState('');
-
-  // Charger les produits au montage du composant
-  useEffect(() => {
-    const chargerProduits = async () => {
-      try {
-        setLoadingProduits(true);
-        setErrorProduits('');
-        
-        // Utiliser l'endpoint pour les produits actifs
-        const response = await api.get('/produits/actifs');
-        setProduits(response.data);
-        
-        console.log('Produits chargés:', response.data);
-      } catch (err) {
-        console.error('Erreur lors du chargement des produits:', err);
-        setErrorProduits('Erreur lors du chargement des produits');
-        
-        // En cas d'erreur, essayer avec l'endpoint général
-        try {
-          const responseFallback = await api.get('/produits');
-          setProduits(responseFallback.data);
-          setErrorProduits('');
-        } catch (fallbackErr) {
-          console.error('Erreur avec le fallback:', fallbackErr);
-          setErrorProduits('Impossible de charger la liste des produits');
-        }
-      } finally {
-        setLoadingProduits(false);
-      }
-    };
-
-    chargerProduits();
-  }, []);
-
-  // Chargement des priorites
-  useEffect(() => {
-    const fetchPriorites = async () => {
-      try {
-        setLoadingPriorites(true);
-        setErrorPriorites('');
-        const response = await api.get('/prioriteTickets');
-        setPriorites(response.data);
-      }
-      catch (err) {
-        console.error('Erreur lors du chargement des priorités:', err);
-        setErrorPriorites('Erreur lors du chargement des priorités');
-      }
-      finally {
-        setLoadingPriorites(false);
-      }
-    };
-
-    fetchPriorites();
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!accepteConditions) {
-      alert('Vous devez accepter les conditions');
-      return;
+    
+    try {
+      await soumettreDemande({
+        raison,
+        logiciel,
+        description,
+        niveau,
+        fichiers
+      }, accepteConditions);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Une erreur est survenue');
     }
-    
-    // Validation supplémentaire
-    if (!logiciel) {
-      alert('Veuillez sélectionner un produit');
-      return;
-    }
-    
-    console.log('Données du formulaire:', {
-      raison,
-      logiciel,
-      description,
-      niveau,
-      fichiers: fichiers ? fichiers.length : 0
-    });
-    
-    // Ici vous enverriez les données à votre API
-    // await api.post('/tickets', { ... });
-    
-    navigate('/mes-demandes');
   };
 
   return (
@@ -147,6 +64,7 @@ export default function NouvelleDemande() {
           </h2>
 
           <form onSubmit={handleSubmit}>
+            {/* Raison */}
             <div style={{ marginBottom: '25px' }}>
               <label style={{
                 display: 'block',
@@ -171,68 +89,14 @@ export default function NouvelleDemande() {
               />
             </div>
 
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                fontWeight: '600',
-                color: '#333'
-              }}>
-                *Logiciel/Application :
-              </label>
-              <select
-                value={logiciel}
-                onChange={(e) => setLogiciel(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '16px',
-                  background: 'white'
-                }}
-                required
-                disabled={loadingProduits}
-              >
-                <option value="">
-                  {loadingProduits ? 'Chargement des produits...' : 'Liste déroulante des produits'}
-                </option>
-                
-                {errorProduits ? (
-                  <option value="" disabled>
-                    Erreur de chargement
-                  </option>
-                ) : (
-                  produits
-                    .filter(produit => produit.actif) // Double sécurité
-                    .map((produit) => (
-                      <option key={produit.id} value={produit.id}>
-                        {produit.libelle}
-                      </option>
-                    ))
-                )}
-              </select>
-              
-              {/* Messages d'état */}
-              {loadingProduits && (
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-                  Chargement des produits...
-                </p>
-              )}
-              
-              {errorProduits && (
-                <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
-                  {errorProduits}
-                </p>
-              )}
-              
-              {!loadingProduits && !errorProduits && produits.length === 0 && (
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-                  Aucun produit disponible
-                </p>
-              )}
-            </div>
+            {/* Produit */}
+            <SelectProduit 
+              value={logiciel}
+              onChange={setLogiciel}
+              required
+            />
 
+            {/* Description */}
             <div style={{ marginBottom: '25px' }}>
               <label style={{
                 display: 'block',
@@ -258,83 +122,17 @@ export default function NouvelleDemande() {
               />
             </div>
 
-            
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                fontWeight: '600',
-                color: '#333'
-              }}>
-                *Niveau de priorité :
-              </label>
-              <select
-                value={niveau}
-                onChange={(e) => setNiveau(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '16px',
-                  background: 'white'
-                }}
-                required
-              >
-                <option value="">
-                  {loadingPriorites ? 'Chargement des priorités...' : 'Sélectionnez la priorité'}
-                </option>
-                {errorPriorites ? (
-                  <option value="" disabled>
-                    Erreur de chargement
-                  </option>
-                ) : (
-                  priorites.map((priorite) => (
-                    <option key={priorite.id} value={priorite.code}>
-                      {priorite.libelle}
-                    </option>
-                  ))
-                )}
-              </select>
-              {loadingPriorites && (
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-                  Chargement des priorités...
-                </p>
-              )}
-              {errorPriorites && (
-                <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
-                  {errorPriorites}
-                </p>
-              )}
-            </div>
+            {/* Priorité */}
+            <SelectPriorite 
+              value={niveau}
+              onChange={setNiveau}
+              required
+            />
 
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                fontWeight: '600',
-                color: '#333'
-              }}>
-                *Pièces jointes
-              </label>
-              <input
-                type="file"
-                multiple
-                onChange={(e) => setFichiers(e.target.files)}
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '14px',
-                  background: 'white'
-                }}
-              />
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-                (PDF, DOCX, JPEG - 20 Mo max)
-              </p>
-            </div>
+            {/* Fichiers */}
+            <InputFichiers onChange={setFichiers} />
 
+            {/* Conditions */}
             <div style={{ marginBottom: '30px' }}>
               <label style={{
                 display: 'flex',
@@ -365,22 +163,23 @@ export default function NouvelleDemande() {
               </label>
             </div>
 
+            {/* Bouton de soumission */}
             <button
               type="submit"
               style={{
                 width: '100%',
-                background: '#10b981',
+                background: loading ? '#9ca3af' : '#10b981',
                 color: 'white',
                 padding: '14px',
                 borderRadius: '25px',
                 border: 'none',
                 fontSize: '18px',
                 fontWeight: '600',
-                cursor: 'pointer'
+                cursor: loading ? 'not-allowed' : 'pointer'
               }}
-              disabled={loadingProduits}
+              disabled={loading}
             >
-              {loadingProduits ? 'Chargement...' : 'Soumettre'}
+              {loading ? 'Soumission en cours...' : 'Soumettre'}
             </button>
           </form>
         </div>
