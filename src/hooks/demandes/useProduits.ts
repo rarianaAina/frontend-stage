@@ -5,13 +5,14 @@ export const useProduits = () => {
   const [produits, setProduits] = useState<Produit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const companyId = localStorage.getItem('companyId') || '';
 
   useEffect(() => {
     const chargerProduits = async () => {
       try {
         setLoading(true);
         setError('');
-        const data = await ticketService.getProduitsActifs();
+        const data = await ticketService.getProduitsParCompany(companyId);
         setProduits(data);
       } catch (err) {
         console.error('Erreur lors du chargement des produits:', err);

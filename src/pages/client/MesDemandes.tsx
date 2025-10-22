@@ -22,6 +22,14 @@ type PaginationInfo = {
   pageSize: number;
 };
 
+type TicketPageReponse = {
+  tickets: Ticket[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+};
+
 // Mapping des priorités
 const PRIORITE_MAPPING: { [key: string]: string } = {
   '0': 'Basse',
@@ -81,6 +89,24 @@ const DescriptionAvecVoirPlus = ({ description, maxLength = 100 }: { description
   );
 };
 
+// Fonction pour obtenir la couleur en fonction de la priorité
+function getCouleurPriorite(prioriteId: string): string {
+  const priorite = getPrioriteText(prioriteId).toLowerCase();
+  
+  switch (priorite) {
+    case 'basse':
+      return '#10b981'; // Vert
+    case 'moyenne':
+      return '#f59e0b'; // Orange
+    case 'haute':
+      return '#ef4444'; // Rouge
+    case 'urgente':
+      return '#dc2626'; // Rouge foncé
+    default:
+      return '#6b7280'; // Gris par défaut
+  }
+}
+
 export default function MesDemandes() {
   const navigate = useNavigate();
   const [etat, setEtat] = useState('');
@@ -105,29 +131,46 @@ export default function MesDemandes() {
     console.log('Chargement des tickets - userId:', utilisateurId, 'page:', page, 'size:', size);
     
     if (!utilisateurId) return;
-
+    
     setLoading(true);
-    api.get(`/tickets/utilisateur/${utilisateurId}/page/${page}/size/${size}`)
+    
+    // Construire les paramètres de requête avec les filtres
+    const params = new URLSearchParams();
+    if (etat) params.append('etat', etat);
+    if (reference) params.append('reference', reference);
+    if (produit) params.append('produit', produit);
+    if (dateDebut) params.append('dateDebut', dateDebut);
+    if (dateFin) params.append('dateFin', dateFin);
+    
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+    
+    api.get(`/tickets/utilisateur/${utilisateurId}/page/${page}/size/${size}${queryString}`)
       .then((res) => {
-        setTickets(res.data);
+        const data: TicketPageReponse = res.data;
         
-        // Mettre à jour les informations de pagination
-        // Note: Vous devrez peut-être adapter selon la structure de réponse de votre API
-        // Si votre API renvoie des métadonnées de pagination, utilisez-les ici
-        setPagination(prev => ({
-          ...prev,
-          currentPage: page,
-          pageSize: size,
-          // Ces valeurs devraient venir de votre API
-          // totalPages: res.data.totalPages,
-          // totalElements: res.data.totalElements
-        }));
+        // Adapter à la structure de TicketPageReponse
+        setTickets(data.tickets || []);
         
-        console.log(`Chargé ${res.data.length} tickets pour la page ${page}`);
+        // Mettre à jour les informations de pagination depuis la réponse
+        setPagination({
+          currentPage: data.currentPage,
+          totalPages: data.totalPages,
+          totalElements: data.totalElements,
+          pageSize: data.pageSize
+        });
+        
+        console.log(`Chargé ${data.tickets?.length || 0} tickets pour la page ${page}`);
       })
       .catch((err) => {
         console.error('Erreur lors du chargement des tickets:', err);
         setTickets([]);
+        // Réinitialiser la pagination en cas d'erreur
+        setPagination(prev => ({
+          ...prev,
+          currentPage: page,
+          totalPages: 0,
+          totalElements: 0
+        }));
       })
       .finally(() => setLoading(false));
   };
@@ -136,6 +179,11 @@ export default function MesDemandes() {
   useEffect(() => {
     loadTickets(0);
   }, []);
+
+  // Recharger les tickets quand les filtres changent
+  useEffect(() => {
+    loadTickets(0); // Retourner à la première page lors du filtrage
+  }, [etat, reference, produit, dateDebut, dateFin]);
 
   // Gestionnaires de pagination
   const goToPage = (page: number) => {
@@ -247,8 +295,8 @@ export default function MesDemandes() {
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="client" />
-
+      <NavBar role="CLIENT" />
+      
       <div style={{ padding: '40px 60px' }}>
         <div style={{
           display: 'flex',
@@ -284,7 +332,6 @@ export default function MesDemandes() {
         }}>
           Filtres:
         </h3>
-
         <FilterBar
           filters={[
             { label: 'Etat:', value: etat, onChange: setEtat },
@@ -324,6 +371,17 @@ export default function MesDemandes() {
 
         {loading ? (
           <div style={{ textAlign: 'center', margin: '40px' }}>Chargement...</div>
+        ) : tickets.length === 0 ? (
+          <div style={{ 
+            textAlign: 'center', 
+            margin: '40px',
+            background: 'white',
+            padding: '40px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+          }}>
+            Aucun ticket trouvé
+          </div>
         ) : (
           <div style={{ background: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%' }}>
@@ -436,45 +494,31 @@ export default function MesDemandes() {
         )}
 
         {/* Pagination */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '10px',
-          marginTop: '30px',
-          alignItems: 'center'
-        }}>
-          {renderPaginationButtons()}
-        </div>
+        {pagination.totalPages > 0 && (
+          <>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '10px',
+              marginTop: '30px',
+              alignItems: 'center'
+            }}>
+              {renderPaginationButtons()}
+            </div>
 
-        {/* Informations de pagination */}
-        <div style={{
-          textAlign: 'center',
-          marginTop: '10px',
-          fontSize: '14px',
-          color: '#666'
-        }}>
-          Page {pagination.currentPage + 1} sur {pagination.totalPages || 1} 
-          {pagination.totalElements > 0 && ` - ${pagination.totalElements} éléments au total`}
-        </div>
+            {/* Informations de pagination */}
+            <div style={{
+              textAlign: 'center',
+              marginTop: '10px',
+              fontSize: '14px',
+              color: '#666'
+            }}>
+              Page {pagination.currentPage + 1} sur {pagination.totalPages} 
+              {pagination.totalElements > 0 && ` - ${pagination.totalElements} éléments au total`}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-}
-
-// Fonction pour obtenir la couleur en fonction de la priorité
-function getCouleurPriorite(prioriteId: string): string {
-  const priorite = getPrioriteText(prioriteId).toLowerCase();
-  
-  switch (priorite) {
-    case 'basse':
-      return '#10b981'; // Vert
-    case 'moyenne':
-      return '#f59e0b'; // Orange
-    case 'haute':
-      return '#ef4444'; // Rouge
-    case 'urgente':
-      return '#dc2626'; // Rouge foncé
-    default:
-      return '#6b7280'; // Gris par défaut
-  }
 }

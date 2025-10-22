@@ -5,18 +5,22 @@ import { useNouvelleDemande } from '../../hooks/demandes/useNouvelleDemande';
 import { SelectProduit } from '../../components/formsDemande/SelectProduit';
 import { SelectPriorite } from '../../components/formsDemande/SelectPriorite';
 import { InputFichiers } from '../../components/formsDemande/InputFichiers';
-
+import { SelectType } from '../../components/formsDemande/SelectType';
 
 export default function NouvelleDemande() {
   const [raison, setRaison] = useState('');
   const [logiciel, setLogiciel] = useState('');
   const [description, setDescription] = useState('');
   const [niveau, setNiveau] = useState('');
+  const [type, setType] = useState('');
   const [accepteConditions, setAccepteConditions] = useState(false);
   const [fichiers, setFichiers] = useState<FileList | null>(null);
   
   const { soumettreDemande, loading } = useNouvelleDemande();
-
+  const companyId = localStorage.getItem('companyId') || '';
+  const utilisateurId = localStorage.getItem('userId') || '';
+  const company = companyId;
+  const utilisateur = utilisateurId;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -24,6 +28,9 @@ export default function NouvelleDemande() {
       await soumettreDemande({
         raison,
         logiciel,
+        type,
+        company,
+        utilisateur,
         description,
         niveau,
         fichiers
@@ -38,7 +45,7 @@ export default function NouvelleDemande() {
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="client" />
+      <NavBar role="CLIENT" />
 
       <div style={{
         padding: '40px 60px',
@@ -126,6 +133,12 @@ export default function NouvelleDemande() {
             <SelectPriorite 
               value={niveau}
               onChange={setNiveau}
+              required
+            />
+
+            <SelectType 
+              value={type}
+              onChange={setType}
               required
             />
 

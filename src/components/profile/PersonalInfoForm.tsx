@@ -85,7 +85,6 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
             type="tel"
             value={userData.whatsappNumero}
             onChange={(e) => onUserDataChange('whatsappNumero', e.target.value)}
-            placeholder="+261 34 12 345 67"
             style={inputStyle}
           />
         </div>

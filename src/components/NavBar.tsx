@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 type NavBarProps = {
-  role: 'client' | 'consultant' | 'admin';
+  role: 'CLIENT' | 'CONSULTANT' | 'ADMINISTRATEUR';
 };
 
 export default function NavBar({ role }: NavBarProps) {
@@ -24,7 +24,7 @@ export default function NavBar({ role }: NavBarProps) {
       zIndex: 10,
     }}>
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-        {role === 'client' && (
+        {role === 'CLIENT' && (
           <>
             <NavButton to="/dashboard">Dashboard</NavButton>
             <NavButton to="/mes-demandes">Mes demandes</NavButton>
@@ -33,14 +33,14 @@ export default function NavBar({ role }: NavBarProps) {
           </>
         )}
 
-        {role === 'consultant' && (
+        {role === 'CONSULTANT' && (
           <>
             <NavButton to="/consultant/tickets">Mes tickets</NavButton>
             <NavButton to="/consultant/interventions">Mes interventions</NavButton>
           </>
         )}
 
-        {role === 'admin' && (
+        {role === 'ADMINISTRATEUR' && (
           <>
             <NavButton to="/admin/demandes">Demandes</NavButton>
             <NavButton to="/admin/interventions">Interventions</NavButton>

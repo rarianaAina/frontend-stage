@@ -19,6 +19,7 @@ export const userService = {
   // Obtenir les données de l'utilisateur connecté
   async getCurrentUser(userId: string): Promise<UserData> {
     const response = await api.get(`/utilisateurs/${userId}`);
+    console.log(response);
     return response.data;
   },
 

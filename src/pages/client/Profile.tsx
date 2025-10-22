@@ -1,4 +1,3 @@
-// pages/Profile.tsx
 import { useState } from 'react';
 import NavBar from '../../components/NavBar';
 import { useUserProfile } from '../../hooks/profile/useUserProfile';
@@ -8,11 +7,14 @@ import { PersonalInfoForm } from '../../components/profile/PersonalInfoForm';
 import { NotificationPreferences } from '../../components/profile/NotificationPreferences';
 import { ProfileActions } from '../../components/profile/ProfileActions';
 import { LoadingState } from '../../components/profile/LoadingState';
+import { getStoredRole } from '../../hooks/role/utilsRole';
 
 export default function Profile() {
-  const userRole = localStorage.getItem('role') || 'client';
+  const userRole = getStoredRole();
+  //const userRole = localStorage.getItem('role') || 'CLIENT';
   const userName = localStorage.getItem('userName') || 'Utilisateur';
   const userEmail = localStorage.getItem('email') || '';
+  
   
   const {
     userData,

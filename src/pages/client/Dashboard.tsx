@@ -72,7 +72,7 @@ export default function Dashboard() {
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="client" />
+      <NavBar role="CLIENT" />
 
       <div style={{ padding: '40px 60px' }}>
         <div style={{

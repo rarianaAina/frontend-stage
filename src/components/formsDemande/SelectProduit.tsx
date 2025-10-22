@@ -47,10 +47,9 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
           </option>
         ) : (
           produits
-            .filter(produit => produit.actif)
             .map((produit) => (
-              <option key={produit.id} value={produit.id}>
-                {produit.libelle}
+              <option key={produit.parcId} value={produit.parcId}>
+                {produit.parcName}
               </option>
             ))
         )}
