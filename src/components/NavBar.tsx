@@ -20,8 +20,13 @@ export default function NavBar({ role }: NavBarProps) {
       alignItems: 'center',
       padding: '20px 40px',
       background: 'transparent',
-      position: 'relative',
-      zIndex: 10,
+      position: 'fixed', // Changé de 'relative' à 'fixed'
+      top: 0, // Positionné en haut
+      left: 0, // Positionné à gauche
+      right: 0, // S'étend sur toute la largeur
+      zIndex: 1000, // Augmenté pour être sûr qu'il soit au-dessus
+      width: '100%', // Prend toute la largeur
+      boxSizing: 'border-box', // Inclut le padding dans la largeur
     }}>
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
         {role === 'CLIENT' && (
@@ -116,7 +121,7 @@ function NavButton({ to, children }: { to: string; children: React.ReactNode }) 
         background: 'rgba(255, 255, 255, 0.25)',
         backdropFilter: 'blur(10px)',
         borderRadius: '25px',
-        color: 'black', // Changer ici pour le texte en noir
+        color: 'black',
         textDecoration: 'none',
         fontSize: '14px',
         fontWeight: '500',

@@ -76,7 +76,9 @@ const ProduitsTab: React.FC = () => {
                       borderRadius: '15px',
                       display: 'inline-block'
                     }}>
-                      {produit.dateObtention || 'N/A'}
+                      {produit.dateObtention 
+                        ? new Date(produit.dateObtention).toLocaleDateString('fr-FR') 
+                        : 'N/A'}
                     </span>
                   </td>
                   <td style={{ padding: '12px' }}>{produit.parcId}</td>

@@ -22,6 +22,7 @@ import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
 import Rapports from './pages/admin/Rapports'
 
 import ProtectedRoute from './components/ProtectedRoute'
+import Layout from './components/Layout' // Import du nouveau Layout
 
 function App(){
   return (
@@ -30,84 +31,115 @@ function App(){
         <Route path="/" element={<Navigate to="/connexion" replace />} />
         <Route path="/connexion" element={<Login />} />
 
+        {/* Toutes les routes protégées utilisent maintenant le Layout */}
         {/* Routes Client */}
         <Route path="/dashboard" element={
           <ProtectedRoute allowedRoles={['client', 'admin', 'consultant']}>
-            <Dashboard />
+            <Layout>
+              <Dashboard />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/mes-demandes" element={
           <ProtectedRoute allowedRoles={['client']}>
-            <MesDemandes />
+            <Layout>
+              <MesDemandes />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/nouvelle-demande" element={
           <ProtectedRoute allowedRoles={['client']}>
-            <NouvelleDemande />
+            <Layout>
+              <NouvelleDemande />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/ticket/:id" element={
           <ProtectedRoute allowedRoles={['client', 'consultant', 'admin']}>
-            <TicketDetails />
+            <Layout>
+              <TicketDetails />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/ma-societe" element={
           <ProtectedRoute allowedRoles={['client']}>
-            <MaSociete />
+            <Layout>
+              <MaSociete />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/profile" element={
           <ProtectedRoute allowedRoles={['client', 'consultant', 'admin']}>
-            <Profile />
+            <Layout>
+              <Profile />
+            </Layout>
           </ProtectedRoute>
         } />
 
         {/* Routes Consultant */}
         <Route path="/consultant/tickets" element={
           <ProtectedRoute allowedRoles={['consultant']}>
-            <ConsultantTickets />
+            <Layout>
+              <ConsultantTickets />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/consultant/interventions" element={
           <ProtectedRoute allowedRoles={['consultant']}>
-            <ConsultantInterventions />
+            <Layout>
+              <ConsultantInterventions />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/consultant/ticket/:id" element={
           <ProtectedRoute allowedRoles={['consultant']}>
-            <TicketDetails />
+            <Layout>
+              <TicketDetails />
+            </Layout>
           </ProtectedRoute>
         } />
 
         {/* Routes Admin */}
         <Route path="/admin/demandes" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <AdminDemandes />
+            <Layout>
+              <AdminDemandes />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/admin/interventions" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <AdminInterventions />
+            <Layout>
+              <AdminInterventions />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/admin/dashboard" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <AdminDashboard />
+            <Layout>
+              <AdminDashboard />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/admin/configurations" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <Configurations />
+            <Layout>
+              <Configurations />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/admin/gestion-utilisateurs" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <GestionUtilisateurs />
+            <Layout>
+              <GestionUtilisateurs />
+            </Layout>
           </ProtectedRoute>
         } />
         <Route path="/admin/rapports" element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <Rapports />
+            <Layout>
+              <Rapports />
+            </Layout>
           </ProtectedRoute>
         } />
 

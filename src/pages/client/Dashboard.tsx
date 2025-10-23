@@ -1,71 +1,65 @@
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
 import NavBar from '../../components/NavBar';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-
+import { useDashboard } from '../../hooks/dashboard/useDashboard';
+import { StatisticsCard } from '../../components/dashboard/StatisticsCard';
+import { TicketsChart } from '../../components/dashboard/TicketsChart';
+import { CreditsTable } from '../../components/dashboard/CreditsTable';
+import { LoadingState } from '../../components/dashboard/LoadingState';
+import { ErrorState } from '../../components/dashboard/ErrorState';
 
 export default function Dashboard() {
-  const chartData = {
-    labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
-    datasets: [
-      {
-        label: 'Tickets',
-        data: [18, 25, 22, 35, 27, 10],
-        borderColor: '#000',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        tension: 0.4,
-        borderWidth: 3,
-      },
-    ],
+  const { dashboardData, loading, error, refetch } = useDashboard();
+
+  const handleStatisticClick = (statistic: any) => {
+    // Navigation ou filtre basé sur la statistique cliquée
+    console.log('Statistique cliquée:', statistic);
+    // Exemple: navigation vers la page des tickets avec filtre
+    // navigate(`/mes-demandes?filter=${statistic.label}`);
   };
 
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: 'Tickets par mois',
-        font: {
-          size: 18,
-          weight: 'bold' as const,
-        },
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 40,
-      },
-    },
-  };
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
+      }}>
+        <NavBar role="CLIENT" />
+        <div style={{ padding: '40px 60px' }}>
+          <LoadingState message="Chargement de votre tableau de bord..." />
+        </div>
+      </div>
+    );
+  }
 
-  const credits = [
-    { product: 'ABC', initial: 22, used: 0, remaining: 22 },
-    { product: 'CDE', initial: 50, used: 45.5, remaining: 4.5 },
-  ];
+  if (error) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
+      }}>
+        <NavBar role="CLIENT" />
+        <div style={{ padding: '40px 60px' }}>
+          <ErrorState message={error} onRetry={refetch} />
+        </div>
+      </div>
+    );
+  }
+
+  if (!dashboardData) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
+      }}>
+        <NavBar role="CLIENT" />
+        <div style={{ padding: '40px 60px' }}>
+          <ErrorState 
+            message="Aucune donnée disponible" 
+            onRetry={refetch} 
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -81,110 +75,37 @@ export default function Dashboard() {
           gap: '40px',
           marginBottom: '40px'
         }}>
-          <div style={{
-            background: 'rgba(200, 240, 180, 0.7)',
-            padding: '40px',
-            borderRadius: '20px',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              marginBottom: '20px',
-              textDecoration: 'underline'
-            }}>
-              Répartition par statut :
-            </h3>
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '30px' }}>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                Ouvert :
-              </li>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                En attente d'intervention :
-              </li>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                Intervention planifiée :
-              </li>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                Clôturé :
-              </li>
-            </ul>
+          {/* Colonne de gauche - Statistiques */}
+          <div>
+            <StatisticsCard
+              title="Répartition par statut :"
+              statistics={dashboardData.repartitionStatut}
+              onStatisticClick={handleStatisticClick}
+            />
 
-            <h3 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              marginBottom: '20px',
-              textDecoration: 'underline'
-            }}>
-              Durée de traitement :
-            </h3>
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '30px' }}>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                Temps moyen de résolution :
-              </li>
-              <li style={{ marginBottom: '10px', color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}>
-                Tickets en retard / nombre de ticket :
-              </li>
-            </ul>
+            <StatisticsCard
+              title="Durée de traitement :"
+              statistics={dashboardData.dureeTraitement}
+            />
 
-            <h3 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              marginBottom: '20px',
-              textDecoration: 'underline'
-            }}>
-              Répartition par produit :
-            </h3>
+            <StatisticsCard
+              title="Répartition par produit :"
+              statistics={dashboardData.repartitionProduit}
+              onStatisticClick={handleStatisticClick}
+            />
           </div>
 
+          {/* Colonne de droite - Graphique et crédits */}
           <div>
-            <div style={{
-              background: '#17a2b8',
-              padding: '30px',
-              borderRadius: '20px',
-              marginBottom: '30px',
-              height: '350px'
-            }}>
-              <Line data={chartData} options={chartOptions} />
-            </div>
+            <TicketsChart 
+              chartData={dashboardData.chartData}
+              title="Évolution des tickets"
+              height={400}
+            />
 
-            <div>
-              <h2 style={{
-                textAlign: 'center',
-                fontSize: '32px',
-                fontWeight: 'bold',
-                color: '#17a2b8',
-                marginBottom: '20px'
-              }}>
-                Mes crédits horaires
-              </h2>
-              <table style={{
-                width: '100%',
-                background: 'white',
-                borderRadius: '15px',
-                overflow: 'hidden',
-                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
-              }}>
-                <thead>
-                  <tr style={{ background: '#e5e5e5' }}>
-                    <th style={{ padding: '16px' }}>Produits\CH</th>
-                    <th style={{ padding: '16px' }}>Initial</th>
-                    <th style={{ padding: '16px' }}>Pris</th>
-                    <th style={{ padding: '16px' }}>Reste</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {credits.map((credit, idx) => (
-                    <tr key={idx}>
-                      <td style={{ padding: '16px' }}>{credit.product}</td>
-                      <td style={{ padding: '16px' }}>{credit.initial}</td>
-                      <td style={{ padding: '16px' }}>{credit.used}</td>
-                      <td style={{ padding: '16px' }}>{credit.remaining}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <CreditsTable 
+              credits={dashboardData.creditsHoraires}
+            />
           </div>
         </div>
       </div>
