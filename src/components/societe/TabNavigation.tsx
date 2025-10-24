@@ -11,7 +11,6 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const tabs: { key: Tab; label: string }[] = [
     { key: 'contacts', label: 'Mes contacts' },
     { key: 'produits', label: 'Mes produits' },
-    { key: 'informations', label: 'Mes informations' },
   ];
 
   return (

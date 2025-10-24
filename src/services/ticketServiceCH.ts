@@ -56,12 +56,12 @@ export interface AutreDateData {
 
 export const ticketService = {
   async getTicketDetails(ticketId: string): Promise<Ticket> {
-    const response = await api.get(`/api/tickets/${ticketId}`);
+    const response = await api.get(`/tickets/${ticketId}`);
     return response.data;
   },
 
   async relancerTicket(ticketId: string, data: RelanceData) {
-    const response = await api.post(`/api/tickets/${ticketId}/relancer`, data);
+    const response = await api.post(`/tickets/${ticketId}/relancer`, data);
     return response.data;
   },
 
@@ -70,7 +70,7 @@ export const ticketService = {
     if (data.fichier) formData.append('fichier', data.fichier);
     formData.append('commentaires', data.commentaires);
     
-    const response = await api.post(`/api/tickets/${ticketId}/pieces-jointes`, formData, {
+    const response = await api.post(`/tickets/${ticketId}/pieces-jointes`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
@@ -81,19 +81,19 @@ export const ticketService = {
     formData.append('solutions', data.solutions);
     if (data.fichier) formData.append('fichier', data.fichier);
     
-    const response = await api.post(`/api/tickets/${ticketId}/cloturer`, formData, {
+    const response = await api.post(`/tickets/${ticketId}/cloturer`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;
   },
 
   async proposerAutreDate(ticketId: string, demandeId: string, data: AutreDateData) {
-    const response = await api.post(`/api/tickets/${ticketId}/demandes/${demandeId}/autre-date`, data);
+    const response = await api.post(`/tickets/${ticketId}/demandes/${demandeId}/autre-date`, data);
     return response.data;
   },
 
   async validerIntervention(ticketId: string, demandeId: string) {
-    const response = await api.post(`/api/tickets/${ticketId}/demandes/${demandeId}/valider`);
+    const response = await api.post(`/tickets/${ticketId}/demandes/${demandeId}/valider`);
     return response.data;
   }
 };

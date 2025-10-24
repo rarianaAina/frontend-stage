@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Ticket, ticketService } from '../../services/ticketService';
+import { Ticket, ticketService } from '../../services/ticketServiceCH';
 
 export const useTicketDetails = (ticketId: string) => {
   const [ticket, setTicket] = useState<Ticket | null>(null);

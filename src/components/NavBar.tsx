@@ -10,9 +10,15 @@ export default function NavBar({ role }: NavBarProps) {
   const handleLogout = () => {
     localStorage.removeItem('jeton');
     localStorage.removeItem('role');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('company'); // Supprimer aussi la company
     navigate('/connexion');
   };
 
+  // Récupérer le nom de la compagnie depuis le localStorage
+  const companyName = localStorage.getItem('companyName') || 'Ma Société';
+
+  console.log('Company Name in NavBar:', companyName);
   return (
     <nav style={{
       display: 'flex',
@@ -20,13 +26,13 @@ export default function NavBar({ role }: NavBarProps) {
       alignItems: 'center',
       padding: '20px 40px',
       background: 'transparent',
-      position: 'fixed', // Changé de 'relative' à 'fixed'
-      top: 0, // Positionné en haut
-      left: 0, // Positionné à gauche
-      right: 0, // S'étend sur toute la largeur
-      zIndex: 1000, // Augmenté pour être sûr qu'il soit au-dessus
-      width: '100%', // Prend toute la largeur
-      boxSizing: 'border-box', // Inclut le padding dans la largeur
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      width: '100%',
+      boxSizing: 'border-box',
     }}>
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
         {role === 'CLIENT' && (
@@ -58,6 +64,21 @@ export default function NavBar({ role }: NavBarProps) {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        {/* Affichage du nom de la compagnie */}
+        <div style={{
+          fontSize: '16px',
+          fontFamily: 'Arial, sans-serif',
+          color: 'black',
+          fontWeight: 'bold',
+          textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+          padding: '8px 16px',
+          background: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '20px',
+          backdropFilter: 'blur(5px)'
+        }}>
+          {companyName}
+        </div>
+        
         <div style={{
           fontSize: '20px',
           fontFamily: 'cursive',

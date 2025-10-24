@@ -33,15 +33,18 @@ export default function Login() {
       console.log('Status code /auth/connexion:', response.status);
 
       if (response.status === 200) {
-        const { jeton, email, utilisateurId, nom, companyId } = response.data;
+        const { jeton, email, utilisateurId, nom, companyId, companyName } = response.data;
         console.log(response.data);
         // Stocker le token
         localStorage.setItem('token', jeton);
         localStorage.setItem('email', email);
         localStorage.setItem('userId', utilisateurId);
         localStorage.setItem('companyId', companyId);
+        localStorage.setItem('companyName', companyName);
+
         console.log('User ID avant parseInt:', utilisateurId);
         console.log('Company ID: ', companyId);
+        console.log('Company Name: ', companyName);
         const userId = parseInt(utilisateurId, 10);
 
         console.log('User ID:', userId);

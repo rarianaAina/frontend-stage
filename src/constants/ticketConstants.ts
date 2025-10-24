@@ -1,8 +1,8 @@
 export const PRIORITE_MAPPING: { [key: string]: string } = {
-  '0': 'Basse',
-  '1': 'Moyenne',
+  '4': 'Basse',
+  '3': 'Moyenne',
   '2': 'Haute',
-  '3': 'Urgente',
+  '1': 'Urgente',
   'low': 'Basse',
   'medium': 'Moyenne',
   'high': 'Haute',

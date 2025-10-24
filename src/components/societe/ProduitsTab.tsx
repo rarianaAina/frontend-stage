@@ -1,7 +1,9 @@
 import React from 'react';
 import { useProduits } from '../../hooks/demandes/useProduits';
+import { useCreditsHoraires } from '../../hooks/dashboard/useCreditsHoraires';
+import { useProduitsAvecCH } from '../../hooks/dashboard/useProduitsAvecCH';
 
-interface Produit {
+interface ProduitAvecCH {
   parcName: string;
   parcId: string;
   dateObtention?: string;
@@ -9,16 +11,55 @@ interface Produit {
 }
 
 const ProduitsTab: React.FC = () => {
-  const { produits: produitsReels, loading, error } = useProduits();
+  const companyId = localStorage.getItem('companyId') || '';
+  const { produits: produitsReels, loading: loadingProduits, error } = useProduits();
+  const { credits, loading: loadingCredits } = useCreditsHoraires(produitsReels, companyId);
+  const produitsAvecCH = useProduitsAvecCH(produitsReels, credits);
 
   // Données factices (à supprimer une fois que les données réelles fonctionnent)
-  const produitsFactices: Produit[] = [
-    { parcName: 'ABC123', parcId: '40', dateObtention: '09/09/2020' },
-    { parcName: 'DEF456', parcId: '20', dateObtention: '09/09/2020' },
+  const produitsFactices: ProduitAvecCH[] = [
+    { 
+      parcName: 'ABC123', 
+      parcId: '40', 
+      dateObtention: '09/09/2020',
+      chRestant: 120
+    },
+    { 
+      parcName: 'DEF456', 
+      parcId: '20', 
+      dateObtention: '09/09/2020',
+      chRestant: 75
+    },
   ];
 
-  // Utiliser les produits réels s'ils sont disponibles, sinon les produits factices
-  const produitsAAfficher = produitsReels.length > 0 ? produitsReels : produitsFactices;
+  // Utiliser les produits réels avec CH calculé, sinon les produits factices
+  const produitsAAfficher = produitsAvecCH.length > 0 ? produitsAvecCH : produitsFactices;
+
+  const loadingTotal = loadingProduits || loadingCredits;
+
+  // Fonction pour formater l'affichage du CH restant
+  const formaterCHRestant = (chRestant?: number) => {
+    if (chRestant === undefined || chRestant === null) {
+      return '0';
+    }
+    return `${chRestant}h`;
+  };
+
+  // Fonction pour déterminer la couleur selon le CH restant
+  const getCouleurCHRestant = (chRestant?: number) => {
+    if (chRestant === undefined || chRestant === null) {
+      return '#e5e5e5'; // Gris par défaut
+    }
+    if (chRestant > 100) {
+      return '#d4edda'; // Vert pour beaucoup d'heures
+    } else if (chRestant > 50) {
+      return '#fff3cd'; // Jaune pour moyenne quantité
+    } else if (chRestant > 0) {
+      return '#f8d7da'; // Rouge pour peu d'heures
+    } else {
+      return '#e5e5e5'; // Gris pour zéro heure
+    }
+  };
 
   return (
     <div>
@@ -33,9 +74,9 @@ const ProduitsTab: React.FC = () => {
       </h2>
       
       {/* État de chargement */}
-      {loading && (
+      {loadingTotal && (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          Chargement des produits...
+          Chargement des produits et crédits horaires...
         </div>
       )}
       
@@ -54,7 +95,7 @@ const ProduitsTab: React.FC = () => {
       )}
       
       {/* Tableau des produits */}
-      {!loading && (
+      {!loadingTotal && (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ borderBottom: '2px solid #ddd' }}>
@@ -81,7 +122,18 @@ const ProduitsTab: React.FC = () => {
                         : 'N/A'}
                     </span>
                   </td>
-                  <td style={{ padding: '12px' }}>{produit.parcId}</td>
+                  <td style={{ padding: '12px' }}>
+                    <span style={{
+                      background: getCouleurCHRestant(produit.chRestant),
+                      padding: '8px 16px',
+                      borderRadius: '15px',
+                      display: 'inline-block',
+                      fontWeight: 'bold',
+                      color: produit.chRestant && produit.chRestant < 50 ? '#721c24' : '#155724'
+                    }}>
+                      {formaterCHRestant(produit.chRestant)}
+                    </span>
+                  </td>
                   <td style={{ padding: '12px' }}>
                     <button style={{
                       background: '#6dd5ed',
@@ -91,7 +143,9 @@ const ProduitsTab: React.FC = () => {
                       border: 'none',
                       cursor: 'pointer',
                       transition: 'background 0.3s ease'
-                    }}>
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#4fa3c7'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = '#6dd5ed'}>
                       Faire une demande
                     </button>
                   </td>

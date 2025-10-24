@@ -1,68 +1,17 @@
-import { useState, useEffect } from 'react';
-import { CreditHoraire } from '../../types/dashboard';
-import { dashboardService } from '../../services/dashboardService';
+// components/dashboard/CreditsTable.tsx
+import { useCreditsHoraires } from '../../hooks/dashboard/useCreditsHoraires';
+import { useCreditsResumes } from '../../hooks/dashboard/useCreditsResumes';
 import { useProduits } from '../../hooks/demandes/useProduits';
 
 export const CreditsTable = () => {
-  const [credits, setCredits] = useState<{ [key: string]: CreditHoraire[] }>({});
-  const [loading, setLoading] = useState(true);
-  const { produits, loading: loadingProduits } = useProduits();
   const companyId = localStorage.getItem('companyId') || '';
+  const { produits, loading: loadingProduits } = useProduits();
+  const { credits, loading: loadingCredits } = useCreditsHoraires(produits, companyId);
+  const creditsResumes = useCreditsResumes(produits, credits);
 
-  const loadCredits = async () => {
-    if (!companyId || produits.length === 0) return;
+  const loading = loadingProduits || loadingCredits;
 
-    try {
-      setLoading(true);
-      
-      // Pour chaque produit, récupérer tous les crédits
-      const creditsParProduit: { [key: string]: CreditHoraire[] } = {};
-      
-      for (const produit of produits) {
-        try {
-          const creditsDuProduit = await dashboardService.getCreditsHorairesParProduit(
-            companyId, 
-            produit.parcId.toString()
-          );
-          
-          creditsParProduit[produit.parcId] = creditsDuProduit;
-        } catch (err) {
-          console.error(`Erreur pour le produit ${produit.parcName}:`, err);
-          creditsParProduit[produit.parcId] = [];
-        }
-      }
-      
-      setCredits(creditsParProduit);
-    } catch (err) {
-      console.error('Erreur lors du chargement des crédits:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (produits.length > 0) {
-      loadCredits();
-    }
-  }, [produits]);
-
-  // Calculer les totaux par produit
-  const creditsResumes = produits.map(produit => {
-    const creditsDuProduit = credits[produit.parcId] || [];
-    
-    const totalInitial = creditsDuProduit.reduce((sum, credit) => sum + credit.initial, 0);
-    const totalUsed = creditsDuProduit.reduce((sum, credit) => sum + credit.used, 0);
-    const totalRemaining = creditsDuProduit.reduce((sum, credit) => sum + credit.remaining, 0);
-    
-    return {
-      product: produit.parcName,
-      initial: totalInitial,
-      used: totalUsed,
-      remaining: totalRemaining
-    };
-  });
-
-  if (loadingProduits || loading) {
+  if (loading) {
     return (
       <div style={{
         background: 'white',
@@ -127,7 +76,7 @@ export const CreditsTable = () => {
                 padding: '12px', 
                 textAlign: 'center',
                 fontWeight: 'bold',
-                color: credit.remaining < 10 ? '#dc3545' : '#28a745'
+                color: credit.remaining < 5 ? '#dc3545' : '#28a745'
               }}>
                 {credit.remaining}h
               </td>

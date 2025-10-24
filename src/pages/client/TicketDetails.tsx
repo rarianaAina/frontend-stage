@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import { useTicketDetails } from '../../hooks/ticket/useTicketDetails';
-import { ticketService, RelanceData, PJData, ClotureData, AutreDateData } from '../../services/ticketService';
+import { ticketService, RelanceData, PJData, ClotureData, AutreDateData } from '../../services/ticketServiceCH';
 import { TicketHeader } from '../../components/ticket/TicketHeader';
 import { DemandesIntervention } from '../../components/ticket/DemandesIntervention';
 import { InteractionsPJ } from '../../components/ticket/InteractionsPJ';
@@ -100,16 +100,16 @@ export default function TicketDetails() {
           onCloturer={() => setShowClotureModal(true)}
         />
 
-        <DemandesIntervention
+        {/* <DemandesIntervention
           demandes={ticket.demandesIntervention}
           onValider={handleValider}
           onAutreDate={handleAutreDate}
-        />
+        /> */}
 
-        <InteractionsPJ
+        {/* <InteractionsPJ
           interactions={ticket.interactions}
           piecesJointes={ticket.piecesJointes}
-        />
+        /> */}
       </div>
 
       <RelanceModal
