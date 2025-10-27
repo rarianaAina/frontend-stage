@@ -20,11 +20,11 @@ export default function ProtectedRoute({ children, allowedRoles = [] }: Protecte
   if (allowedRoles.length > 0 && (!role || !allowedRoles.includes(role))) {
     // Rediriger vers le dashboard par défaut selon le rôle
     switch(role) {
-      case 'admin':
+      case 'ADMIN':
         return <Navigate to="/admin/dashboard" replace />;
-      case 'consultant':
+      case 'CONSULTANT':
         return <Navigate to="/consultant/tickets" replace />;
-      case 'client':
+      case 'CLIENT':
       default:
         return <Navigate to="/dashboard" replace />;
     }

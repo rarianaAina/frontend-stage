@@ -60,7 +60,7 @@ export const StatisticsCard = ({
             style={{ 
               marginBottom: '12px', 
               color: '#2563eb', 
-              textDecoration: 'underline', 
+              textDecoration: 'none',
               cursor: onStatisticClick ? 'pointer' : 'default',
               display: 'flex',
               justifyContent: 'space-between',

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 type NavBarProps = {
-  role: 'CLIENT' | 'CONSULTANT' | 'ADMINISTRATEUR';
+  role: 'CLIENT' | 'CONSULTANT' | 'ADMIN';
 };
 
 export default function NavBar({ role }: NavBarProps) {
@@ -51,7 +51,7 @@ export default function NavBar({ role }: NavBarProps) {
           </>
         )}
 
-        {role === 'ADMINISTRATEUR' && (
+        {role === 'ADMIN' && (
           <>
             <NavButton to="/admin/demandes">Demandes</NavButton>
             <NavButton to="/admin/interventions">Interventions</NavButton>
@@ -65,7 +65,7 @@ export default function NavBar({ role }: NavBarProps) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         {/* Affichage du nom de la compagnie */}
-        <div style={{
+        {/* <div style={{
           fontSize: '16px',
           fontFamily: 'Arial, sans-serif',
           color: 'black',
@@ -77,32 +77,29 @@ export default function NavBar({ role }: NavBarProps) {
           backdropFilter: 'blur(5px)'
         }}>
           {companyName}
-        </div>
+        </div> */}
         
-        <div style={{
+        {/* <div style={{
           fontSize: '20px',
           fontFamily: 'cursive',
           color: 'black',
           textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
         }}>
           Portail client
-        </div>
+        </div> */}
         <Link
           to="/profile"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
-            color: 'white',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            textDecoration: 'none',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            transition: 'transform 0.3s ease'
+          fontSize: '16px',
+          fontFamily: 'Arial, sans-serif',
+          color: 'black',
+          fontWeight: 'bold',
+          textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+          padding: '8px 16px',
+          background: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '20px',
+          backdropFilter: 'blur(5px)',
+          textDecoration: 'none'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.1)';
@@ -111,7 +108,7 @@ export default function NavBar({ role }: NavBarProps) {
             e.currentTarget.style.transform = 'scale(1)';
           }}
         >
-          {(localStorage.getItem('userName') || 'U').charAt(0).toUpperCase()}
+          {companyName}
         </Link>
         <button
           onClick={handleLogout}

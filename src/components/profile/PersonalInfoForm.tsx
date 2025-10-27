@@ -83,7 +83,7 @@ export const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
           </label>
           <input
             type="tel"
-            value={userData.whatsappNumero}
+            value={userData.telephone}
             onChange={(e) => onUserDataChange('whatsappNumero', e.target.value)}
             style={inputStyle}
           />

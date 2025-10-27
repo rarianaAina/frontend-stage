@@ -10,9 +10,9 @@ export default function Layout({ children }: LayoutProps) {
   // Récupérer le rôle depuis le localStorage
   const getCurrentRole = () => {
     const role = localStorage.getItem('role');
-    if (role === 'client') return 'CLIENT';
-    if (role === 'consultant') return 'CONSULTANT';
-    if (role === 'admin') return 'ADMINISTRATEUR';
+    if (role === 'CLIENT') return 'CLIENT';
+    if (role === 'CONSULTANT') return 'CONSULTANT';
+    if (role === 'ADMIN') return 'ADMIN';
     return 'CLIENT'; // valeur par défaut
   };
 

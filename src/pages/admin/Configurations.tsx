@@ -18,7 +18,7 @@ export default function Configurations() {
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="admin" />
+      <NavBar role="ADMIN" />
 
       <div style={{ padding: '40px 60px' }}>
         <h1 style={{

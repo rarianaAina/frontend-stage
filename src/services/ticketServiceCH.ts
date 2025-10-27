@@ -4,12 +4,10 @@ export interface Ticket {
   id: number;
   reference: string;
   statut: string;
-  dateSoumission: string;
-  produit: string;
-  produitId: number;
+  dateCreation: string;
+  produitNom: string;
+  produitId: string;
   demandesIntervention: DemandeIntervention[];
-  interactions: Interaction[];
-  piecesJointes: PieceJointe[];
 }
 
 export interface DemandeIntervention {
@@ -20,11 +18,21 @@ export interface DemandeIntervention {
   etat: string;
 }
 
+export interface InteractionCreateDTO {
+  ticketId: number;
+  message: string;
+  typeInteractionId: number;
+  canalInteractionId: number;
+  auteurUtilisateurId: number;
+  visibleClient?: boolean;
+  interventionId?: number;
+}
+
 export interface Interaction {
   id: number;
-  type: string;
-  date: string;
-  commentaires: string;
+  typeInteractionLibelle: string;
+  dateCreation: string;
+  message: string;
   pieceJointe?: string;
 }
 
@@ -54,12 +62,78 @@ export interface AutreDateData {
   commentaires: string;
 }
 
-export const ticketService = {
-  async getTicketDetails(ticketId: string): Promise<Ticket> {
-    const response = await api.get(`/tickets/${ticketId}`);
+// Service pour les types et canaux d'interaction
+export const interactionService = {
+  async getTypesInteraction() {
+    const response = await api.get('/types-interaction');
     return response.data;
   },
 
+  async getCanauxInteraction() {
+    const response = await api.get('/canaux-interaction');
+    return response.data;
+  },
+
+  // async getTypeRelanceId(): Promise<number> {
+  //   const types = await this.getTypesInteraction();
+  //   const relanceType = types.find((type: any) => 
+  //     type.libelle.toLowerCase().includes('relance') || 
+  //     type.libelle.toLowerCase().includes('rappel')
+  //   );
+  //   if (!relanceType) {
+  //     throw new Error('Type d\'interaction "Relance" non trouvé');
+  //   }
+  //   return relanceType.id;
+  // },
+
+  // async getCanalInterneId(): Promise<number> {
+  //   const canaux = await this.getCanauxInteraction();
+  //   const canalInterne = canaux.find((canal: any) => 
+  //     canal.libelle.toLowerCase().includes('système') || 
+  //     canal.libelle.toLowerCase().includes('interne')
+  //   );
+  //   if (!canalInterne) {
+  //     throw new Error('Canal d\'interaction "Interne" non trouvé');
+  //   }
+  //   return canalInterne.id;
+  // }
+};
+
+export const ticketService = {
+  async getTicketDetails(ticketId: string): Promise<Ticket> {
+    const response = await api.get(`/tickets/${ticketId}`);
+    console.log('Détails ticket:', response.data);
+    return response.data;
+  },
+
+  async getInteractions(ticketId: string): Promise<Interaction[]> {
+    try {
+      const response = await api.get(`/interactions/ticket/${ticketId}`);
+      console.log('Interactions:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur récupération interactions:', error);
+      return [];
+    }
+  },
+
+  async creerInteraction(data: InteractionCreateDTO) {
+    const response = await api.post('/interactions', data);
+    return response.data;
+  },
+  
+  async getPiecesJointes(ticketId: string): Promise<PieceJointe[]> {
+    try {
+      const response = await api.get(`/pieces-jointes/ticket/${ticketId}`);
+      console.log('Pièces jointes:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur récupération pièces jointes:', error);
+      return [];
+    }
+  },
+
+  // Ancienne méthode - vous pouvez la supprimer si elle n'est plus utilisée
   async relancerTicket(ticketId: string, data: RelanceData) {
     const response = await api.post(`/tickets/${ticketId}/relancer`, data);
     return response.data;
@@ -95,5 +169,5 @@ export const ticketService = {
   async validerIntervention(ticketId: string, demandeId: string) {
     const response = await api.post(`/tickets/${ticketId}/demandes/${demandeId}/valider`);
     return response.data;
-  }
+  },
 };

@@ -4,13 +4,14 @@ type TicketHeaderProps = {
   reference: string;
   statut?: string | number | null;
   dateCreation?: string | null;
-  produit: string;
+  produit?: string | null; // ✅ Changé pour accepter null
+  produitNom?: string | null; // ✅ Ajouté pour correspondre au type Ticket
   onRelancer: () => void;
   onAjouterPJ: () => void;
   onCloturer: () => void;
 };
 
-// Statut: map simple pour badges
+// Fonction getStatutInfo inchangée...
 function getStatutInfo(raw: string | number | null | undefined) {
   const normalized = String(raw || "").trim().toUpperCase();
 
@@ -41,11 +42,32 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
   statut,
   dateCreation,
   produit,
+  produitNom, // ✅ Nouvelle prop
   onRelancer,
   onAjouterPJ,
   onCloturer,
 }) => {
   const statutInfo = getStatutInfo(statut);
+
+  // ✅ Utilisez produitNom si disponible, sinon produit
+  const displayProduit = produitNom || produit || "—";
+
+  // ✅ Formatez la date
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "—";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch {
+      return "—";
+    }
+  };
 
   const badgeStyle: React.CSSProperties = {
     display: "inline-block",
@@ -86,11 +108,11 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
 
         <div style={{ marginBottom: "15px" }}>
           <strong style={{ color: "#17a2b8" }}>Date de soumission :</strong>{" "}
-          {dateCreation || "—"}
+          {formatDate(dateCreation)} {/* ✅ Date formatée */}
         </div>
 
         <div>
-          <strong style={{ color: "#17a2b8" }}>Produit :</strong> {produit || "—"}
+          <strong style={{ color: "#17a2b8" }}>Produit :</strong> {displayProduit} {/* ✅ Produit corrigé */}
         </div>
       </div>
 
@@ -120,7 +142,7 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
           }}
         >
           <button onClick={onRelancer} className="btn-warning">
-            Relancer
+            Nouvelle interaction
           </button>
           <button
             onClick={onAjouterPJ}

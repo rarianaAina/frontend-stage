@@ -43,7 +43,7 @@ export default function AdminDashboard() {
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="ADMINISTRATEUR" />
+      <NavBar role="ADMIN" />
 
       <div style={{ padding: '40px 60px' }}>
         <div style={{
