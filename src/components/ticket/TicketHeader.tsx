@@ -4,8 +4,8 @@ type TicketHeaderProps = {
   reference: string;
   statut?: string | number | null;
   dateCreation?: string | null;
-  produit?: string | null; // ✅ Changé pour accepter null
-  produitNom?: string | null; // ✅ Ajouté pour correspondre au type Ticket
+  produit?: string | null; 
+  produitNom?: string | null;
   onRelancer: () => void;
   onAjouterPJ: () => void;
   onCloturer: () => void;
@@ -42,17 +42,15 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
   statut,
   dateCreation,
   produit,
-  produitNom, // ✅ Nouvelle prop
+  produitNom,
   onRelancer,
   onAjouterPJ,
   onCloturer,
 }) => {
   const statutInfo = getStatutInfo(statut);
 
-  // ✅ Utilisez produitNom si disponible, sinon produit
   const displayProduit = produitNom || produit || "—";
 
-  // ✅ Formatez la date
   const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return "—";
     try {
@@ -108,11 +106,11 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
 
         <div style={{ marginBottom: "15px" }}>
           <strong style={{ color: "#17a2b8" }}>Date de soumission :</strong>{" "}
-          {formatDate(dateCreation)} {/* ✅ Date formatée */}
+          {formatDate(dateCreation)}
         </div>
 
         <div>
-          <strong style={{ color: "#17a2b8" }}>Produit :</strong> {displayProduit} {/* ✅ Produit corrigé */}
+          <strong style={{ color: "#17a2b8" }}>Produit :</strong> {displayProduit}
         </div>
       </div>
 
@@ -141,22 +139,59 @@ export const TicketHeader: React.FC<TicketHeaderProps> = ({
             gap: "15px",
           }}
         >
-          <button onClick={onRelancer} className="btn-warning">
+          <button 
+            onClick={onRelancer} 
+            className="btn-warning"
+            style={{
+              padding: '10px',
+              borderRadius: '20px',
+              border: 'none',
+              background: '#ffc107',
+              color: 'black',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
             Nouvelle interaction
           </button>
           <button
             onClick={onAjouterPJ}
             style={{
+              padding: '10px',
+              borderRadius: '20px',
+              border: 'none',
               background: "#c8f7dc",
               color: "black",
+              cursor: 'pointer',
+              fontWeight: '600'
             }}
           >
             Rajouter PJ
           </button>
-          <button style={{ background: "#ffd700", color: "black" }}>
+          <button style={{ 
+            padding: '10px',
+            borderRadius: '20px',
+            border: 'none',
+            background: "#ffd700", 
+            color: "black",
+            cursor: 'pointer',
+            fontWeight: '600'
+          }}>
             Renvoyer une fiche
           </button>
-          <button onClick={onCloturer} className="btn-primary">
+          <button 
+            onClick={onCloturer} 
+            className="btn-primary"
+            style={{
+              padding: '10px',
+              borderRadius: '20px',
+              border: 'none',
+              background: '#17a2b8',
+              color: 'white',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
             Clôturer ticket
           </button>
         </div>

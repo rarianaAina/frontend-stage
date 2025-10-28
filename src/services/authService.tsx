@@ -74,13 +74,13 @@ class AuthService {
   
   const { jeton, email, utilisateurId, nom, companyId, companyName } = userData;
   
-  // Convertir l'ID en string pour le localStorage
+
   const userIdString = utilisateurId.toString();
   const companyIdString = companyId?.toString() || '';
   
   console.log('Converted userId:', userIdString);
   
-  // ✅ CORRECTION: Utiliser 'jeton' au lieu de 'token'
+ 
   localStorage.setItem('jeton', jeton);
   localStorage.setItem('email', email);
   localStorage.setItem('userId', userIdString);

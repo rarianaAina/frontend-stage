@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import { useTicketDetails } from '../../hooks/ticket/useTicketDetails';
-import { ticketService, RelanceData, PJData, ClotureData, AutreDateData, interactionService } from '../../services/ticketServiceCH';
+import { ticketService, RelanceData, PJData, ClotureData, AutreDateData, interactionService, InteractionCreateDTO } from '../../services/ticketServiceCH';
 import { TicketHeader } from '../../components/ticket/TicketHeader';
 import { DemandesIntervention } from '../../components/ticket/DemandesIntervention';
 import { InteractionsPJ } from '../../components/ticket/InteractionsPJ';
 import { RelanceModal } from '../../components/modals/RelanceModal';
 import { PJModal } from '../../components/modals/PJModal';
 import { NouvelleInteractionModal } from '../../components/modals/NouvelleInteractionModal';
+import { toast } from 'react-toastify';
 
 export default function TicketDetails() {
   const { id } = useParams();
@@ -29,9 +30,8 @@ export default function TicketDetails() {
 
   // Récupérer l'utilisateur connecté
   const getCurrentUserId = (): number => {
-    // À adapter selon votre système d'authentification
     const userId = localStorage.getItem('userId');
-    return userId ? parseInt(userId) : 1; // Fallback à 1 si non trouvé
+    return userId ? parseInt(userId) : 1;
   };
 
   // Charger les interactions et pièces jointes séparément
@@ -60,38 +60,19 @@ export default function TicketDetails() {
     }
   }, [ticket]);
 
-  // Handler pour la relance via interaction
-  const handleRelancer = async (data: RelanceData) => {
+  // Handler pour la relance via interaction - CORRIGÉ
+  const handleRelancer = async (interactionData: InteractionCreateDTO) => {
     try {
-      // Utiliser le nouveau système de relance via interaction
-      const utilisateurId = getCurrentUserId();
-      
-      // Récupérer les IDs de type et canal
-      // const [typeRelanceId, canalInterneId] = await Promise.all([
-      //   interactionService.getTypeRelanceId(),
-      //   interactionService.getCanalInterneId()
-      // ]);
-
-      // Créer le message de relance
-      const message = `Relance ${data.niveau}: ${data.commentaires}`;
-      
-      // Créer l'interaction de relance
-      await ticketService.creerInteraction({
-        ticketId: ticket!.id,
-        message: message,
-        typeInteractionId: 3,
-        canalInteractionId: 1,
-        auteurUtilisateurId: utilisateurId,
-        visibleClient: false
-      });
+      // UN SEUL APPEL maintenant
+      await ticketService.creerInteraction(interactionData);
 
       // Recharger les interactions pour afficher la nouvelle relance
       const nouvellesInteractions = await ticketService.getInteractions(ticket!.id.toString());
       setInteractions(nouvellesInteractions);
       
       setShowRelanceModal(false);
-      alert(`Relance ${data.niveau} créée avec succès !`);
-      
+      //alert(`Interaction créée avec succès !`);
+      toast.success('✅ Interaction créée avec succès !');
     } catch (err) {
       console.error('Erreur lors de la relance:', err);
       alert('Erreur lors de la relance');
@@ -124,7 +105,7 @@ export default function TicketDetails() {
         return;
       }
 
-      const interactionData = {
+      const interactionData: InteractionCreateDTO = {
         ticketId: ticket!.id,
         message: data.message,
         typeInteractionId: data.typeInteractionId,
@@ -140,8 +121,8 @@ export default function TicketDetails() {
       setInteractions(nouvellesInteractions);
       
       setShowNouvelleInteractionModal(false);
-      alert('Interaction créée avec succès!');
-      
+      //alert('Interaction créée avec succès!');
+      toast.success('✅ Interaction créée avec succès !');
     } catch (err) {
       console.error('Erreur lors de la création de l\'interaction:', err);
       alert('Erreur lors de la création de l\'interaction');
@@ -313,9 +294,9 @@ export default function TicketDetails() {
       <RelanceModal
         isOpen={showRelanceModal}
         onClose={() => setShowRelanceModal(false)}
-        ticketId={ticket.id} // ✅ Changé de reference à ticketId
+        ticketId={ticket.id}
         onRelancer={handleRelancer}
-        utilisateurId={getCurrentUserId()} // ✅ Ajout de l'utilisateurId
+        utilisateurId={getCurrentUserId()}
       />
 
       <PJModal
@@ -325,15 +306,12 @@ export default function TicketDetails() {
         onAjouterPJ={handleAjouterPJ}
       />
 
-      {/* ✅ Décommentez cette modale si elle existe */}
       {/* <NouvelleInteractionModal
         isOpen={showNouvelleInteractionModal}
         onClose={() => setShowNouvelleInteractionModal(false)}
         reference={ticket.reference}
         onCreerInteraction={handleNouvelleInteraction}
       /> */}
-
-      {/* Ajouter les autres modales ici... */}
     </div>
   );
 }

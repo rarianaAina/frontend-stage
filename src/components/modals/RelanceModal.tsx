@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { RelanceData, ticketService, interactionService } from '../../services/ticketServiceCH';
+import { RelanceData, ticketService, interactionService, InteractionCreateDTO } from '../../services/ticketServiceCH';
 import Modal from '../Modal';
 
 interface RelanceModalProps {
   isOpen: boolean;
   onClose: () => void;
   ticketId: number;
-  onRelancer: (data: RelanceData) => void;
+  onRelancer: (interactionData: InteractionCreateDTO) => void;
   utilisateurId: number;
 }
 
@@ -18,64 +18,31 @@ export const RelanceModal = ({
   utilisateurId 
 }: RelanceModalProps) => {
   const [data, setData] = useState<RelanceData>({ niveau: 'Urgent', commentaires: '' });
-  const [typeRelanceId, setTypeRelanceId] = useState<number | null>(null);
-  const [canalInterneId, setCanalInterneId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Charger les IDs au montage du composant
-  useEffect(() => {
-    const loadIds = async () => {
-      try {
-        setLoading(true);
-        // const [typeId, canalId] = await Promise.all([
-        //   interactionService.getTypeRelanceId(),
-        //   interactionService.getCanalInterneId()
-        // ]);
-        setTypeRelanceId(3);
-        setCanalInterneId(1);
-      } catch (error) {
-        console.error('Erreur lors du chargement des IDs:', error);
-        alert('Erreur de configuration des types d\'interaction');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isOpen) {
-      loadIds();
-    }
-  }, [isOpen]);
-
   const handleSubmit = async () => {
-    if (!typeRelanceId || !canalInterneId) {
-      alert('Configuration des interactions non chargée');
-      return;
-    }
-
     try {
       setLoading(true);
-      
-      // Créer le message de relance
-      const message = `Relance ${data.niveau}: ${data.commentaires}`;
-      
-      // Créer l'interaction
-      await ticketService.creerInteraction({
+      const typeInteractionId = data.niveau === 'Relance' ? 3 : 1;
+      // Préparer les données complètes de l'interaction
+      const interactionData: InteractionCreateDTO = {
         ticketId: ticketId,
-        message: message,
-        typeInteractionId: typeRelanceId,
-        canalInteractionId: canalInterneId,
+        message: `${data.niveau}: ${data.commentaires}`,
+        typeInteractionId: typeInteractionId, // Type relance
+        canalInteractionId: 1, // Canal interne
         auteurUtilisateurId: utilisateurId,
         visibleClient: false // La relance n'est généralement pas visible au client
-      });
+      };
 
-      // Appeler la callback parent
-      onRelancer(data);
+      // Passer les données complètes au parent - PAS d'appel API ici
+      onRelancer(interactionData);
+      
       onClose();
       setData({ niveau: 'Urgent', commentaires: '' });
       
     } catch (error) {
-      console.error('Erreur lors de la relance:', error);
-      alert('Erreur lors de la création de la relance');
+      console.error('Erreur lors de la préparation de la relance:', error);
+      alert('Erreur lors de la préparation de la relance');
     } finally {
       setLoading(false);
     }
@@ -87,20 +54,36 @@ export const RelanceModal = ({
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
           Ticket ID :
         </label>
-        <input type="text" value={ticketId} disabled style={{ width: '100%' }} />
+        <input 
+          type="text" 
+          value={ticketId} 
+          disabled 
+          style={{ 
+            width: '100%', 
+            padding: '10px', 
+            borderRadius: '20px', 
+            border: '1px solid #ddd',
+            background: '#f5f5f5'
+          }} 
+        />
       </div>
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
           Niveau :
         </label>
         <select 
-          style={{ width: '100%' }}
+          style={{ 
+            width: '100%', 
+            padding: '10px', 
+            borderRadius: '20px', 
+            border: '1px solid #ddd' 
+          }}
           value={data.niveau}
           onChange={(e) => setData({...data, niveau: e.target.value})}
           disabled={loading}
         >
-          <option>Réponse</option>
-          <option>Relance</option>
+          <option value="Relance">Relance</option>
+          <option value="Message">Message</option>
         </select>
       </div>
       <div style={{ marginBottom: '30px' }}>
@@ -108,7 +91,14 @@ export const RelanceModal = ({
           Commentaires :
         </label>
         <textarea 
-          style={{ width: '100%', minHeight: '100px' }} 
+          style={{ 
+            width: '100%', 
+            minHeight: '100px', 
+            padding: '10px', 
+            borderRadius: '20px', 
+            border: '1px solid #ddd',
+            fontFamily: 'inherit'
+          }} 
           value={data.commentaires}
           onChange={(e) => setData({...data, commentaires: e.target.value})}
           disabled={loading}
@@ -119,7 +109,16 @@ export const RelanceModal = ({
         <button 
           className="btn-primary" 
           onClick={handleSubmit}
-          disabled={loading || !typeRelanceId || !canalInterneId}
+          disabled={loading || !data.commentaires.trim()}
+          style={{
+            padding: '10px 20px',
+            borderRadius: '20px',
+            border: 'none',
+            background: loading || !data.commentaires.trim() ? '#ccc' : '#17a2b8',
+            color: 'white',
+            cursor: loading || !data.commentaires.trim() ? 'not-allowed' : 'pointer',
+            fontWeight: '600'
+          }}
         >
           {loading ? 'Création...' : 'Valider'}
         </button>
@@ -127,6 +126,15 @@ export const RelanceModal = ({
           className="btn-warning" 
           onClick={onClose}
           disabled={loading}
+          style={{
+            padding: '10px 20px',
+            borderRadius: '20px',
+            border: '1px solid #ddd',
+            background: 'white',
+            color: '#666',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontWeight: '600'
+          }}
         >
           Annuler
         </button>

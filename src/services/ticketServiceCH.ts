@@ -73,30 +73,6 @@ export const interactionService = {
     const response = await api.get('/canaux-interaction');
     return response.data;
   },
-
-  // async getTypeRelanceId(): Promise<number> {
-  //   const types = await this.getTypesInteraction();
-  //   const relanceType = types.find((type: any) => 
-  //     type.libelle.toLowerCase().includes('relance') || 
-  //     type.libelle.toLowerCase().includes('rappel')
-  //   );
-  //   if (!relanceType) {
-  //     throw new Error('Type d\'interaction "Relance" non trouvé');
-  //   }
-  //   return relanceType.id;
-  // },
-
-  // async getCanalInterneId(): Promise<number> {
-  //   const canaux = await this.getCanauxInteraction();
-  //   const canalInterne = canaux.find((canal: any) => 
-  //     canal.libelle.toLowerCase().includes('système') || 
-  //     canal.libelle.toLowerCase().includes('interne')
-  //   );
-  //   if (!canalInterne) {
-  //     throw new Error('Canal d\'interaction "Interne" non trouvé');
-  //   }
-  //   return canalInterne.id;
-  // }
 };
 
 export const ticketService = {
@@ -118,6 +94,7 @@ export const ticketService = {
   },
 
   async creerInteraction(data: InteractionCreateDTO) {
+    console.log('Création interaction avec données:', data);
     const response = await api.post('/interactions', data);
     return response.data;
   },
@@ -133,7 +110,6 @@ export const ticketService = {
     }
   },
 
-  // Ancienne méthode - vous pouvez la supprimer si elle n'est plus utilisée
   async relancerTicket(ticketId: string, data: RelanceData) {
     const response = await api.post(`/tickets/${ticketId}/relancer`, data);
     return response.data;
