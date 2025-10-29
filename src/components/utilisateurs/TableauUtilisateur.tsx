@@ -1,4 +1,3 @@
-// components/utilisateurs/TableauUtilisateurs.tsx
 import { Utilisateur } from '../../types/utilisateur';
 
 interface Props {
@@ -10,13 +9,9 @@ export default function TableauUtilisateurs({ utilisateurs, onVoirDetails }: Pro
   
   const getEtatDisplay = (actif: boolean) => actif ? 'Actif' : 'Inactif';
   
-  const getSocieteDisplay = (companyId?: number) => {
-    // Mapping des companyId vers les noms de société
-    const societes: { [key: number]: string } = {
-      896: 'OPTIMADA',
-      // Ajouter d'autres mappings selon vos besoins
-    };
-    return companyId ? societes[companyId] || `Société ${companyId}` : 'Non définie';
+  const getSocieteDisplay = (companyName?: string) => {
+
+    return companyName || 'Non définie';
   };
 
   const getPosteDisplay = (idExterneCrm?: string) => {
@@ -37,7 +32,7 @@ export default function TableauUtilisateurs({ utilisateurs, onVoirDetails }: Pro
         <tr style={{ background: '#f8fafc' }}>
           <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Nom</th>
           <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Prénom</th>
-          <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Identifiant</th>
+          {/* <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Identifiant</th> */}
           <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Email</th>
           <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Société</th>
           <th style={{ padding: '15px', textAlign: 'left', borderBottom: '2px solid #e2e8f0' }}>Poste</th>
@@ -50,9 +45,9 @@ export default function TableauUtilisateurs({ utilisateurs, onVoirDetails }: Pro
           <tr key={user.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
             <td style={{ padding: '15px' }}>{user.nom}</td>
             <td style={{ padding: '15px' }}>{user.prenom}</td>
-            <td style={{ padding: '15px' }}>{user.identifiant}</td>
+            {/* <td style={{ padding: '15px' }}>{user.identifiant}</td> */}
             <td style={{ padding: '15px' }}>{user.email}</td>
-            <td style={{ padding: '15px' }}>{getSocieteDisplay(user.companyId)}</td>
+            <td style={{ padding: '15px' }}>{getSocieteDisplay(user.companyName)}</td>
             <td style={{ padding: '15px' }}>{getPosteDisplay(user.idExterneCrm)}</td>
             <td style={{ padding: '15px' }}>{getEtatDisplay(user.actif)}</td>
             <td style={{ padding: '15px' }}>
