@@ -1,17 +1,18 @@
 export interface Utilisateur {
   id: number;
+  companyId: number;
+  companyName: string;
+  idExterneCrm: string;
   identifiant: string;
   nom: string;
   prenom: string;
   email: string;
   telephone: string;
-  whatsappNumero?: string;
+  whatsappNumero: string;
   actif: boolean;
+  dateDerniereConnexion: string;
   dateCreation: string;
   dateMiseAJour: string;
-  dateDerniereConnexion?: string;
-  companyId?: number;
-  idExterneCrm?: string;
   
   // Champs calculés pour l'affichage
   societe?: string;
