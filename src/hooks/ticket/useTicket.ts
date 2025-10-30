@@ -40,6 +40,7 @@ export const useTickets = ({ etat, reference, produit, dateDebut, dateFin }: Use
     api.get(`/tickets/utilisateur/${utilisateurId}/page/${page}/size/${size}${queryString}`)
       .then((res) => {
         const data = res.data;
+        console.log('Réponse API brute des tickets:', data);
         setTickets(data.tickets || []);
         setPagination({
           currentPage: data.currentPage,

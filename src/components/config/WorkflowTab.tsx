@@ -57,7 +57,7 @@ export const WorkflowTab: React.FC = () => {
 
     // Vérifier qu'un utilisateur est disponible
     if (availableUsers.length === 0) {
-      alert('Aucun utilisateur interne disponible. Veuillez d\'abord créer des utilisateurs avec les rôles 2 ou 3.');
+      alert('Aucun utilisateur interne disponible. Veuillez d\'abord créer des utilisateurs.');
       return;
     }
 

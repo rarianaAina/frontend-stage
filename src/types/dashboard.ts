@@ -37,3 +37,56 @@ export type DashboardStats = {
   creditsHoraires: CreditHoraire[];
   chartData: ChartData;
 };
+
+// Types spécifiques pour le dashboard admin
+export type ConsultantPerformance = {
+  consultantId: number;
+  consultantNom: string;
+  ticketsEnCours: number;
+  ticketsClotures: number;
+  interventionsRealisees: number;
+  tauxResolution: number;
+  dureeMoyenneTraitement: number;
+};
+
+export type StatistiquesGlobales = {
+  totalTickets: number;
+  ticketsOuverts: number;
+  ticketsEnCours: number;
+  ticketsClotures: number;
+  totalCompanies: number;
+  totalConsultants: number;
+  interventionsPlanifiees: number;
+};
+
+export type DureeTraitement = {
+  moyenneHeures: number;
+  moyenneJours: number;
+  rapides: number;
+  normaux: number;
+  lents: number;
+};
+
+export type TicketRecent = {
+  id: number;
+  reference: string;
+  titre: string;
+  statut: string;
+  priorite: string;
+  nomCompany: string;
+  nomProduit: string;
+  consultantNom: string;
+  dateCreation: string;
+};
+
+export type DashboardAdminData = {
+  statistiquesGlobales: StatistiquesGlobales;
+  ticketsParStatut: StatisticItem[];
+  ticketsParPriorite: StatisticItem[];
+  ticketsParProduit: StatisticItem[];
+  ticketsParCompany: StatisticItem[];
+  performancesConsultants: ConsultantPerformance[];
+  ticketsRecents: TicketRecent[];
+  dureesMoyennes: DureeTraitement;
+  chartData: ChartData;
+};

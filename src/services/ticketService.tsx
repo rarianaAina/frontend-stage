@@ -27,6 +27,7 @@ export type NouvelleDemandeData = {
   niveau: string;
   type: string;
   fichiers?: FileList | null;
+  
 };
 
 export const ticketService = {
