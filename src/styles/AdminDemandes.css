@@ -1,0 +1,156 @@
+/* AdminDemandes.css */
+.admin-demandes-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%);
+}
+
+.admin-demandes-content {
+  padding: 40px 60px;
+}
+
+.admin-demandes-title {
+  font-size: 42px;
+  color: #17a2b8;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 10px;
+  color: #17a2b8;
+  font-style: italic;
+  background: white;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.results-count {
+  font-size: 16px;
+  color: #666;
+  font-weight: 600;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #17a2b8;
+}
+
+.tickets-table-container {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.table-header {
+  background-color: #f8f9fa;
+}
+
+.table-header th {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #17a2b8;
+}
+
+.table-row {
+  border-bottom: 1px solid #dee2e6;
+  transition: background-color 0.2s;
+}
+
+.table-cell {
+  padding: 16px;
+}
+
+.reference-cell {
+  font-weight: 600;
+  color: #17a2b8;
+  white-space: nowrap;
+}
+
+.title-cell {
+  max-width: 200px;
+}
+
+.description-cell {
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.priority-badge {
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
+}
+
+.date-badge {
+  background: #e5e5e5;
+  padding: 8px 16px;
+  border-radius: 15px;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-badge {
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.details-button {
+  background: #6dd5ed;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.details-button:hover {
+  background: #17a2b8;
+}
+
+.no-results {
+  padding: 40px;
+  text-align: center;
+  color: #6c757d;
+  font-size: 16px;
+  font-style: italic;
+}

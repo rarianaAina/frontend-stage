@@ -12,6 +12,7 @@ export type Ticket = {
   etat?: string;
   typeTicketId?: number;
   companyId?: number;
+  companyName: string;
   clientId?: number;
   affecteAUtilisateurId?: number;
 };

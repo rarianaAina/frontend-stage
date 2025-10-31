@@ -14,6 +14,7 @@ export type Ticket = {
   etat?: string;
   typeTicketId?: number;
   companyId?: number;
+  companyName: string;
   clientId?: number;
   affecteAUtilisateurId?: number;
 };
@@ -64,7 +65,8 @@ export const adminTicketService = {
       const response = await api.get<TicketApiReponse>(`/tickets/admin?${params.toString()}`);
       
       console.log('API Response structure:', response.data);
-      
+      // console log des données de filtres
+        console.log('Applied filters:', filtres);
       const apiData = response.data;
       
       return {

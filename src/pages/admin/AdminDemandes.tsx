@@ -7,6 +7,8 @@ import { FiltresTickets } from '../../components/ticket/admin/FiltresTickets';
 import { Pagination } from '../../components/ticket/admin/Pagination';
 import { LoadingState } from '../../components/dashboard/LoadingState';
 import { ErrorState } from '../../components/dashboard/ErrorState';
+import { useDebounce } from '../../hooks/ticket/admin/useDebounce';
+import '../../styles/AdminDemandes.css';
 
 export default function AdminDemandes() {
   const navigate = useNavigate();
@@ -15,7 +17,10 @@ export default function AdminDemandes() {
     size: 10
   });
 
-  const { tickets, loading, error, pagination, refetch, changerPage } = useAdminTickets(filtres);
+  // Utilisez le debounce pour les filtres avec un délai de 500ms
+  const debouncedFiltres = useDebounce(filtres, 500);
+
+  const { tickets, loading, error, pagination, refetch, changerPage } = useAdminTickets(debouncedFiltres);
 
   const getStatusLabel = (etat: string): string => {
     switch (etat) {
@@ -75,6 +80,14 @@ export default function AdminDemandes() {
     }
   };
 
+  const handleFiltresChange = (nouveauxFiltres: TicketFiltres) => {
+    // Réinitialiser la page à 0 quand les filtres changent (sauf pour la pagination)
+    setFiltres(prev => ({
+      ...nouveauxFiltres,
+      page: nouveauxFiltres.page !== undefined ? nouveauxFiltres.page : 0
+    }));
+  };
+
   if (loading) {
     return <LoadingState message="Chargement des demandes..." />;
   }
@@ -86,164 +99,67 @@ export default function AdminDemandes() {
   const ticketsToDisplay = tickets || [];
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
-    }}>
+    <div className="admin-demandes-container">
       <NavBar role="ADMIN" />
 
-      <div style={{ padding: '40px 60px' }}>
-        <h1 style={{
-          fontSize: '42px',
-          color: '#17a2b8',
-          marginBottom: '30px',
-          fontWeight: 'bold',
-          textAlign: 'center'
-        }}>
+      <div className="admin-demandes-content">
+        <h1 className="admin-demandes-title">
           Gestion des Demandes
         </h1>
 
         {/* Filtres */}
         <FiltresTickets 
           filtres={filtres} 
-          onFiltresChange={setFiltres} 
+          onFiltresChange={handleFiltresChange} 
         />
 
+        {/* Indicateur de recherche en cours */}
+        {loading && (
+          <div className="loading-indicator">
+            Recherche en cours...
+          </div>
+        )}
+
         {/* Résultats */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px',
-          background: 'white',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
-          <div style={{ fontSize: '16px', color: '#666', fontWeight: '600' }}>
+        <div className="results-info">
+          <div className="results-count">
             {pagination.totalElements} demande(s) trouvée(s)
           </div>
-          <div style={{ fontSize: '14px', color: '#17a2b8' }}>
+          <div className="page-info">
             Page {pagination.number + 1} sur {pagination.totalPages}
           </div>
         </div>
 
         {/* Tableau des demandes */}
-        <div style={{
-          background: 'white',
-          borderRadius: '15px',
-          overflow: 'hidden',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          marginBottom: '30px'
-        }}>
+        <div className="tickets-table-container">
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ 
-              width: '100%', 
-              borderCollapse: 'collapse',
-              minWidth: '1000px'
-            }}>
+            <table className="tickets-table">
               <thead>
-                <tr style={{ backgroundColor: '#f8f9fa' }}>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Référence
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Titre
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Produit
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Description
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Priorité
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Date création
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Statut
-                  </th>
-                  <th style={{ 
-                    padding: '16px', 
-                    textAlign: 'left', 
-                    borderBottom: '2px solid #dee2e6', 
-                    fontWeight: '600',
-                    color: '#17a2b8'
-                  }}>
-                    Actions
-                  </th>
+                <tr className="table-header">
+                  <th>Référence</th>
+                  <th>Société</th>
+                  <th>Produit</th>
+                  <th>Description</th>
+                  <th>Priorité</th>
+                  <th>Date création</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {ticketsToDisplay.length > 0 ? (
                   ticketsToDisplay.map((ticket) => (
-                    <tr key={ticket.id} style={{ 
-                      borderBottom: '1px solid #dee2e6',
-                      transition: 'background-color 0.2s'
-                    }}>
-                      <td style={{ 
-                        padding: '16px', 
-                        fontWeight: '600', 
-                        color: '#17a2b8',
-                        whiteSpace: 'nowrap'
-                      }}>
+                    <tr key={ticket.id} className="table-row">
+                      <td className="table-cell reference-cell">
                         {ticket.reference || 'N/A'}
                       </td>
-                      <td style={{ padding: '16px', maxWidth: '200px' }}>
-                        {ticket.titre || 'Sans titre'}
+                      <td className="table-cell title-cell">
+                        {ticket.companyName || 'Non définie'}
                       </td>
-                      <td style={{ padding: '16px', whiteSpace: 'nowrap' }}>
+                      <td className="table-cell" style={{ whiteSpace: 'nowrap' }}>
                         {ticket.produitNom || 'Non spécifié'}
                       </td>
-                      <td style={{ 
-                        padding: '16px', 
-                        maxWidth: '300px',
-                        wordWrap: 'break-word'
-                      }}>
+                      <td className="table-cell description-cell">
                         {ticket.description 
                           ? (ticket.description.length > 100 
                               ? `${ticket.description.substring(0, 100)}...` 
@@ -251,68 +167,31 @@ export default function AdminDemandes() {
                           : 'Aucune description'
                         }
                       </td>
-                      <td style={{ padding: '16px' }}>
-                        <span style={{
-                          background: getNiveauColor(ticket.prioriteTicketId),
-                          color: 'white',
-                          padding: '6px 12px',
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          display: 'inline-block',
-                          minWidth: '70px',
-                          textAlign: 'center'
-                        }}>
+                      <td className="table-cell">
+                        <span 
+                          className="priority-badge"
+                          style={{ background: getNiveauColor(ticket.prioriteTicketId) }}
+                        >
                           {getPrioriteLabel(ticket.prioriteTicketId)}
                         </span>
                       </td>
-                      <td style={{ padding: '16px', whiteSpace: 'nowrap' }}>
-                        <span style={{
-                          background: '#e5e5e5',
-                          padding: '8px 16px',
-                          borderRadius: '15px',
-                          display: 'inline-block',
-                          fontSize: '13px',
-                          fontWeight: '500'
-                        }}>
+                      <td className="table-cell">
+                        <span className="date-badge">
                           {ticket.dateCreation ? formatDate(ticket.dateCreation) : 'N/A'}
                         </span>
                       </td>
-                      <td style={{ padding: '16px' }}>
-                        <span style={{
-                          background: getStatusColor(ticket.etat || ''),
-                          color: 'white',
-                          padding: '6px 12px',
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          display: 'inline-block',
-                          minWidth: '80px',
-                          textAlign: 'center'
-                        }}>
+                      <td className="table-cell">
+                        <span 
+                          className="status-badge"
+                          style={{ background: getStatusColor(ticket.etat || '') }}
+                        >
                           {getStatusLabel(ticket.etat || '')}
                         </span>
                       </td>
-                      <td style={{ padding: '16px' }}>
+                      <td className="table-cell">
                         <button
                           onClick={() => navigate(`/admin/demande/${ticket.id}`)}
-                          style={{
-                            background: '#6dd5ed',
-                            color: 'white',
-                            padding: '8px 20px',
-                            borderRadius: '20px',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontSize: '13px',
-                            fontWeight: '600',
-                            transition: 'background-color 0.2s'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#17a2b8';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = '#6dd5ed';
-                          }}
+                          className="details-button"
                         >
                           Détails
                         </button>
@@ -321,13 +200,7 @@ export default function AdminDemandes() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={8} style={{ 
-                      padding: '40px', 
-                      textAlign: 'center', 
-                      color: '#6c757d',
-                      fontSize: '16px',
-                      fontStyle: 'italic'
-                    }}>
+                    <td colSpan={8} className="no-results">
                       Aucune demande trouvée avec les critères sélectionnés
                     </td>
                   </tr>
