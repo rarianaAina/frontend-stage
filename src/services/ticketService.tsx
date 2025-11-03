@@ -49,6 +49,7 @@ export const ticketService = {
     console.log(response);
     return response.data;
   },
+  
   // Récupérer les priorités
   async getPriorites(): Promise<PrioriteTicket[]> {
     const response = await api.get('/prioriteTickets');
