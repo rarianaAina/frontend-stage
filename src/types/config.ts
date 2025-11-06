@@ -10,6 +10,20 @@ export interface GeneralSettings {
   timezone: string;
 }
 
+// Whatsapp settings
+export interface WhatsAppSettings {
+  id?: number;
+  apiBaseUrl: string;
+  apiKey: string;
+  phoneNumberId: string;
+  businessAccountId?: string;
+  webhookUrl?: string;
+  webhookToken?: string;
+  estActif: boolean;
+  nomConfiguration: string;
+  description?: string;
+}
+
 // MISE À JOUR : Nouvelle interface pour SMTP
 export interface SmtpSettings {
   id?: number;

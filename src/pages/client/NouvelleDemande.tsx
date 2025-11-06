@@ -1,5 +1,6 @@
 // pages/NouvelleDemande.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import { useNouvelleDemande } from '../../hooks/demandes/useNouvelleDemande';
 import { SelectProduit } from '../../components/formsDemande/SelectProduit';
@@ -8,8 +9,10 @@ import { InputFichiers } from '../../components/formsDemande/InputFichiers';
 import { SelectType } from '../../components/formsDemande/SelectType';
 
 export default function NouvelleDemande() {
+  const location = useLocation();
   const [raison, setRaison] = useState('');
   const [logiciel, setLogiciel] = useState('');
+  const [logicielId, setLogicielId] = useState(''); // Nouvel état pour stocker l'ID
   const [description, setDescription] = useState('');
   const [niveau, setNiveau] = useState('');
   const [type, setType] = useState('');
@@ -21,13 +24,26 @@ export default function NouvelleDemande() {
   const utilisateurId = localStorage.getItem('userId') || '';
   const company = companyId;
   const utilisateur = utilisateurId;
+
+  // Récupérer le produit depuis le state de navigation
+  useEffect(() => {
+    if (location.state?.produitSelectionne) {
+      console.log('Produit ID présélectionné:', location.state.produitSelectionne);
+      setLogicielId(location.state.produitSelectionne); // Stocker l'ID
+      
+      // Optionnel: si vous voulez aussi afficher le nom dans le select
+      // Vous devrez peut-être adapter SelectProduit pour gérer cela
+    }
+  }, [location.state]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
+      // Utiliser logicielId au lieu de logiciel pour l'envoi
       await soumettreDemande({
         raison,
-        logiciel,
+        logiciel: logicielId, // CHANGEMENT ICI : envoyer l'ID au lieu du nom
         type,
         company,
         utilisateur,
@@ -70,6 +86,18 @@ export default function NouvelleDemande() {
             Nouvelle demande
           </h2>
 
+          {/* Debug info */}
+          <div style={{ 
+            background: '#f8f9fa', 
+            padding: '10px', 
+            borderRadius: '5px', 
+            marginBottom: '10px',
+            fontSize: '12px',
+            color: '#666'
+          }}>
+            Debug: Produit ID = "{logicielId}", Produit Nom = "{logiciel}"
+          </div>
+
           <form onSubmit={handleSubmit}>
             {/* Raison */}
             <div style={{ marginBottom: '25px' }}>
@@ -98,8 +126,8 @@ export default function NouvelleDemande() {
 
             {/* Produit */}
             <SelectProduit 
-              value={logiciel}
-              onChange={setLogiciel}
+              value={logicielId} // CHANGEMENT ICI : utiliser l'ID comme valeur
+              onChange={setLogicielId} // CHANGEMENT ICI : mettre à jour l'ID
               required
             />
 

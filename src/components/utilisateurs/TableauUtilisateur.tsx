@@ -16,7 +16,7 @@ export default function TableauUtilisateurs({ utilisateurs, onVoirDetails }: Pro
 
   const getPosteDisplay = (idExterneCrm?: string) => {
     // Logique pour déterminer le poste basée sur idExterneCrm ou autres champs
-    return idExterneCrm ? 'Consultant' : 'Client';
+    return idExterneCrm ? 'Client' : 'Consultant';
   };
 
   const getAnciennete = (dateCreation: string) => {

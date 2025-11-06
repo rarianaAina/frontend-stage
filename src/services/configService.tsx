@@ -1,7 +1,54 @@
 import { api } from '../lib/api';
-import { GeneralSettings, SmtpSettings, SLASettings, CreditSettings, BackupSettings } from '../types/config';
+import { GeneralSettings,WhatsAppSettings, SmtpSettings, SLASettings, CreditSettings, BackupSettings } from '../types/config';
 
 class ConfigService {
+
+
+    // Configuration WhatsApp
+  async getWhatsAppSettings(): Promise<WhatsAppSettings> {
+    try {
+      const response = await api.get('/configurations/whatsapp/active');
+      // Le backend retourne un tableau, on prend le premier élément
+      const data = response.data;
+      return Array.isArray(data) ? data[0] : data;
+    } catch (error) {
+      console.error('Erreur ConfigService.getWhatsAppSettings:', error);
+      return {
+        apiBaseUrl: 'https://waba.360dialog.io/v1/messages',
+        apiKey: '',
+        phoneNumberId: '',
+        businessAccountId: '',
+        webhookUrl: '',
+        webhookToken: '',
+        estActif: true,
+        nomConfiguration: 'Défaut',
+        description: ''
+      };
+    }
+  }
+
+  async saveWhatsAppSettings(settings: WhatsAppSettings): Promise<boolean> {
+    try {
+      console.log('📤 Données WhatsApp envoyées au backend:', settings);
+      const response = await api.post('/configurations/whatsapp', settings);
+      console.log('✅ Réponse du backend WhatsApp:', response.data);
+      return true;
+    } catch (error: any) {
+      console.error('❌ Erreur ConfigService.saveWhatsAppSettings:', error);
+      console.error('📋 Détails de l\'erreur:', error.response?.data);
+      return false;
+    }
+  }
+
+  async testWhatsAppSettings(id: number): Promise<boolean> {
+    try {
+      await api.post(`/configurations/whatsapp/${id}/test`);
+      return true;
+    } catch (error: any) {
+      console.error('Erreur ConfigService.testWhatsAppSettings:', error);
+      throw new Error(error.response?.data?.error || 'Erreur lors du test WhatsApp');
+    }
+  }
   // Paramètres généraux
   async getGeneralSettings(): Promise<GeneralSettings> {
     try {
@@ -147,6 +194,8 @@ class ConfigService {
       return false;
     }
   }
+
+  
 }
 
 export const configService = new ConfigService();

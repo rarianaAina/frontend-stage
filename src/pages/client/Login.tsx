@@ -18,11 +18,18 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     
+    // Rediriger immédiatement vers la vérification
+    // sans attendre la réponse de l'API
+    setShowVerification(true);
+    
     const result = await login(email, password);
     
     if (result.success && result.requiresVerification && result.user) {
       setCurrentUser(result.user);
-      setShowVerification(true);
+      // Le formulaire de vérification est déjà affiché à ce stade
+    } else if (!result.success) {
+      // Si la connexion échoue, revenir à la page de login
+      setShowVerification(false);
     }
   };
 

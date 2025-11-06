@@ -5,7 +5,7 @@ interface VerificationFormProps {
   onCodeChange: (index: number, value: string) => void;
   error: string;
   onVerify: () => void;
-  onRegenerateCode: () => void; // Nouvelle prop
+  onRegenerateCode: () => void;
   onBack: () => void;
   loading: boolean;
 }
@@ -33,6 +33,21 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       <div style={{ fontSize: '20px', color: 'white', marginBottom: '10px' }}>
         Portail client
       </div>
+      
+      {/* Message d'attente pendant l'envoi du code */}
+      {loading && (
+        <div style={{
+          color: 'white',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          padding: '15px 20px',
+          borderRadius: '10px',
+          marginBottom: '20px',
+          fontSize: '16px'
+        }}>
+          Envoi du code de vérification en cours...
+        </div>
+      )}
+      
       <p style={{ color: 'white', marginBottom: '40px', fontSize: '18px' }}>
         Un code de vérification vous a été envoyé par email et whatsapp
       </p>
@@ -67,6 +82,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
             maxLength={1}
             value={digit}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCodeChange(index, e.target.value)}
+            disabled={loading} // Désactiver les inputs pendant le chargement
             style={{
               width: '80px',
               height: '80px',
@@ -74,9 +90,10 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
               textAlign: 'center',
               borderRadius: '20px',
               border: '3px solid rgba(0, 0, 0, 0.3)',
-              background: '#17a2b8',
+              background: loading ? '#6c757d' : '#17a2b8',
               color: 'white',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              opacity: loading ? 0.6 : 1
             }}
           />
         ))}

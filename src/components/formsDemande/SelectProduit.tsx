@@ -1,3 +1,4 @@
+import React from 'react';
 import { useProduits } from '../../hooks/demandes/useProduits';
 
 interface SelectProduitProps {
@@ -46,12 +47,11 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
             Erreur de chargement
           </option>
         ) : (
-          produits
-            .map((produit) => (
-              <option key={produit.parcId} value={produit.parcId}>
-                {produit.parcName}
-              </option>
-            ))
+          produits.map((produit) => (
+            <option key={produit.parcId} value={produit.parcId}> {/* CHANGEMENT ICI : utiliser parcName comme valeur */}
+              {produit.parcName}
+            </option>
+          ))
         )}
       </select>
       

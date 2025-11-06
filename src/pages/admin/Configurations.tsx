@@ -5,6 +5,7 @@ import { EmailTab } from '../../components/config/EmailTab';
 import { WorkflowTab } from '../../components/config/WorkflowTab';
 import { BackupTab } from '../../components/config/BackupTab';
 import { TabConfig } from '../../types/config';
+import { WhatsAppTab } from '../../components/config/whatsapp/WhatsAppTab';
 
 const Configurations: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('general');
@@ -12,6 +13,7 @@ const Configurations: React.FC = () => {
   const tabs: TabConfig[] = [
     { id: 'general', label: 'Général', component: GeneralTab },
     { id: 'email', label: 'Email', component: EmailTab },
+    { id: 'whatsapp', label: 'Whatsapp', component: WhatsAppTab },
     { id: 'workflow', label: 'Workflow Notifications', component: WorkflowTab },
     { id: 'sla', label: 'SLA', component: () => <div>Configuration SLA</div> },
     { id: 'credits', label: 'Crédits', component: () => <div>Gestion des crédits</div> },

@@ -10,8 +10,8 @@ import { LoadingState } from '../../components/profile/LoadingState';
 import { getStoredRole } from '../../hooks/role/utilsRole';
 
 export default function Profile() {
-  const userRole = getStoredRole();
-  //const userRole = localStorage.getItem('role') || 'CLIENT';
+  //const userRole = getStoredRole();
+  const userRole = localStorage.getItem('role') || 'CLIENT';
   const userName = localStorage.getItem('userName') || 'Utilisateur';
   const userEmail = localStorage.getItem('email') || '';
   
