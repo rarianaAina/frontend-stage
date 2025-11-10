@@ -1,0 +1,31 @@
+{
+  "list": {
+    "title": "Modely fampandrenesana",
+    "new": "Modely Vaovao",
+    "empty": "Tsy misy modely misy"
+  },
+  "details": {
+    "noSelection": "Tsy misy modely voafantina",
+    "selectOrCreate": "Fidio modely iray amin'ny lisitra na mamorona modely vaovao",
+    "createTitle": "Mamorona Modely",
+    "editTitle": "Hanova Modely",
+    "code": "Kaody",
+    "canal": "Fantsona",
+    "sujet": "Lohahevitra",
+    "contenuHtml": "Votoaty HTML",
+    "test": "Hanandrama ny Modely",
+    "testResult": "Vokatra fanandramana"
+  },
+  "form": {
+    "code": "Kaodim-pandrenesana",
+    "libelle": "Anarana",
+    "libellePlaceholder": "Ohatra: Famoronana tapakila",
+    "canal": "Fantsona fampandrenesana",
+    "sujet": "Lohahevitry ny hafatra",
+    "sujetPlaceholder": "Ohatra: Tapakila vaovao - {reference}",
+    "contenuHtml": "Votoaty HTML",
+    "contenuHtmlPlaceholder": "Ampidiro ny votoaty HTML an'ity modely...",
+    "variablesHelp": "Ampiasao {variable} ho an'ny toerana azo ovaina (ohatra: {reference}, {utilisateur}, {titre})",
+    "active": "Modely mavitrika"
+  }
+}

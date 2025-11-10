@@ -60,15 +60,7 @@ export default function MesDemandes() {
           </Link>
         </div>
 
-        <h3 style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          fontWeight: 'bold',
-          marginBottom: '20px',
-          textDecoration: 'underline'
-        }}>
-          Filtres:
-        </h3>
+
         <FilterBar
           filters={[
             { label: 'Etat:', value: etat, onChange: setEtat },

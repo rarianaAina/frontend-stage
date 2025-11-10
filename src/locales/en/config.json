@@ -1,0 +1,46 @@
+{
+  "whatsapp": {
+    "title": "WhatsApp Business API Configuration",
+    "configName": "Configuration name",
+    "apiUrl": "API URL",
+    "apiKey": "360dialog API Key",
+    "apiKeyHelp": "API key provided by 360dialog (should be encrypted)",
+    "phoneId": "Phone number ID",
+    "phoneIdHelp": "WhatsApp Business phone number ID configured in 360dialog",
+    "businessId": "Business account ID (optional)",
+    "webhookUrl": "Webhook URL (optional)",
+    "webhookUrlHelp": "URL where your app receives message statuses",
+    "webhookToken": "Webhook token (optional)",
+    "description": "Description (optional)",
+    "activeConfig": "Active configuration",
+    "saveSuccess": "WhatsApp configuration saved successfully!",
+    "saveError": "Error while saving",
+    "testSuccess": "Test successful! WhatsApp configuration validated.",
+    "testError": "Test failed",
+    "testFirstSave": "Please save the configuration first before testing",
+    "guideTitle": "💡 360dialog Configuration Guide",
+    "guideText": "To configure WhatsApp Business API:",
+    "guideStep1": "Create an account on 360dialog",
+    "guideStep2": "Get your API Key from 360dialog dashboard",
+    "guideStep3": "Configure a WhatsApp Business number",
+    "guideStep4": "Retrieve Phone number ID from 360dialog",
+    "guideStep5": "For webhooks, configure callback URL in 360dialog settings",
+    "guideStep6": "Webhook token must match the one configured in 360dialog"
+  },
+  "smtp": {
+    "title": "SMTP Configuration",
+    "server": "SMTP Server",
+    "port": "Port",
+    "email": "Email (username)",
+    "password": "Password (App Password)",
+    "passwordHelp": "For Gmail, use an App Password instead of your main password",
+    "testEmail": "Test email sending"
+  },
+  "general": {
+    "title": "General Settings",
+    "companyName": "Company name",
+    "language": "Language",
+    "timezone": "Timezone",
+    "dateFormat": "Date format"
+  }
+}

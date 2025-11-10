@@ -2,12 +2,16 @@ import React from 'react';
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { DashboardAdminData } from '../../../types/dashboard';
 import { ChartContainer } from './ChartContainer';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface DashboardChartsProps {
   data: DashboardAdminData;
 }
 
+
 export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
+
+  const { t } = useAppTranslation(['auth', 'common']);
   // Données pour le graphique de répartition par statut
   const statusData = {
     labels: data.ticketsParStatut.map(item => item.label),

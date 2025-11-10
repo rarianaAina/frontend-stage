@@ -8,10 +8,13 @@ import { Pagination } from '../../components/ticket/admin/Pagination';
 import { LoadingState } from '../../components/dashboard/LoadingState';
 import { ErrorState } from '../../components/dashboard/ErrorState';
 import { useDebounce } from '../../hooks/ticket/admin/useDebounce';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 import '../../styles/AdminDemandes.css';
 
 export default function AdminDemandes() {
   const navigate = useNavigate();
+  const { t } = useAppTranslation(['common', 'tickets', 'admin']);
+  
   const [filtres, setFiltres] = useState<TicketFiltres>({
     page: 0,
     size: 10
@@ -24,24 +27,24 @@ export default function AdminDemandes() {
 
   const getStatusLabel = (etat: string): string => {
     switch (etat) {
-      case '1': return 'Nouveau';
-      case '2': return 'En cours';
-      case '3': return 'En attente';
-      case '4': return 'En attente client';
-      case '5': return 'Planifié';
-      case '6': return 'Résolu';
-      case '7': return 'Clôturé';
-      default: return etat || 'Inconnu';
+      case '1': return t('tickets:status.new');
+      case '2': return t('tickets:status.inProgress');
+      case '3': return t('tickets:status.pending');
+      case '4': return t('tickets:status.waitingClient');
+      case '5': return t('tickets:status.scheduled');
+      case '6': return t('tickets:status.resolved');
+      case '7': return t('tickets:status.closed');
+      default: return etat || t('common:unknown');
     }
   };
 
   const getPrioriteLabel = (prioriteTicketId: string): string => {
     switch (prioriteTicketId) {
-      case '1': return 'Basse';
-      case '2': return 'Normale';
-      case '3': return 'Haute';
-      case '4': return 'Urgente';
-      default: return 'Inconnu';
+      case '1': return t('tickets:priority.low');
+      case '2': return t('tickets:priority.normal');
+      case '3': return t('tickets:priority.high');
+      case '4': return t('tickets:priority.urgent');
+      default: return t('common:unknown');
     }
   };
 
@@ -70,18 +73,19 @@ export default function AdminDemandes() {
 
   const formatDate = (dateString: string) => {
     try {
-      return new Date(dateString).toLocaleDateString('fr-FR', {
+      // Utiliser la locale basée sur la langue actuelle
+      const locale = t('common:locale') || 'fr-FR';
+      return new Date(dateString).toLocaleDateString(locale, {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
       });
     } catch (error) {
-      return 'Date invalide';
+      return t('common:invalidDate');
     }
   };
 
   const handleFiltresChange = (nouveauxFiltres: TicketFiltres) => {
-    // Réinitialiser la page à 0 quand les filtres changent (sauf pour la pagination)
     setFiltres(prev => ({
       ...nouveauxFiltres,
       page: nouveauxFiltres.page !== undefined ? nouveauxFiltres.page : 0
@@ -89,7 +93,7 @@ export default function AdminDemandes() {
   };
 
   if (loading) {
-    return <LoadingState message="Chargement des demandes..." />;
+    return <LoadingState message={t('tickets:loadingRequests')} />;
   }
 
   if (error) {
@@ -104,7 +108,7 @@ export default function AdminDemandes() {
 
       <div className="admin-demandes-content">
         <h1 className="admin-demandes-title">
-          Gestion des Demandes
+          {t('admin:demandesManagement')}
         </h1>
 
         {/* Filtres */}
@@ -116,17 +120,17 @@ export default function AdminDemandes() {
         {/* Indicateur de recherche en cours */}
         {loading && (
           <div className="loading-indicator">
-            Recherche en cours...
+            {t('tickets:searching')}
           </div>
         )}
 
         {/* Résultats */}
         <div className="results-info">
           <div className="results-count">
-            {pagination.totalElements} demande(s) trouvée(s)
+            {pagination.totalElements} {t('tickets:requestsFound')}
           </div>
           <div className="page-info">
-            Page {pagination.number + 1} sur {pagination.totalPages}
+            {t('common:page')} {pagination.number + 1} {t('common:of')} {pagination.totalPages}
           </div>
         </div>
 
@@ -136,14 +140,14 @@ export default function AdminDemandes() {
             <table className="tickets-table">
               <thead>
                 <tr className="table-header">
-                  <th>Référence</th>
-                  <th>Société</th>
-                  <th>Produit</th>
-                  <th>Description</th>
-                  <th>Priorité</th>
-                  <th>Date création</th>
-                  <th>Statut</th>
-                  <th>Actions</th>
+                  <th>{t('tickets:reference')}</th>
+                  <th>{t('tickets:company')}</th>
+                  <th>{t('tickets:product')}</th>
+                  <th>{t('tickets:description')}</th>
+                  <th>{t('tickets:priority.label')}</th>
+                  <th>{t('tickets:creationDate')}</th>
+                  <th>{t('tickets:status.label')}</th>
+                  <th>{t('common:actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,20 +155,20 @@ export default function AdminDemandes() {
                   ticketsToDisplay.map((ticket) => (
                     <tr key={ticket.id} className="table-row">
                       <td className="table-cell reference-cell">
-                        {ticket.reference || 'N/A'}
+                        {ticket.reference || t('common:notAvailable')}
                       </td>
                       <td className="table-cell title-cell">
-                        {ticket.companyName || 'Non définie'}
+                        {ticket.companyName || t('tickets:companyNotDefined')}
                       </td>
                       <td className="table-cell" style={{ whiteSpace: 'nowrap' }}>
-                        {ticket.produitNom || 'Non spécifié'}
+                        {ticket.produitNom || t('tickets:productNotSpecified')}
                       </td>
                       <td className="table-cell description-cell">
                         {ticket.description 
                           ? (ticket.description.length > 100 
                               ? `${ticket.description.substring(0, 100)}...` 
                               : ticket.description)
-                          : 'Aucune description'
+                          : t('tickets:noDescription')
                         }
                       </td>
                       <td className="table-cell">
@@ -177,7 +181,7 @@ export default function AdminDemandes() {
                       </td>
                       <td className="table-cell">
                         <span className="date-badge">
-                          {ticket.dateCreation ? formatDate(ticket.dateCreation) : 'N/A'}
+                          {ticket.dateCreation ? formatDate(ticket.dateCreation) : t('common:notAvailable')}
                         </span>
                       </td>
                       <td className="table-cell">
@@ -193,7 +197,7 @@ export default function AdminDemandes() {
                           onClick={() => navigate(`/admin/demande/${ticket.id}`)}
                           className="details-button"
                         >
-                          Détails
+                          {t('common:details')}
                         </button>
                       </td>
                     </tr>
@@ -201,7 +205,7 @@ export default function AdminDemandes() {
                 ) : (
                   <tr>
                     <td colSpan={8} className="no-results">
-                      Aucune demande trouvée avec les critères sélectionnés
+                      {t('tickets:noRequestsFound')}
                     </td>
                   </tr>
                 )}

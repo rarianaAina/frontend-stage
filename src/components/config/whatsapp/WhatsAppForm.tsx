@@ -109,7 +109,7 @@ export const WhatsAppForm: React.FC<WhatsAppFormProps> = ({
         />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <input
           type="checkbox"
           id="estActif"
@@ -120,7 +120,7 @@ export const WhatsAppForm: React.FC<WhatsAppFormProps> = ({
         <label htmlFor="estActif" style={{ fontWeight: '600', cursor: 'pointer' }}>
           Configuration active
         </label>
-      </div>
+      </div> */}
 
       <FormActions
         saving={saving}

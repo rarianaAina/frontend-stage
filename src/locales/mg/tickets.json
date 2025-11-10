@@ -1,0 +1,41 @@
+{
+  "loadingRequests": "Fampidirana ny fangatahana...",
+  "searching": "Fikarohana...",
+  "requestsFound": "fangatahana hita",
+  "requestsManagement": "Fitantanana Fangatahana",
+  "reference": "Fampahafantarana",
+  "newTicket": "Fangatahana vaovao",
+  "company": "Orinasa",
+  "product": "Vokatra",
+  "myTickets": "Ireo fangatahako",
+  "description": "Famariparitana",
+  "creationDate": "Daty namoronana",
+  "companyNotDefined": "Tsy voafaritra",
+  "productNotSpecified": "Tsy voafaritra",
+  "noDescription": "Tsy misy famariparitana",
+  "noRequestsFound": "Tsy nahita fangatahana tamin'ny fepetra nifantina",
+  "allStatuses": "Sata rehetra",
+  "allPriorities": "Zava-dehibe rehetra",
+  "searchByReference": "Hikaroka amin'ny fampahafantarana",
+  "searchByProduct": "Hikaroka amin'ny vokatra",
+  "searchByCompany": "Hikaroka amin'ny orinasa",
+  "startDate": "Daty fanombohana",
+  "endDate": "Daty farany",
+  "status": {
+    "label": "Sata",
+    "new": "Vaovao",
+    "inProgress": "Eo am-panatanterahana",
+    "pending": "Miandry",
+    "waitingClient": "Miandry ny mpanjifa",
+    "scheduled": "Voalahatra",
+    "resolved": "Vahana",
+    "closed": "Mikatona"
+  },
+  "priority": {
+    "label": "Laharam-pahamehana",
+    "low": "Ambany",
+    "normal": "Antonony",
+    "high": "Avony",
+    "urgent": "Maika"
+  }
+}

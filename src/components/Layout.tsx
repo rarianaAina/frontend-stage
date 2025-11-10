@@ -1,6 +1,6 @@
-// components/Layout.tsx
 import React from 'react';
 import NavBar from './NavBar';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface LayoutProps {
   children: React.ReactNode;

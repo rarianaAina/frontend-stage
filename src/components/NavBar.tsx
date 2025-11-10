@@ -1,4 +1,7 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useAppTranslation } from '../hooks/translation/useTranslation';
 
 type NavBarProps = {
   role: 'CLIENT' | 'CONSULTANT' | 'ADMIN';
@@ -6,26 +9,25 @@ type NavBarProps = {
 
 export default function NavBar({ role }: NavBarProps) {
   const navigate = useNavigate();
+  const { t } = useAppTranslation(['common', 'auth', 'tickets', 'admin']);
 
   const handleLogout = () => {
     localStorage.removeItem('jeton');
     localStorage.removeItem('role');
     localStorage.removeItem('userName');
-    localStorage.removeItem('company'); // Supprimer aussi la company
+    localStorage.removeItem('company');
     navigate('/connexion');
   };
 
-  // Récupérer le nom de la compagnie depuis le localStorage
-  const companyName = localStorage.getItem('companyName') || 'Ma Société';
+  const companyName = localStorage.getItem('companyName') || t('common:myCompany');
 
-  console.log('Company Name in NavBar:', companyName);
   return (
     <nav style={{
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '20px 40px',
-      background: 'transparent',
+      background: '#4ed9f1ff',
       position: 'fixed',
       top: 0,
       left: 0,
@@ -34,72 +36,53 @@ export default function NavBar({ role }: NavBarProps) {
       width: '100%',
       boxSizing: 'border-box',
     }}>
+      {/* Partie gauche - Navigation */}
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
         {role === 'CLIENT' && (
           <>
-            <NavButton to="/dashboard">Dashboard</NavButton>
-            <NavButton to="/mes-demandes">Mes demandes</NavButton>
-            <NavButton to="/nouvelle-demande">Nouvelle demande</NavButton>
-            <NavButton to="/ma-societe">Ma société</NavButton>
+            <NavButton to="/dashboard">{t('common:dashboard')}</NavButton>
+            <NavButton to="/mes-demandes">{t('tickets:myTickets')}</NavButton>
+            <NavButton to="/nouvelle-demande">{t('tickets:newTicket')}</NavButton>
+            <NavButton to="/ma-societe">{t('common:myCompany')}</NavButton>
           </>
         )}
 
         {role === 'CONSULTANT' && (
           <>
-            <NavButton to="/consultant/tickets">Mes tickets</NavButton>
-            <NavButton to="/consultant/interventions">Mes interventions</NavButton>
+            <NavButton to="/consultant/tickets">{t('tickets:tickets')}</NavButton>
+            <NavButton to="/consultant/interventions">{t('admin:interventions')}</NavButton>
           </>
         )}
 
         {role === 'ADMIN' && (
           <>
-            <NavButton to="/admin/demandes">Demandes</NavButton>
-            <NavButton to="/admin/interventions">Interventions</NavButton>
-            <NavButton to="/admin/dashboard">Dashboard</NavButton>
-            <NavButton to="/admin/rapports">Rapports</NavButton>
-            <NavButton to="/admin/configurations">Configurations</NavButton>
-            <NavButton to="/admin/gestion-utilisateurs">Gestion utilisateurs</NavButton>
+            <NavButton to="/admin/demandes">{t('common:demandes')}</NavButton>
+            <NavButton to="/admin/interventions">{t('common:interventions')}</NavButton>
+            <NavButton to="/admin/dashboard">{t('common:dashboard')}</NavButton>
+            <NavButton to="/admin/rapports">{t('admin:reports')}</NavButton>
+            <NavButton to="/admin/configurations">{t('admin:configurations')}</NavButton>
+            <NavButton to="/admin/gestion-utilisateurs">{t('admin:users')}</NavButton>
           </>
         )}
       </div>
 
+      {/* Partie droite - Company, LanguageSwitcher, Logout */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        {/* Affichage du nom de la compagnie */}
-        {/* <div style={{
-          fontSize: '16px',
-          fontFamily: 'Arial, sans-serif',
-          color: 'black',
-          fontWeight: 'bold',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
-          padding: '8px 16px',
-          background: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: '20px',
-          backdropFilter: 'blur(5px)'
-        }}>
-          {companyName}
-        </div> */}
-        
-        {/* <div style={{
-          fontSize: '20px',
-          fontFamily: 'cursive',
-          color: 'black',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
-        }}>
-          Portail client
-        </div> */}
+        {/* Nom de la compagnie */}
         <Link
           to="/profile"
           style={{
-          fontSize: '16px',
-          fontFamily: 'Arial, sans-serif',
-          color: 'black',
-          fontWeight: 'bold',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
-          padding: '8px 16px',
-          background: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: '20px',
-          backdropFilter: 'blur(5px)',
-          textDecoration: 'none'
+            fontSize: '16px',
+            fontFamily: 'Arial, sans-serif',
+            color: 'black',
+            fontWeight: 'bold',
+            textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+            padding: '8px 16px',
+            background: 'rgba(255, 255, 255, 0.2)',
+            borderRadius: '20px',
+            backdropFilter: 'blur(5px)',
+            textDecoration: 'none',
+            transition: 'transform 0.2s ease'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.1)';
@@ -110,6 +93,11 @@ export default function NavBar({ role }: NavBarProps) {
         >
           {companyName}
         </Link>
+
+        {/* Language Switcher */}
+        <LanguageSwitcher />
+
+        {/* Bouton Déconnexion */}
         <button
           onClick={handleLogout}
           style={{
@@ -120,10 +108,17 @@ export default function NavBar({ role }: NavBarProps) {
             border: 'none',
             cursor: 'pointer',
             fontSize: '14px',
-            fontWeight: '500'
+            fontWeight: '500',
+            transition: 'background 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#dc2626';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#ef4444';
           }}
         >
-          Se déconnecter
+          {t('auth:logout')}
         </button>
       </div>
     </nav>

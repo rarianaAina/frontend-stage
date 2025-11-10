@@ -1,0 +1,31 @@
+{
+  "list": {
+    "title": "Templates de Notification",
+    "new": "Nouveau Template",
+    "empty": "Aucun template disponible"
+  },
+  "details": {
+    "noSelection": "Aucun template sélectionné",
+    "selectOrCreate": "Sélectionnez un template dans la liste ou créez-en un nouveau",
+    "createTitle": "Créer un Template",
+    "editTitle": "Modifier le Template",
+    "code": "Code",
+    "canal": "Canal",
+    "sujet": "Sujet",
+    "contenuHtml": "Contenu HTML",
+    "test": "Tester le Template",
+    "testResult": "Résultat du test"
+  },
+  "form": {
+    "code": "Code du Template",
+    "libelle": "Libellé",
+    "libellePlaceholder": "Ex: Création de ticket",
+    "canal": "Canal de notification",
+    "sujet": "Sujet du message",
+    "sujetPlaceholder": "Ex: Nouveau Ticket - {reference}",
+    "contenuHtml": "Contenu HTML",
+    "contenuHtmlPlaceholder": "Saisissez le contenu HTML du template...",
+    "variablesHelp": "Utilisez {variable} pour les placeholders dynamiques (ex: {reference}, {utilisateur}, {titre})",
+    "active": "Template actif"
+  }
+}

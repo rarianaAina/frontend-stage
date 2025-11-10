@@ -1,0 +1,46 @@
+{
+  "whatsapp": {
+    "title": "Fametrahana WhatsApp Business API",
+    "configName": "Anaran'ny fametrahana",
+    "apiUrl": "URL API",
+    "apiKey": "Fanalahidy API 360dialog",
+    "apiKeyHelp": "Fanalahidy API omen'i 360dialog (tokony hosoratana)",
+    "phoneId": "ID laharana finday",
+    "phoneIdHelp": "ID laharana WhatsApp Business napetraka ao amin'ny 360dialog",
+    "businessId": "ID kaonty orinasa (tsy maintsy)",
+    "webhookUrl": "URL Webhook (tsy maintsy)",
+    "webhookUrlHelp": "URL alehan'ny satitan'ny hafatra",
+    "webhookToken": "Token Webhook (tsy maintsy)",
+    "description": "Famariparitana (tsy maintsy)",
+    "activeConfig": "Fametrahana mavitrika",
+    "saveSuccess": "Tafiditra soa aman-tsara ny fametrahana WhatsApp!",
+    "saveError": "Nisy olana nandritra ny fitahirizana",
+    "testSuccess": "Nahomby ny fitsapana! Voamarina ny fametrahana WhatsApp.",
+    "testError": "Tsy nahomby ny fitsapana",
+    "testFirstSave": "Ampidiro aloha ny fametrahana vao manao fitsapana",
+    "guideTitle": "💡 Torolalana fametrahana 360dialog",
+    "guideText": "Hanamboarana WhatsApp Business API:",
+    "guideStep1": "Mamorona kaonty ao amin'ny 360dialog",
+    "guideStep2": "Alao ny Fanalahidy API ao amin'ny dashboard 360dialog",
+    "guideStep3": "Hametraka laharana WhatsApp Business",
+    "guideStep4": "Alao ny ID laharana finday ao amin'ny 360dialog",
+    "guideStep5": "Ho an'ny webhooks, amboary ny URL callback ao amin'ny paramètres 360dialog",
+    "guideStep6": "Tokony hifanaraka amin'ny an'ny 360dialog ny token webhook"
+  },
+  "smtp": {
+    "title": "Fametrahana SMTP",
+    "server": "Mpanompo SMTP",
+    "port": "Seranana",
+    "email": "Mailaka (mpampiasa)",
+    "password": "Tenimiafina (App Password)",
+    "passwordHelp": "Ho an'ny Gmail, ampiasao App Password fa tsy ny tenimiafina fototra",
+    "testEmail": "Andrana fandefasana mailaka"
+  },
+  "general": {
+    "title": "Fanovana ankapobeny",
+    "companyName": "Anaran'ny orinasa",
+    "language": "Fiteny",
+    "timezone": "Faritra ora",
+    "dateFormat": "Endrika daty"
+  }
+}

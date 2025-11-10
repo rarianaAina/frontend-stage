@@ -1,24 +1,28 @@
-import { Interaction, PieceJointe } from '../../services/ticketServiceCH';
+import { Interaction, PieceJointe, Solution } from '../../services/ticketServiceCH';
 import { InteractionsTable } from '../ticket/interactionsComponents/InteractionsTable';
 import { PiecesJointesTable } from '../ticket/interactionsComponents/PiecesJointesTable';
 
 interface InteractionsPJProps {
   interactions?: Interaction[];
   piecesJointes?: PieceJointe[];
+  solutions?: Solution[];
   onNouvelleInteraction?: () => void;
 }
 
 export const InteractionsPJ = ({ 
   interactions = [],
   piecesJointes = [],
+  solutions = [],
   onNouvelleInteraction
 }: InteractionsPJProps) => {
   
   const safeInteractions = Array.isArray(interactions) ? interactions : [];
   const safePiecesJointes = Array.isArray(piecesJointes) ? piecesJointes : [];
-
+  const safeSolutions = Array.isArray(solutions) ? solutions : [];
+  
   console.log('Interactions reçues:', safeInteractions);
   console.log('Pièces jointes reçues:', safePiecesJointes);
+  console.log('Solutions reçues:', safeSolutions); // Ajout du log pour les solutions
 
   return (
     <div style={{
@@ -39,6 +43,7 @@ export const InteractionsPJ = ({
         
         <InteractionsTable 
           interactions={safeInteractions}
+          solutions={safeSolutions} // ⬅️ AJOUT IMPORTANT : passage des solutions
           onNouvelleInteraction={onNouvelleInteraction}
         />
       </div>

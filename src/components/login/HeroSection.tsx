@@ -1,31 +1,59 @@
 import React from 'react';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 export const HeroSection: React.FC = () => {
-  return (
-    <div style={{ flex: 1 }}>
-      <div style={{
-        fontSize: '120px',
-        fontFamily: 'cursive',
-        color: '#ffd700',
-        marginBottom: '40px',
-        textShadow: '4px 4px 8px rgba(0,0,0,0.3)',
-        lineHeight: 1
-      }}>
-        Optimada
-      </div>
+  const { t } = useAppTranslation('auth');
 
-      <button style={{
-        background: '#17a2b8',
-        color: 'white',
-        padding: '14px 40px',
-        borderRadius: '25px',
-        border: 'none',
-        fontSize: '16px',
-        fontWeight: '500',
-        cursor: 'pointer'
+  return (
+    <div style={{
+      flex: 1,
+      maxWidth: '600px',
+      color: 'white',
+      paddingRight: '60px'
+    }}>
+      <h1 style={{
+        fontSize: '48px',
+        fontWeight: 'bold',
+        marginBottom: '20px',
+        textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
       }}>
-        En savoir plus
-      </button>
+        {t('hero.title')}
+      </h1>
+      
+      <p style={{
+        fontSize: '20px',
+        marginBottom: '30px',
+        lineHeight: '1.6',
+        textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+      }}>
+        {t('hero.description')}
+      </p>
+      
+      <div style={{
+        display: 'flex',
+        gap: '15px',
+        flexWrap: 'wrap'
+      }}>
+        {['feature1', 'feature2', 'feature3'].map((feature, index) => (
+          <div
+            key={feature}
+            style={{
+              background: 'rgba(255, 255, 255, 0.2)',
+              padding: '15px 20px',
+              borderRadius: '15px',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)'
+            }}
+          >
+            <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+              {t(`hero.features.${feature}.title`)}
+            </div>
+            <div style={{ fontSize: '14px', opacity: 0.9 }}>
+              {t(`hero.features.${feature}.description`)}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

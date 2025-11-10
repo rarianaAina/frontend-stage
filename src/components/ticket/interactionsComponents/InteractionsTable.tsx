@@ -1,18 +1,36 @@
-import { Interaction } from '../../../services/ticketServiceCH';
+import { Interaction, Solution } from '../../../services/ticketServiceCH';
 import { InteractionRow } from './InteractionRow';
+import { SolutionRow } from './SolutionRow'; // Nouveau composant
 import { getInteractionColor } from '../utils/interactionUtils';
 
 interface InteractionsTableProps {
   interactions: Interaction[];
+  solutions?: Solution[]; // Ajout des solutions
   onNouvelleInteraction?: () => void;
 }
 
 export const InteractionsTable = ({ 
   interactions, 
+  solutions = [], // Valeur par défaut
   onNouvelleInteraction 
 }: InteractionsTableProps) => {
   
-  if (interactions.length === 0) {
+  // Combiner interactions et solutions pour l'affichage
+  const allElements = [
+    ...interactions.map(interaction => ({ 
+      ...interaction, 
+      type: 'interaction' 
+    })),
+    ...solutions.map(solution => ({ 
+      ...solution, 
+      type: 'solution',
+      typeInteractionLibelle: 'Solution', // Forcer le type pour le badge
+      dateCreation: solution.dateCreation,
+      message: solution.description || solution.titre
+    }))
+  ].sort((a, b) => new Date(b.dateCreation).getTime() - new Date(a.dateCreation).getTime());
+
+  if (allElements.length === 0) {
     return (
       <div style={{
         background: 'white',
@@ -22,7 +40,7 @@ export const InteractionsTable = ({
         color: '#666',
         fontStyle: 'italic'
       }}>
-        Aucune interaction
+        Aucune interaction ou solution
       </div>
     );
   }
@@ -41,59 +59,33 @@ export const InteractionsTable = ({
             <tr style={{ background: '#f8f9fa' }}>
               <TableHeader>Type</TableHeader>
               <TableHeader>Date</TableHeader>
-              <TableHeader>Commentaires</TableHeader>
+              <TableHeader>Contenu</TableHeader>
+              {/* <TableHeader>Zone/Statut</TableHeader> */}
               <TableHeader>PJ</TableHeader>
             </tr>
           </thead>
           <tbody>
-            {interactions.map((interaction) => (
-              <InteractionRow 
-                key={interaction.id} 
-                interaction={interaction} 
-              />
+            {allElements.map((element) => (
+              element.type === 'interaction' ? (
+                <InteractionRow 
+                  key={`interaction-${element.id}`} 
+                  interaction={element as Interaction} 
+                />
+              ) : (
+                <SolutionRow 
+                  key={`solution-${element.id}`} 
+                  solution={element as Solution} 
+                />
+              )
             ))}
           </tbody>
         </table>
       </div>
-
-      {/* Bouton Nouvelle Interaction
-      {onNouvelleInteraction && (
-        <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={onNouvelleInteraction}
-            style={{
-              background: '#17a2b8',
-              color: 'white',
-              padding: '12px 24px',
-              borderRadius: '25px',
-              border: 'none',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#138496';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#17a2b8';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <span style={{ fontSize: '18px' }}>+</span>
-            Nouvelle Interaction
-          </button>
-        </div>
-      )} */}
     </div>
   );
 };
 
-// Composant TableHeader réutilisable
+// Composant TableHeader réutilisable (inchangé)
 const TableHeader = ({ children }: { children: React.ReactNode }) => (
   <th style={{ 
     padding: '12px', 

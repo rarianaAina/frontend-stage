@@ -1,0 +1,46 @@
+{
+  "whatsapp": {
+    "title": "Configuration WhatsApp Business API",
+    "configName": "Nom de la configuration",
+    "apiUrl": "URL de l'API",
+    "apiKey": "Clé API 360dialog",
+    "apiKeyHelp": "Clé API fournie par 360dialog (doit être chiffrée)",
+    "phoneId": "ID du numéro de téléphone",
+    "phoneIdHelp": "ID du numéro WhatsApp Business configuré dans 360dialog",
+    "businessId": "ID du compte Business (optionnel)",
+    "webhookUrl": "URL Webhook (optionnel)",
+    "webhookUrlHelp": "URL où votre application reçoit les statuts des messages",
+    "webhookToken": "Token Webhook (optionnel)",
+    "description": "Description (optionnel)",
+    "activeConfig": "Configuration active",
+    "saveSuccess": "Configuration WhatsApp sauvegardée avec succès!",
+    "saveError": "Erreur lors de la sauvegarde",
+    "testSuccess": "Test réussi! Configuration WhatsApp validée.",
+    "testError": "Échec du test",
+    "testFirstSave": "Veuillez d'abord sauvegarder la configuration avant de tester",
+    "guideTitle": "💡 Guide de configuration 360dialog",
+    "guideText": "Pour configurer WhatsApp Business API :",
+    "guideStep1": "Créer un compte sur 360dialog",
+    "guideStep2": "Obtenir votre Clé API depuis le dashboard 360dialog",
+    "guideStep3": "Configurer un numéro WhatsApp Business",
+    "guideStep4": "Récupérer l'ID du numéro de téléphone depuis 360dialog",
+    "guideStep5": "Pour les webhooks, configurer l'URL de callback dans les paramètres 360dialog",
+    "guideStep6": "Le token webhook doit correspondre à celui configuré dans 360dialog"
+  },
+  "smtp": {
+    "title": "Configuration SMTP",
+    "server": "Serveur SMTP",
+    "port": "Port",
+    "email": "Email (utilisateur)",
+    "password": "Mot de passe (App Password)",
+    "passwordHelp": "Pour Gmail, utilisez un App Password et non votre mot de passe principal",
+    "testEmail": "Tester l'envoi d'email"
+  },
+  "general": {
+    "title": "Paramètres généraux",
+    "companyName": "Nom de l'entreprise",
+    "language": "Langue",
+    "timezone": "Fuseau horaire",
+    "dateFormat": "Format de date"
+  }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { DemoCredentials } from '../login/DemoCredentials';
+import { DemoCredentials } from './DemoCredentials';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 interface LoginFormProps {
   email: string;
@@ -19,37 +20,92 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   setPassword, 
   error, 
   onLogin, 
-  loading,
+  loading, 
   onFillCredentials 
 }) => {
+  const { t } = useAppTranslation(['auth', 'common']);
+
   return (
     <div style={{
       background: 'rgba(200, 200, 200, 0.9)',
-      padding: '60px 50px',
+      padding: '40px 50px', // Réduit le padding pour compenser le logo agrandi
       borderRadius: '30px',
       width: '450px',
       boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
       position: 'relative'
     }}>
-      <div style={{
-        position: 'absolute',
-        top: '30px',
-        right: '30px',
-        fontSize: '28px',
-        fontFamily: 'cursive',
-        color: '#333'
-      }}>
-        Portail client
-      </div>
 
-      <h2 style={{
-        textAlign: 'center',
-        marginBottom: '40px',
-        fontSize: '32px',
-        color: '#333'
+      {/* Logo Optimada au-dessus du titre */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: '20px', // Réduit la marge
+        marginTop: '-20px' // Remonte le logo pour compenser
       }}>
-        Identifiez-vous
-      </h2>
+        {/* Logo PNG */}
+        <img 
+          src="/src/dist/img/Logo.png"
+          alt="OPTIMADA"
+          style={{
+            width: '310px', // Taille légèrement réduite pour mieux s'intégrer
+            height: '150px',
+            marginBottom: '10px',
+            borderRadius: '10px',
+            objectFit: 'cover', // Changé à 'cover' pour bien appliquer le border-radius
+            border: 'none',
+            overflow: 'hidden', // Important pour contenir le border-radius
+            display: 'block'
+          }}
+          onError={(e) => {
+            // Fallback si le logo n'est pas trouvé
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+            
+            // Afficher un fallback stylisé
+            const fallback = document.getElementById('logo-fallback');
+            if (fallback) fallback.style.display = 'flex';
+          }}
+          onLoad={(e) => {
+            // Force le border-radius après le chargement
+            const target = e.target as HTMLImageElement;
+            target.style.borderRadius = '50px';
+          }}
+        />
+        
+        {/* Fallback stylisé si le logo n'est pas chargé */}
+        <div 
+          id="logo-fallback"
+          style={{
+            width: '180px',
+            height: '180px',
+            background: '#FFD700',
+            borderRadius: '50px',
+            display: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '10px',
+            boxShadow: '0 4px 12px rgba(255, 215, 0, 0.3)'
+          }}
+        >
+          <span style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: '#000'
+          }}>
+            O
+          </span>
+        </div>
+
+        <h2 style={{
+          textAlign: 'center',
+          margin: 0,
+          fontSize: '32px',
+          color: '#333'
+        }}>
+          {t('auth:login')}
+        </h2>
+      </div>
 
       {error && (
         <div style={{
@@ -65,42 +121,68 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         </div>
       )}
 
-      <DemoCredentials onFillCredentials={onFillCredentials} />
-
       <form onSubmit={onLogin}>
-        <div style={{ marginBottom: '25px' }}>
-          <label style={{ display: 'block', marginBottom: '10px', fontWeight: '600', color: '#333' }}>
-            Adresse email :
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600', 
+            color: '#333',
+            fontSize: '14px'
+          }}>
+            {t('auth:email')}:
           </label>
           <input
             type="email"
             value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            placeholder={t('auth:emailPlaceholder')}
             style={{
               width: '100%',
-              padding: '14px 20px',
+              padding: '12px 20px',
               borderRadius: '25px',
               border: 'none',
-              fontSize: '16px'
+              fontSize: '16px',
+              transition: 'all 0.2s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = 'none';
             }}
             required
           />
         </div>
 
-        <div style={{ marginBottom: '25px' }}>
-          <label style={{ display: 'block', marginBottom: '10px', fontWeight: '600', color: '#333' }}>
-            Mot de passe :
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600', 
+            color: '#333',
+            fontSize: '14px'
+          }}>
+            {t('auth:password')}:
           </label>
           <input
             type="password"
             value={password}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            placeholder={t('auth:passwordPlaceholder')}
             style={{
               width: '100%',
-              padding: '14px 20px',
+              padding: '12px 20px',
               borderRadius: '25px',
               border: 'none',
-              fontSize: '16px'
+              fontSize: '16px',
+              transition: 'all 0.2s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = 'none';
             }}
             required
           />
@@ -113,22 +195,47 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             width: '100%',
             background: loading ? '#6c757d' : '#10b981',
             color: 'white',
-            padding: '14px',
+            padding: '12px',
             borderRadius: '25px',
             border: 'none',
-            fontSize: '18px',
+            fontSize: '16px',
             fontWeight: '600',
             cursor: loading ? 'not-allowed' : 'pointer',
-            marginTop: '20px',
-            opacity: loading ? 0.7 : 1
+            marginTop: '15px',
+            opacity: loading ? 0.7 : 1,
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#059669';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#10b981';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }
           }}
         >
-          {loading ? 'Connexion...' : 'Se connecter'}
+          {loading ? t('auth:signingIn') : t('auth:signIn')}
         </button>
 
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <a href="#" style={{ color: '#666', fontSize: '14px', textDecoration: 'none' }}>
-            Mot de passe oublié?
+        <div style={{ textAlign: 'center', marginTop: '15px' }}>
+          <a href="#" style={{ 
+            color: '#666', 
+            fontSize: '14px', 
+            textDecoration: 'none',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#3b82f6';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#666';
+          }}
+          >
+            {t('auth:forgotPassword')}
           </a>
         </div>
       </form>

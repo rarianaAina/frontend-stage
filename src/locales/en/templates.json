@@ -1,0 +1,31 @@
+{
+  "list": {
+    "title": "Title of templates",
+    "new": "New Template",
+    "empty": "No templates available"
+  },
+  "details": {
+    "noSelection": "No template selected",
+    "selectOrCreate": "Select a template from the list or create a new one",
+    "createTitle": "Create Template",
+    "editTitle": "Edit Template",
+    "code": "Code",
+    "canal": "Channel",
+    "sujet": "Subject",
+    "contenuHtml": "HTML Content",
+    "test": "Test Template",
+    "testResult": "Test Result"
+  },
+  "form": {
+    "code": "Template Code",
+    "libelle": "Label",
+    "libellePlaceholder": "Ex: Ticket creation",
+    "canal": "Notification channel",
+    "sujet": "Message subject",
+    "sujetPlaceholder": "Ex: New Ticket - {reference}",
+    "contenuHtml": "HTML Content",
+    "contenuHtmlPlaceholder": "Enter the HTML content of the template...",
+    "variablesHelp": "Use {variable} for dynamic placeholders (ex: {reference}, {user}, {title})",
+    "active": "Active template"
+  }
+}

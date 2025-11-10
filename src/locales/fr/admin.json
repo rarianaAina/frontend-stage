@@ -1,0 +1,18 @@
+{
+  "admin": "Administration",
+  "users": "Utilisateurs",
+  "reports": "Rapports",
+  "configurations": "Configurations",
+  "gestionUtilisateurs": "Gestion des utilisateurs",
+  "statistics": "Statistiques",
+  "system": "Système",
+  "backup": "Sauvegarde",
+  "logs": "Journaux",
+  "userManagement": "Gestion des utilisateurs",
+  "roleManagement": "Gestion des rôles",
+  "permissions": "Permissions",
+  "systemHealth": "Santé du système",
+  "performance": "Performance",
+  "monitoring": "Monitoring",
+  "demandesManagement": "Gestion des Demandes"
+}

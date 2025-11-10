@@ -1,0 +1,19 @@
+{
+  "dashboard": "Tableau de bord",
+  "welcomeBack": "Bon retour",
+  "overview": "Aperçu",
+  "recentActivity": "Activité récente",
+  "quickActions": "Actions rapides",
+  "statistics": "Statistiques",
+  "ticketsOverview": "Aperçu des demandes",
+  "interventionsOverview": "Aperçu des interventions",
+  "usersOnline": "Utilisateurs en ligne",
+  "systemStatus": "Statut du système",
+  "today": "Aujourd'hui",
+  "thisWeek": "Cette semaine",
+  "thisMonth": "Ce mois",
+  "totalTickets": "Total des demandes",
+  "openTickets": "Demandes ouvertes",
+  "closedTickets": "Demandes fermées",
+  "averageResponse": "Temps de réponse moyen"
+}

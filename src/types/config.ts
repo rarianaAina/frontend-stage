@@ -81,3 +81,8 @@ export interface WorkflowConfig {
   typeNotificationCode: string;
   steps: WorkflowStep[];
 }
+
+export interface BackupSettings {
+  frequency: 'daily' | 'weekly' | 'monthly';
+  lastBackup?: string;
+}

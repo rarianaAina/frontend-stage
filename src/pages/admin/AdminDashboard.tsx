@@ -1,3 +1,4 @@
+// src/pages/admin/AdminDashboard.tsx
 import React from 'react';
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { 
@@ -19,6 +20,7 @@ import { GlobalStats } from '../../components/dashboard/admin/GlobalStats';
 import { DashboardCharts } from '../../components/dashboard/admin/DashboardCharts';
 import { PerformanceTeam } from '../../components/dashboard/admin/PerformanceTeam';
 import { RecentTickets } from '../../components/dashboard/admin/RecentTickets';
+import { SynchronisationStatus } from '../../components/dashboard/admin/SynchronisationStatuts';
 
 // Enregistrement des composants Chart.js
 ChartJS.register(
@@ -55,6 +57,7 @@ export default function AdminDashboard() {
       <NavBar role="ADMIN" />
 
       <div style={{ padding: '40px 60px' }}>
+
         {/* Statistiques globales */}
         <GlobalStats data={dashboardData.statistiquesGlobales} />
 
@@ -70,8 +73,26 @@ export default function AdminDashboard() {
         }}>
           <PerformanceTeam data={dashboardData.dureesMoyennes} />
           <RecentTickets tickets={dashboardData.ticketsRecents} />
+
         </div>
+                {/* Statuts des synchronisations */}
+        <SynchronisationStatus />
+
       </div>
+
+      {/* Styles CSS pour les animations */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+          }
+        `}
+      </style>
     </div>
   );
 }

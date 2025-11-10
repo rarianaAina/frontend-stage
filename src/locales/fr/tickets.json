@@ -1,0 +1,41 @@
+{
+  "loadingRequests": "Chargement des demandes...",
+  "searching": "Recherche en cours...",
+  "requestsFound": "demande(s) trouvée(s)",
+  "requestsManagement": "Gestion des Demandes",
+  "reference": "Référence",
+  "newTicket": "Nouvelle demande",
+  "company": "Société",
+  "product": "Produit",
+  "myTickets": "Mes demandes",
+  "description": "Description",
+  "creationDate": "Date création",
+  "companyNotDefined": "Non définie",
+  "productNotSpecified": "Non spécifié",
+  "noDescription": "Aucune description",
+  "noRequestsFound": "Aucune demande trouvée avec les critères sélectionnés",
+  "allStatuses": "Tous les états",
+  "allPriorities": "Toutes les priorités",
+  "searchByReference": "Rechercher par référence",
+  "searchByProduct": "Rechercher par produit",
+  "searchByCompany": "Rechercher par société",
+  "startDate": "Date début",
+  "endDate": "Date fin",
+  "status": {
+    "label": "Statut",
+    "new": "Nouveau",
+    "inProgress": "En cours",
+    "pending": "En attente",
+    "waitingClient": "En attente client",
+    "scheduled": "Planifié",
+    "resolved": "Résolu",
+    "closed": "Clôturé"
+  },
+  "priority": {
+    "label": "Priorité",
+    "low": "Basse",
+    "normal": "Normale",
+    "high": "Haute",
+    "urgent": "Urgente"
+  }
+}

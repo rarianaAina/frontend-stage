@@ -3,21 +3,31 @@ import NavBar from '../../components/NavBar';
 import { GeneralTab } from '../../components/config/GeneralTab';
 import { EmailTab } from '../../components/config/EmailTab';
 import { WorkflowTab } from '../../components/config/WorkflowTab';
-import { BackupTab } from '../../components/config/BackupTab';
+import { SynchronisationTab } from '../../components/config/synchronisation/SynchronisationTab';
 import { TabConfig } from '../../types/config';
 import { WhatsAppTab } from '../../components/config/whatsapp/WhatsAppTab';
+import { TemplateTabContent } from '../../components/config/template/TemplateTabContent';
+import { useTemplate } from '../../hooks/admin/config/template/useTemplateConfig';
 
 const Configurations: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>('general');
+  const [activeTab, setActiveTab] = useState<string>('email');
+
+  // Hook pour la gestion des templates
+  const templateHook = useTemplate();
 
   const tabs: TabConfig[] = [
-    { id: 'general', label: 'Général', component: GeneralTab },
     { id: 'email', label: 'Email', component: EmailTab },
+    { id: 'general', label: 'Général', component: GeneralTab },
     { id: 'whatsapp', label: 'Whatsapp', component: WhatsAppTab },
     { id: 'workflow', label: 'Workflow Notifications', component: WorkflowTab },
     { id: 'sla', label: 'SLA', component: () => <div>Configuration SLA</div> },
     { id: 'credits', label: 'Crédits', component: () => <div>Gestion des crédits</div> },
-    { id: 'backup', label: 'Sauvegarde', component: BackupTab },
+    { id: 'backup', label: 'Synchronisation', component: SynchronisationTab },
+    { 
+      id: 'template', 
+      label: 'Configuration templates', 
+      component: () => <TemplateTabContent {...templateHook} />
+    },
   ];
 
   const renderActiveTab = () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { TicketFiltres } from '../../../services/adminTicketService';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface FiltresTicketsProps {
   filtres: TicketFiltres;
@@ -10,6 +11,8 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
   filtres, 
   onFiltresChange 
 }) => {
+  const { t } = useAppTranslation(['common', 'tickets']);
+
   const handleChange = (key: keyof TicketFiltres, value: string) => {
     onFiltresChange({
       ...filtres,
@@ -42,9 +45,10 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
           fontSize: '18px',
           fontWeight: 'bold',
           textDecoration: 'underline',
-          margin: 0
+          margin: 0,
+          color: '#1f2937'
         }}>
-          Filtres:
+          {t('common:filter')}:
         </h3>
         <button
           onClick={handleReset}
@@ -55,10 +59,24 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
             borderRadius: '20px',
             border: 'none',
             cursor: 'pointer',
-            fontSize: '14px'
+            fontSize: '14px',
+            fontWeight: '500',
+            transition: 'all 0.2s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#5a6268';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#6c757d';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          Réinitialiser
+          <span>🔄</span>
+          {t('common:reset')}
         </button>
       </div>
 
@@ -67,71 +85,132 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
         gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '20px',
       }}>
+        {/* État */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            État:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:status.label')}:
           </label>
           <select
             value={filtres.etat || ''}
             onChange={(e) => handleChange('etat', e.target.value)}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd',
-              backgroundColor: 'white'
+              border: '1px solid #d1d5db',
+              backgroundColor: 'white',
+              cursor: 'pointer',
+              fontSize: '14px',
+              transition: 'all 0.2s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           >
-            <option value="">Tous les états</option>
-            <option value="1">Nouveau</option>
-            <option value="2">En cours</option>
-            <option value="3">En attente</option>
-            <option value="4">En attente client</option>
-            <option value="5">Planifié</option>
-            <option value="6">Résolu</option>
-            <option value="7">Clôturé</option>
+            <option value="">{t('tickets:allStatuses')}</option>
+            <option value="1">{t('tickets:status.new')}</option>
+            <option value="2">{t('tickets:status.inProgress')}</option>
+            <option value="3">{t('tickets:status.pending')}</option>
+            <option value="4">{t('tickets:status.waitingClient')}</option>
+            <option value="5">{t('tickets:status.scheduled')}</option>
+            <option value="6">{t('tickets:status.resolved')}</option>
+            <option value="7">{t('tickets:status.closed')}</option>
           </select>
         </div>
         
+        {/* Référence */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Référence:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:reference')}:
           </label>
           <input
             type="text"
             value={filtres.reference || ''}
             onChange={(e) => handleChange('reference', e.target.value)}
-            placeholder="Rechercher par référence"
+            placeholder={t('tickets:searchByReference')}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd'
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              backgroundColor: 'white'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>
         
+        {/* Produit */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Produit:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:product')}:
           </label>
           <input
             type="text"
             value={filtres.produit || ''}
             onChange={(e) => handleChange('produit', e.target.value)}
-            placeholder="Rechercher par produit"
+            placeholder={t('tickets:searchByProduct')}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd'
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              backgroundColor: 'white'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>
         
+        {/* Date début */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Date début:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:startDate')}:
           </label>
           <input
             type="date"
@@ -139,16 +218,35 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
             onChange={(e) => handleChange('dateDebut', e.target.value)}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd'
+              border: '1px solid #d1d5db',
+              cursor: 'pointer',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              backgroundColor: 'white'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>
         
+        {/* Date fin */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Date fin:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:endDate')}:
           </label>
           <input
             type="date"
@@ -156,51 +254,99 @@ export const FiltresTickets: React.FC<FiltresTicketsProps> = ({
             onChange={(e) => handleChange('dateFin', e.target.value)}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd'
+              border: '1px solid #d1d5db',
+              cursor: 'pointer',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              backgroundColor: 'white'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>
         
+        {/* Société */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Société:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:company')}:
           </label>
           <input
             type="text"
             value={filtres.societe || ''}
             onChange={(e) => handleChange('societe', e.target.value)}
-            placeholder="Rechercher par société"
+            placeholder={t('tickets:searchByCompany')}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd'
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+              backgroundColor: 'white'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           />
         </div>
         
+        {/* Priorité */}
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Priorité:
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
+          }}>
+            {t('tickets:priority.label')}:
           </label>
           <select
             value={filtres.priorite || ''}
             onChange={(e) => handleChange('priorite', e.target.value)}
             style={{
               width: '100%',
-              padding: '10px',
+              padding: '10px 12px',
               borderRadius: '20px',
-              border: '1px solid #ddd',
-              backgroundColor: 'white'
+              border: '1px solid #d1d5db',
+              backgroundColor: 'white',
+              cursor: 'pointer',
+              fontSize: '14px',
+              transition: 'all 0.2s ease'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#d1d5db';
+              e.target.style.boxShadow = 'none';
             }}
           >
-            <option value="">Toutes les priorités</option>
-            <option value="1">Basse</option>
-            <option value="2">Normale</option>
-            <option value="3">Haute</option>
-            <option value="4">Urgente</option>
+            <option value="">{t('tickets:allPriorities')}</option>
+            <option value="1">{t('tickets:priority.low')}</option>
+            <option value="2">{t('tickets:priority.normal')}</option>
+            <option value="3">{t('tickets:priority.high')}</option>
+            <option value="4">{t('tickets:priority.urgent')}</option>
           </select>
         </div>
       </div>

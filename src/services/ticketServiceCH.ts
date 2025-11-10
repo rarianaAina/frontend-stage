@@ -28,6 +28,20 @@ export interface InteractionCreateDTO {
   interventionId?: number;
 }
 
+export interface Solution {
+  id: number; 
+  titre: string;
+  description: string;
+  zone: string;
+  statut: string;
+  etape: string;
+  reference: string;
+  dateCreation: string;
+  dateMiseAJour: string;
+  dateCloture: string | null;
+  cloture: boolean;
+}
+
 export interface Interaction {
   id: number;
   typeInteractionLibelle: string;
@@ -76,6 +90,18 @@ export const interactionService = {
 };
 
 export const ticketService = {
+
+  async getSolutions(ticketId: string): Promise<Solution[]> {
+    try {
+      const response = await api.get(`/solutions/ticket/${ticketId}`);
+      console.log('Solutions récupérées:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur récupération solutions:', error);
+      return [];
+    }
+  },
+
   async getTicketDetails(ticketId: string): Promise<Ticket> {
     const response = await api.get(`/tickets/${ticketId}`);
     console.log('Détails ticket:', response.data);

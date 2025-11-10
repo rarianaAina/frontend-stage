@@ -5,6 +5,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/global.css';
 
+// Import i18n
+import './i18n/i18n';
+
+// Import des pages
 import Login from './pages/client/Login';
 import Dashboard from './pages/client/Dashboard';
 import MesDemandes from './pages/client/MesDemandes';

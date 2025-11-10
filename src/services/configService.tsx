@@ -161,41 +161,6 @@ class ConfigService {
       return false;
     }
   }
-
-  // Configuration sauvegarde
-  async getBackupSettings(): Promise<BackupSettings> {
-    try {
-      const response = await api.get('/configurations/backup');
-      return response.data;
-    } catch (error) {
-      console.error('Erreur ConfigService.getBackupSettings:', error);
-      return {
-        frequency: 'daily'
-      };
-    }
-  }
-
-  async saveBackupSettings(settings: BackupSettings): Promise<boolean> {
-    try {
-      await api.post('/configurations/backup', settings);
-      return true;
-    } catch (error) {
-      console.error('Erreur ConfigService.saveBackupSettings:', error);
-      return false;
-    }
-  }
-
-  async createBackup(): Promise<boolean> {
-    try {
-      await api.post('/configurations/backup/now');
-      return true;
-    } catch (error) {
-      console.error('Erreur ConfigService.createBackup:', error);
-      return false;
-    }
-  }
-
-  
 }
 
 export const configService = new ConfigService();

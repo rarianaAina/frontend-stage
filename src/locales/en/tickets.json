@@ -1,0 +1,43 @@
+{
+  "loadingRequests": "Loading requests...",
+  "searching": "Searching...",
+  "requestsFound": "request(s) found",
+  "requestsManagement": "Requests Management",
+  "reference": "Reference",
+  "newTicket": "New request",
+  "company": "Company",
+  "product": "Product",
+  "myTickets": "My tickets",
+  "description": "Description",
+  "creationDate": "Creation date",
+  "companyNotDefined": "Not defined",
+  "productNotSpecified": "Not specified",
+  "noDescription": "No description",
+  "noRequestsFound": "No requests found with selected criteria",
+  "allStatuses": "All statuses",
+  "allPriorities": "All priorities",
+  "searchByReference": "Search by reference",
+  "searchByProduct": "Search by product",
+  "searchByCompany": "Search by company",
+  "startDate": "Start date",
+  "endDate": "End date",
+  "status": {
+    "label": "Status",
+    "new": "New",
+    "inProgress": "In progress",
+    "pending": "Pending",
+    "waitingClient": "Waiting client",
+    "scheduled": "Scheduled",
+    "resolved": "Resolved",
+    "closed": "Closed"
+  },
+  "priority": {
+    "label": "Priority",
+    "low": "Low",
+    "normal": "Normal",
+    "high": "High",
+    "urgent": "Urgent"
+  }
+
+  
+}
