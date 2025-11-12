@@ -1,0 +1,18 @@
+{
+  "loadingSyncStatus": "Loading synchronization status...",
+  "loadingError": "Loading error",
+  "crmSyncStatus": "CRM Synchronization Status", 
+  "refresh": "Refresh",
+  "scheduledSyncInfo": "Scheduled synchronizations run automatically according to cron configuration",
+  "inProgress": "In Progress",
+  "stopRequested": "Stop Requested",
+  "inactive": "Inactive",
+  "companies": "Companies",
+  "timeCredits": "Time Credits",
+  "people": "People", 
+  "products": "Products",
+  "tickets": "Tickets",
+  "solutions": "Solutions",
+  "solutionTicketLinks": "Solution-Ticket Links",
+  "lastSync": "Last sync"
+}
