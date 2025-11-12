@@ -1,5 +1,6 @@
 import React from 'react';
 import { SyncStatusData } from '../../../hooks/dashboard/admin/useSynchronisationStatuts';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface SyncStatusCardProps {
   type: keyof SyncStatusData;
@@ -7,6 +8,8 @@ interface SyncStatusCardProps {
 }
 
 export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) => {
+  const { t } = useAppTranslation(['common', 'sync']);
+
   const getStatusConfig = (status: string) => {
     switch (status) {
       case 'EN_COURS':
@@ -15,7 +18,7 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
           bgColor: '#fffbeb',
           borderColor: '#fed7aa',
           icon: '🔄',
-          label: 'En cours'
+          label: t('sync:inProgress')
         };
       case 'ARRET_DEMANDE':
         return {
@@ -23,7 +26,7 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
           bgColor: '#fef2f2',
           borderColor: '#fecaca',
           icon: '⏹️',
-          label: 'Arrêt demandé'
+          label: t('sync:stopRequested')
         };
       default:
         return {
@@ -31,7 +34,7 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
           bgColor: '#f0fdf4',
           borderColor: '#bbf7d0',
           icon: '✅',
-          label: 'Inactive'
+          label: t('sync:inactive')
         };
     }
   };
@@ -47,6 +50,19 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
       liaisonsSolutionsTickets: '🔗'
     };
     return icons[type] || '📊';
+  };
+
+  const getTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      companies: t('sync:companies'),
+      creditsHoraires: t('sync:timeCredits'),
+      personnes: t('sync:people'),
+      produits: t('sync:products'),
+      tickets: t('sync:tickets'),
+      solutions: t('sync:solutions'),
+      liaisonsSolutionsTickets: t('sync:solutionTicketLinks')
+    };
+    return labels[type] || type;
   };
 
   const config = getStatusConfig(statut.statut);
@@ -73,7 +89,7 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
             color: '#1f2937',
             margin: 0
           }}>
-            {statut.nom}
+            {getTypeLabel(type)}
           </h4>
         </div>
         <div style={{
@@ -110,7 +126,7 @@ export const SyncStatusCard: React.FC<SyncStatusCardProps> = ({ type, statut }) 
           color: '#9ca3af'
         }}>
           <span>🕒</span>
-          <span>Dernière sync: {statut.derniereSync}</span>
+          <span>{t('sync:lastSync')}: {statut.derniereSync}</span>
         </div>
       )}
 

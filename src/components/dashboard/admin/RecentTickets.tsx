@@ -1,5 +1,6 @@
 import React from 'react';
 import { TicketRecent } from '../../../types/dashboard';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface RecentTicketsProps {
   tickets?: TicketRecent[];
@@ -16,6 +17,8 @@ const getStatusColor = (statut: string) => {
 };
 
 export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
+  const { t } = useAppTranslation(['common', 'dashboard']);
+
   return (
     <div style={{
       background: 'white',
@@ -31,17 +34,25 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
         marginBottom: '20px',
         textAlign: 'center'
       }}>
-        Tickets Récents
+        {t('dashboard:recentTickets')}
       </h3>
       {tickets && tickets.length > 0 ? (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
             <thead>
               <tr style={{ backgroundColor: '#f8f9fa' }}>
-                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>Référence</th>
-                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>Titre</th>
-                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>Statut</th>
-                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>Date</th>
+                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>
+                  {t('dashboard:reference')}
+                </th>
+                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>
+                  {t('dashboard:title')}
+                </th>
+                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>
+                  {t('dashboard:status')}
+                </th>
+                <th style={{ padding: '12px', border: '1px solid #dee2e6', textAlign: 'left' }}>
+                  {t('dashboard:date')}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -57,7 +68,7 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
                       backgroundColor: getStatusColor(ticket.statut),
                       color: 'white'
                     }}>
-                      {ticket.statut}
+                      {t(`common:statusTicket.${ticket.statut}`)}
                     </span>
                   </td>
                   <td style={{ padding: '12px', border: '1px solid #dee2e6' }}>
@@ -69,7 +80,9 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
           </table>
         </div>
       ) : (
-        <p style={{ textAlign: 'center', color: '#6c757d' }}>Aucun ticket récent</p>
+        <p style={{ textAlign: 'center', color: '#6c757d' }}>
+          {t('dashboard:noRecentTickets')}
+        </p>
       )}
     </div>
   );
