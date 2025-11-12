@@ -1,0 +1,18 @@
+{
+  "loadingSyncStatus": "Eo am-pampidirana ny sata fifanarahana...",
+  "loadingError": "Hadisoana fampidirana",
+  "crmSyncStatus": "Toetran'ny Fifanarahana CRM",
+  "refresh": "Havaozina",
+  "scheduledSyncInfo": "Mihodina ho azy ny fifanarahana voalahatra araka ny fandaharana cron",
+  "inProgress": "Eo am-panatanterahana",
+  "stopRequested": "Fijanonana angatahina",
+  "inactive": "Tsy mavitrika",
+  "companies": "Orinasa",
+  "timeCredits": "Kaonty ora",
+  "people": "Olona",
+  "products": "Vokatra", 
+  "tickets": "Tikety",
+  "solutions": "Vahaolana",
+  "solutionTicketLinks": "Rohidian'ny vahaolana sy tikety",
+  "lastSync": "Fifanarahana farany"
+}
