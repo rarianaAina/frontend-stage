@@ -1,0 +1,18 @@
+{
+  "loadingSyncStatus": "Chargement des statuts de synchronisation...",
+  "loadingError": "Erreur de chargement",
+  "crmSyncStatus": "État des Synchronisations CRM",
+  "refresh": "Actualiser",
+  "scheduledSyncInfo": "Les synchronisations planifiées s'exécutent automatiquement selon la configuration cron",
+  "inProgress": "En cours",
+  "stopRequested": "Arrêt demandé", 
+  "inactive": "Inactive",
+  "companies": "Companies",
+  "timeCredits": "Crédits horaires",
+  "people": "Personnes",
+  "products": "Produits",
+  "tickets": "Tickets",
+  "solutions": "Solutions",
+  "solutionTicketLinks": "Liaisons solutions-tickets",
+  "lastSync": "Dernière sync"
+}
