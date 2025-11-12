@@ -1,18 +1,21 @@
 import React from 'react';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface ChartContainerProps {
-  title: string;
+  titleKey: string;
   children: React.ReactNode;
   height: string;
   background?: string;
 }
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({ 
-  title, 
+  titleKey, 
   children, 
   height, 
   background = 'white' 
 }) => {
+  const { t } = useAppTranslation(['common', 'dashboard']);
+
   return (
     <div style={{ 
       background, 
@@ -26,7 +29,7 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
         marginBottom: '20px', 
         color: background === 'white' ? '#333' : 'white' 
       }}>
-        {title}
+        {t(`dashboard:${titleKey}`)}
       </h3>
       {children}
     </div>

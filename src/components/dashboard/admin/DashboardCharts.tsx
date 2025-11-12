@@ -8,13 +8,12 @@ interface DashboardChartsProps {
   data: DashboardAdminData;
 }
 
-
 export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
+  const { t } = useAppTranslation(['common', 'dashboard']);
 
-  const { t } = useAppTranslation(['auth', 'common']);
   // Données pour le graphique de répartition par statut
   const statusData = {
-    labels: data.ticketsParStatut.map(item => item.label),
+    labels: data.ticketsParStatut.map(item => t(`common:statusTicket.${item.label}`)),
     datasets: [{
       data: data.ticketsParStatut.map(item => item.value),
       backgroundColor: ['#6dd5ed', '#4db8d8', '#3a9fc7', '#2d8ab8', '#1f5f8b', '#164e63'],
@@ -28,12 +27,12 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
     labels: data.performancesConsultants.map(perf => perf.consultantNom),
     datasets: [
       {
-        label: 'Tickets Clos',
+        label: t('dashboard:closedTickets'),
         data: data.performancesConsultants.map(perf => perf.ticketsClotures),
         backgroundColor: '#3a9fc7',
       },
       {
-        label: 'Tickets En Cours',
+        label: t('dashboard:ticketsInProgress'),
         data: data.performancesConsultants.map(perf => perf.ticketsEnCours),
         backgroundColor: '#6dd5ed',
       }
@@ -51,7 +50,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
       marginBottom: '30px'
     }}>
       {/* Répartition par statut */}
-      <ChartContainer title="Répartition par statut" height="300px">
+      <ChartContainer titleKey="statusDistribution" height="300px">
         <Pie 
           data={statusData} 
           options={{ 
@@ -66,7 +65,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
       </ChartContainer>
 
       {/* Évolution temporelle */}
-      <ChartContainer title="Évolution des tickets" height="300px" background="#17a2b8">
+      <ChartContainer titleKey="ticketsEvolution" height="300px" background="#17a2b8">
         <Line 
           data={lineData} 
           options={{
@@ -86,7 +85,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({ data }) => {
       </ChartContainer>
 
       {/* Performance consultants */}
-      <ChartContainer title="Performance consultants" height="300px">
+      <ChartContainer titleKey="consultantsPerformance" height="300px">
         <Bar 
           data={consultantBarData} 
           options={{ 
