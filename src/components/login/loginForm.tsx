@@ -11,6 +11,7 @@ interface LoginFormProps {
   onLogin: (e: React.FormEvent) => void;
   loading: boolean;
   onFillCredentials: (email: string, password: string) => void;
+  onShowForgotPassword: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ 
@@ -21,14 +22,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   error, 
   onLogin, 
   loading, 
-  onFillCredentials 
+  onFillCredentials,
+  onShowForgotPassword 
 }) => {
   const { t } = useAppTranslation(['auth', 'common']);
 
   return (
     <div style={{
       background: 'rgba(200, 200, 200, 0.9)',
-      padding: '40px 50px', // Réduit le padding pour compenser le logo agrandi
+      padding: '40px 50px',
       borderRadius: '30px',
       width: '450px',
       boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
@@ -40,34 +42,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginBottom: '20px', // Réduit la marge
-        marginTop: '-20px' // Remonte le logo pour compenser
+        marginBottom: '20px',
+        marginTop: '-20px'
       }}>
         {/* Logo PNG */}
         <img 
           src="/src/dist/img/Logo.png"
           alt="OPTIMADA"
           style={{
-            width: '310px', // Taille légèrement réduite pour mieux s'intégrer
+            width: '310px',
             height: '150px',
             marginBottom: '10px',
             borderRadius: '10px',
-            objectFit: 'cover', // Changé à 'cover' pour bien appliquer le border-radius
+            objectFit: 'cover',
             border: 'none',
-            overflow: 'hidden', // Important pour contenir le border-radius
+            overflow: 'hidden',
             display: 'block'
           }}
           onError={(e) => {
-            // Fallback si le logo n'est pas trouvé
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';
             
-            // Afficher un fallback stylisé
             const fallback = document.getElementById('logo-fallback');
             if (fallback) fallback.style.display = 'flex';
           }}
           onLoad={(e) => {
-            // Force le border-radius après le chargement
             const target = e.target as HTMLImageElement;
             target.style.borderRadius = '50px';
           }}
@@ -222,18 +221,24 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         </button>
 
         <div style={{ textAlign: 'center', marginTop: '15px' }}>
-          <a href="#" style={{ 
-            color: '#666', 
-            fontSize: '14px', 
-            textDecoration: 'none',
-            transition: 'color 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#3b82f6';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#666';
-          }}
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              onShowForgotPassword();
+            }}
+            style={{ 
+              color: '#666', 
+              fontSize: '14px', 
+              textDecoration: 'none',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#3b82f6';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#666';
+            }}
           >
             {t('auth:forgotPassword')}
           </a>
