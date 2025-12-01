@@ -13,8 +13,12 @@ body {
 
 #root {
   min-height: 100vh;
+}
+
+#scale-wrapper {
   transform: scale(0.95);
   transform-origin: top center;
+  width: 100%;
 }
 
 button {
