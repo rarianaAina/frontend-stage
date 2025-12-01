@@ -2,6 +2,7 @@ import React from 'react';
 import { DemoCredentials } from './DemoCredentials';
 import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
+
 interface LoginFormProps {
   email: string;
   setEmail: (email: string) => void;
@@ -47,7 +48,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       }}>
         {/* Logo PNG */}
         <img 
-          src="../../assets/Logoo.png"
+          src="/Logo.png"
           alt="OPTIMADA"
           style={{
             width: '310px',
