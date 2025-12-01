@@ -1,5 +1,5 @@
 import React from 'react';
-import { useContactsWithDetails } from '../../hooks/contacts/useCOntactWithDetails';
+import { useContactsWithDetails } from '../../hooks/contacts/useContactWithDetails';
 
 interface Contact {
   userId: number;
