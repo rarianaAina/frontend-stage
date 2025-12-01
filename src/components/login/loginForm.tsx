@@ -47,7 +47,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       }}>
         {/* Logo PNG */}
         <img 
-          src="../../../public/Logo.png"
+          src="../../assets/Logoo.png"
           alt="OPTIMADA"
           style={{
             width: '310px',
