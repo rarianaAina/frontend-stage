@@ -1,7 +1,6 @@
-// pages/GestionUtilisateurs.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import Modal from '../../components/Modal';
 import FiltresUtilisateursComponent from '../../components/utilisateurs/FiltresUtilisateur';
 import TableauUtilisateurs from '../../components/utilisateurs/TableauUtilisateur';
@@ -9,9 +8,11 @@ import FormulaireCreationUtilisateur from '../../components/utilisateurs/Formula
 import ModalDetailsUtilisateur from '../../components/utilisateurs/ModalDetailsUtilisateur';
 import type { Utilisateur, FiltresUtilisateurs, NouvelUtilisateur, UtilisateurPageReponse } from '../../types/utilisateur';
 import { userService } from '../../services/userService';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 export default function GestionUtilisateurs() {
   const navigate = useNavigate();
+  const { t } = useAppTranslation(['common', 'users']);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<Utilisateur | null>(null);
@@ -31,7 +32,6 @@ export default function GestionUtilisateurs() {
     dateFin: ''
   });
 
-  // Charger les utilisateurs avec les filtres
   const chargerUtilisateurs = async (page: number = 0) => {
     setLoading(true);
     try {
@@ -55,7 +55,6 @@ export default function GestionUtilisateurs() {
     }
   };
 
-  // Charger au montage et quand les filtres changent
   useEffect(() => {
     chargerUtilisateurs(0);
   }, [filtres]);
@@ -94,7 +93,7 @@ export default function GestionUtilisateurs() {
           marginBottom: '30px'
         }}>
           <h1 style={{ fontSize: '42px', color: '#17a2b8', fontWeight: 'bold' }}>
-            Liste des utilisateurs ({pagination.totalElements})
+            {t('users:userList')} ({pagination.totalElements})
           </h1>
           <button
             onClick={() => setShowCreateModal(true)}
@@ -109,7 +108,7 @@ export default function GestionUtilisateurs() {
               fontWeight: '500'
             }}
           >
-            Nouvel utilisateur
+            {t('users:newUser')}
           </button>
         </div>
 
@@ -120,7 +119,7 @@ export default function GestionUtilisateurs() {
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px' }}>
-            Chargement...
+            {t('common:loading')}
           </div>
         ) : (
           <>
@@ -129,7 +128,6 @@ export default function GestionUtilisateurs() {
               onVoirDetails={handleShowDetails}
             />
             
-            {/* Pagination */}
             {pagination.totalPages > 1 && (
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', gap: '10px' }}>
                 <button
@@ -143,11 +141,11 @@ export default function GestionUtilisateurs() {
                     cursor: pagination.pageCourante === 0 ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  Précédent
+                  {t('common:previous')}
                 </button>
                 
                 <span style={{ padding: '8px 16px' }}>
-                  Page {pagination.pageCourante + 1} sur {pagination.totalPages}
+                  {t('common:page')} {pagination.pageCourante + 1} {t('common:of')} {pagination.totalPages}
                 </span>
                 
                 <button
@@ -161,7 +159,7 @@ export default function GestionUtilisateurs() {
                     cursor: pagination.pageCourante >= pagination.totalPages - 1 ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  Suivant
+                  {t('common:next')}
                 </button>
               </div>
             )}
@@ -169,14 +167,14 @@ export default function GestionUtilisateurs() {
         )}
       </div>
 
-      <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Créer un utilisateur">
+      <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title={t('users:createUser')}>
         <FormulaireCreationUtilisateur 
           onSubmit={handleCreateUser}
           onCancel={() => setShowCreateModal(false)}
         />
       </Modal>
 
-      <Modal isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} title="Détails de l'utilisateur">
+      <Modal isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} title={t('users:userDetails')}>
         <ModalDetailsUtilisateur 
           utilisateur={selectedUser}
           onClose={() => setShowDetailsModal(false)}

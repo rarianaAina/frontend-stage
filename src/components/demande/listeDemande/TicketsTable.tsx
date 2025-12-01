@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useMemo } from 'react';
-import { Ticket } from '../../types/ticket';
+import { Ticket } from '../../../types/ticket';
 import { DescriptionAvecVoirPlus } from './DescriptionAvecVoirPlus';
-import { getPrioriteText, getCouleurPriorite, getStatutText, getCouleurStatut } from '../../utils/ticketUtils';
+import { getPrioriteText, getCouleurPriorite, getStatutText, getCouleurStatut } from '../../../utils/ticketUtils';
 
 interface TicketsTableProps {
   tickets: Ticket[];

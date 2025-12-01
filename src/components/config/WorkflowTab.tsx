@@ -12,7 +12,7 @@ export const WorkflowTab: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [localWorkflow, setLocalWorkflow] = useState<WorkflowConfig | null>(null);
   
-  // Compteur pour les IDs temporaires (négatifs pour éviter les conflits)
+
   const [tempIdCounter, setTempIdCounter] = useState(-1);
 
   useEffect(() => {
@@ -133,41 +133,34 @@ export const WorkflowTab: React.FC = () => {
   };
 
   const saveWorkflow = async () => {
-    if (!localWorkflow) return;
+      if (!localWorkflow) return;
 
-    // Validation des données
-    if (localWorkflow.steps.length === 0) {
-      alert('Veuillez ajouter au moins une étape avant de sauvegarder.');
-      return;
-    }
-
-    // Vérifier que tous les utilisateurs sont sélectionnés
-    const invalidSteps = localWorkflow.steps.filter(step => 
-      step.utilisateurId === 0 || !step.utilisateurId
-    );
-    
-    if (invalidSteps.length > 0) {
-      alert('Veuillez sélectionner un utilisateur pour toutes les étapes.');
-      return;
-    }
-
-    setSaving(true);
-    try {
-      const success = await workflowService.saveWorkflow(localWorkflow);
-      if (success) {
-        // Recharger les données fraîches du serveur
-        await loadData();
-        //alert('Workflow sauvegardé avec succès!');
-        toast.success('Workflow sauvegardé avec succès !');
-      } else {
-        alert('Erreur lors de la sauvegarde du workflow');
+      // Validation des données - PERMETTRE LES WORKFLOWS SANS ÉTAPES
+      const invalidSteps = localWorkflow.steps.filter(step => 
+          step.utilisateurId === 0 || !step.utilisateurId
+      );
+      
+      if (invalidSteps.length > 0) {
+          alert('Veuillez sélectionner un utilisateur pour toutes les étapes.');
+          return;
       }
-    } catch (error: any) {
-      console.error('Erreur lors de la sauvegarde:', error);
-      alert(error.message || 'Erreur lors de la sauvegarde du workflow');
-    } finally {
-      setSaving(false);
-    }
+
+      setSaving(true);
+      try {
+          const success = await workflowService.saveWorkflow(localWorkflow);
+          if (success) {
+              // Recharger les données fraîches du serveur
+              await loadData();
+              toast.success('Workflow sauvegardé avec succès !');
+          } else {
+              alert('Erreur lors de la sauvegarde du workflow');
+          }
+      } catch (error: any) {
+          console.error('Erreur lors de la sauvegarde:', error);
+          alert(error.message || 'Erreur lors de la sauvegarde du workflow');
+      } finally {
+          setSaving(false);
+      }
   };
 
   const handleWorkflowTypeChange = (newType: string) => {
@@ -368,26 +361,26 @@ export const WorkflowTab: React.FC = () => {
         paddingTop: '20px',
         borderTop: '1px solid #e5e7eb'
       }}>
-        <button
-          onClick={saveWorkflow}
-          disabled={saving || localWorkflow.steps.length === 0}
-          style={{
-            background: saving || localWorkflow.steps.length === 0 ? '#9ca3af' : '#10b981',
-            color: 'white',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            border: 'none',
-            cursor: saving || localWorkflow.steps.length === 0 ? 'not-allowed' : 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-        >
-          {saving ? '⏳' : '💾'}
-          {saving ? ' Sauvegarde en cours...' : ' Sauvegarder le workflow'}
-        </button>
+      <button
+        onClick={saveWorkflow}
+        disabled={saving}
+        style={{
+          background: saving ? '#9ca3af' : '#10b981',
+          color: 'white',
+          padding: '12px 24px',
+          borderRadius: '8px',
+          border: 'none',
+          cursor: saving ? 'not-allowed' : 'pointer',
+          fontSize: '14px',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px'
+        }}
+      >
+        {saving ? '⏳' : '💾'}
+        {saving ? ' Sauvegarde en cours...' : ' Sauvegarder le workflow'}
+      </button>
 
         <button
           onClick={loadData}

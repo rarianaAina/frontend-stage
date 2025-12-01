@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { ChartData } from '../../types/dashboard';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 ChartJS.register(
   CategoryScale,
@@ -22,22 +23,26 @@ ChartJS.register(
 );
 
 interface TicketsChartProps {
-  chartData?: ChartData; // Rendre optionnel
+  chartData?: ChartData;
   title?: string;
   height?: number;
 }
 
 export const TicketsChart = ({ 
   chartData, 
-  title = 'Tickets par mois',
+  title,
   height = 350 
 }: TicketsChartProps) => {
-  // Données par défaut si chartData est undefined
+  const { t } = useAppTranslation(['dashboard']);
+
   const defaultChartData: ChartData = {
-    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+    labels: [
+      t('common:months.jan'), t('common:months.feb'), t('common:months.mar'),
+      t('common:months.apr'), t('common:months.may'), t('common:months.jun')
+    ],
     datasets: [
       {
-        label: 'Tickets',
+        label: t('dashboard:tickets'),
         data: [0, 0, 0, 0, 0, 0],
         borderColor: '#000',
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -48,6 +53,7 @@ export const TicketsChart = ({
   };
 
   const dataToUse = chartData || defaultChartData;
+  const chartTitle = title || t('dashboard:ticketsEvolution');
 
   const chartOptions = {
     responsive: true,
@@ -58,7 +64,7 @@ export const TicketsChart = ({
       },
       title: {
         display: true,
-        text: title,
+        text: chartTitle,
         font: {
           size: 18,
           weight: 'bold' as const,

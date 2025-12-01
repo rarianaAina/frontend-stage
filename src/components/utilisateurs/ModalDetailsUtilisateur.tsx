@@ -1,5 +1,5 @@
-// components/utilisateurs/ModalDetailsUtilisateur.tsx
 import { Utilisateur } from '../../types/utilisateur';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 interface Props {
   utilisateur: Utilisateur | null;
@@ -7,37 +7,39 @@ interface Props {
 }
 
 export default function ModalDetailsUtilisateur({ utilisateur, onClose }: Props) {
+  const { t } = useAppTranslation(['common', 'users']);
+
   if (!utilisateur) return null;
 
   return (
     <div style={{ color: 'white' }}>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Nom :</strong> {utilisateur.nom}
+        <strong>{t('users:lastName')}:</strong> {utilisateur.nom}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Prénom(s) :</strong> {utilisateur.prenom}
+        <strong>{t('users:firstName')}:</strong> {utilisateur.prenom}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Poste :</strong> {utilisateur.poste}
+        <strong>{t('users:position')}:</strong> {utilisateur.poste}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Société :</strong> {utilisateur.societe}
+        <strong>{t('users:company')}:</strong> {utilisateur.societe}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Date de création :</strong> {utilisateur.dateCreation}
+        <strong>{t('users:creationDate')}:</strong> {utilisateur.dateCreation}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Adresse email :</strong> {utilisateur.email}
+        <strong>{t('users:email')}:</strong> {utilisateur.email}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Etat :</strong> {utilisateur.etat}
+        <strong>{t('common:status')}:</strong> {utilisateur.etat}
       </div>
       <div style={{ marginBottom: '15px' }}>
-        <strong>Ancienneté :</strong> {utilisateur.anciennete}
+        <strong>{t('users:seniority')}:</strong> {utilisateur.anciennete}
       </div>
       {utilisateur.telephone && (
         <div style={{ marginBottom: '15px' }}>
-          <strong>Téléphone :</strong> {utilisateur.telephone}
+          <strong>{t('users:phone')}:</strong> {utilisateur.telephone}
         </div>
       )}
     </div>

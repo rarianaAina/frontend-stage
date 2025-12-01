@@ -9,11 +9,14 @@ interface ProduitAvecCH {
   parcId: string;
   dateObtention?: string;
   chRestant?: number;
+  userId?: number;
+  userFullName?: string;
 }
 
 const ProduitsTab: React.FC = () => {
   const navigate = useNavigate();
   const companyId = localStorage.getItem('companyId') || '';
+  console.log('Company ID dans ProduitsTab:', companyId);
   const { produits: produitsReels, loading: loadingProduits, error } = useProduits();
   const { credits, loading: loadingCredits } = useCreditsHoraires(produitsReels, companyId);
   const produitsAvecCH = useProduitsAvecCH(produitsReels, credits);
@@ -205,6 +208,7 @@ const ProduitsTab: React.FC = () => {
               <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Nom</th>
               <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Date d'obtention</th>
               <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>CH Restant</th>
+              <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Interlocuteur</th>
               <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Actions</th>
             </tr>
           </thead>
@@ -237,6 +241,7 @@ const ProduitsTab: React.FC = () => {
                       {formaterCHRestant(produit.chRestant)}
                     </span>
                   </td>
+                  <td style={{ padding: '12px' }}>{produit.userFullName}</td>
                   <td style={{ padding: '12px' }}>
                     <button 
                       style={{

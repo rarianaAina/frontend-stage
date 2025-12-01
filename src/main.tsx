@@ -26,9 +26,12 @@ import AdminInterventions from './pages/admin/AdminInterventions';
 import Configurations from './pages/admin/Configurations';
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs';
 import Rapports from './pages/admin/Rapports';
+// IMPORT DU NOUVEAU COMPOSANT ADMIN TICKET DETAILS
+import AdminTicketDetails from './pages/admin/AdminTicketDetails';
+import { ResetPassword } from './components/login/ResetPassword';
 
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import Layout from './components/common/Layout';
 
 function App() {
   return (
@@ -50,6 +53,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/connexion" replace />} />
         <Route path="/connexion" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Routes Client */}
         <Route
@@ -206,6 +210,20 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
+        {/* NOUVELLE ROUTE POUR LES DÉTAILS DE TICKET ADMIN */}
+        <Route
+          path="/admin/ticket/:id"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <Layout>
+                <AdminTicketDetails />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        
 
         {/* Route de fallback */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

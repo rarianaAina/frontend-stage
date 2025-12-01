@@ -1,4 +1,4 @@
-import { PaginationInfo } from '../../types/ticket';
+import { PaginationInfo } from '../../../types/ticket';
 
 interface PaginationProps {
   pagination: PaginationInfo;

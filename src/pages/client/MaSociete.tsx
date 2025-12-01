@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import TabNavigation from '../../components/societe/TabNavigation';
 import ContactsTab from '../../components/societe/ContactsTab';
 import ProduitsTab from '../../components/societe/ProduitsTab';

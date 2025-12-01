@@ -45,7 +45,7 @@ export const ticketService = {
   },
 
   async getProduitsParCompany(companyId: string): Promise<Produit[]> {
-    const response = await api.get(`/produits/parcs/company/${companyId}`);
+    const response = await api.get(`/produits/parcs/company/${companyId}/with-username`);
     console.log(response);
     return response.data;
   },

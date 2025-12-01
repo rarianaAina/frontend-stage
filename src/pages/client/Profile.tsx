@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useUserProfile } from '../../hooks/profile/useUserProfile';
 import { useNotifications } from '../../hooks/profile/useNotifications';
 import { ProfileHeader } from '../../components/profile/ProfileHeader';

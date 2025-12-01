@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { useAppTranslation } from '../hooks/translation/useTranslation';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 type NavBarProps = {
   role: 'CLIENT' | 'CONSULTANT' | 'ADMIN';

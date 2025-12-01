@@ -1,4 +1,3 @@
-// useTemplate.ts - Version simplifiée
 import { useState, useEffect } from 'react';
 import { NotificationTemplate } from '../../../../types/template';
 import { templateService } from '../../../../services/TemplateService';

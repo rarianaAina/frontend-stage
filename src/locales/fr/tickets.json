@@ -37,5 +37,19 @@
     "normal": "Normale",
     "high": "Haute",
     "urgent": "Urgente"
-  }
+  },
+  "loadingTicketDetails": "Chargement des détails du ticket...",
+  "ticketNotFound": "Ticket non trouvé",
+  "clientInfo": "Informations Client",
+  "contactName": "Nom du contact",
+  "phone": "Téléphone",
+  "ticketInfo": "Informations du Ticket",
+  "category": "Catégorie",
+  "assignedAgent": "Agent assigné",
+  "source": "Source",
+  "lastUpdate": "Dernière mise à jour",
+  "attachments": "Pièces jointes",
+  "solutions": "Solutions",
+  "interactions": "Interactions",
+  "createdOn": "Créé le"
 }

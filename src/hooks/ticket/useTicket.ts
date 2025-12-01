@@ -22,6 +22,18 @@ export const useTickets = ({ etat, reference, produit, dateDebut, dateFin }: Use
 
   const loadTickets = useCallback((page: number = 0, size: number = pagination.pageSize) => {
     const utilisateurId = localStorage.getItem('userId');
+        console.log('🚀 DONNÉES ENVOYÉES À L\'API:', {
+      utilisateurId,
+      page,
+      size,
+      filtres: {
+        etat,
+        reference, 
+        produit,
+        dateDebut,
+        dateFin
+      }
+    });
     console.log('Chargement des tickets - userId:', utilisateurId, 'page:', page, 'size:', size);
     
     if (!utilisateurId) return;
@@ -37,6 +49,7 @@ export const useTickets = ({ etat, reference, produit, dateDebut, dateFin }: Use
     
     const queryString = params.toString() ? `?${params.toString()}` : '';
     
+        console.log('🌐 URL APPELÉE:', `/tickets/utilisateur/${utilisateurId}/page/${page}/size/${size}${queryString}`);
     api.get(`/tickets/utilisateur/${utilisateurId}/page/${page}/size/${size}${queryString}`)
       .then((res) => {
         const data = res.data;

@@ -1,47 +1,142 @@
-import { useState } from 'react';
-import NavBar from '../../components/NavBar';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { useState, useEffect } from 'react';
+import NavBar from '../../components/common/NavBar';
+import { useRapports } from '../../hooks/rapports/useRapports';
+import { RapportForm } from '../../components/rapports/RapportForm';
+import { StatistiquesCards } from '../../components/rapports/StatistiquesCards';
+import { Graphiques } from '../../components/rapports/Graphiques';
+import { RapportRequest } from '../../services/rapportService';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
+
+// Fonction pour formater les statistiques pour l'affichage
+const formatStats = (statistiques: any, t: any) => {
+  return [
+    { 
+      label: t('reports:totalRequests'), 
+      value: statistiques?.totalDemandes?.toString() || '0', 
+      trend: '+0%', 
+      color: '#3b82f6' 
+    },
+    { 
+      label: t('reports:resolutionRate'), 
+      value: `${statistiques?.tauxResolution?.toFixed(1) || 0}%`, 
+      trend: '+0%', 
+      color: '#10b981' 
+    },
+    { 
+      label: t('reports:averageResponseTime'), 
+      value: `${statistiques?.tempsMoyenReponse?.toFixed(1) || 0}h`, 
+      trend: '-0%', 
+      color: '#f59e0b' 
+    },
+    { 
+      label: t('reports:resolvedRequests'), 
+      value: statistiques?.demandesResolues?.toString() || '0', 
+      trend: '+0%', 
+      color: '#8b5cf6' 
+    }
+  ];
+};
+
+// Fonction pour obtenir les dates du mois en cours par défaut
+const getCurrentMonthDates = () => {
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  
+  return {
+    dateDebut: firstDay.toISOString().split('T')[0],
+    dateFin: lastDay.toISOString().split('T')[0]
+  };
+};
 
 export default function Rapports() {
-  const [dateDebut, setDateDebut] = useState('2025-01-01');
-  const [dateFin, setDateFin] = useState('2025-10-31');
-  const [typeRapport, setTypeRapport] = useState('activite');
+  const { t } = useAppTranslation(['common', 'reports']);
+  const currentMonth = getCurrentMonthDates();
+  
+  const [formData, setFormData] = useState<RapportRequest>({
+    dateDebut: currentMonth.dateDebut,
+    dateFin: currentMonth.dateFin,
+    typeRapport: 'activite'
+  });
 
-  const activityData = {
-    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct'],
+  const { loading, error, rapport, genererRapport, exporterPDF, exporterExcel, resetToDefault } = useRapports();
+
+  const handleFormChange = (field: keyof RapportRequest, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleGenererRapport = async () => {
+    try {
+      await genererRapport(formData);
+    } catch (err) {
+      console.error('Erreur:', err);
+    }
+  };
+
+  const handleReset = () => {
+    resetToDefault();
+    setFormData({
+      dateDebut: currentMonth.dateDebut,
+      dateFin: currentMonth.dateFin,
+      typeRapport: 'activite'
+    });
+  };
+
+  const handleExportPDF = async () => {
+    try {
+      await exporterPDF(formData);
+    } catch (err) {
+      console.error('Erreur export PDF:', err);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    try {
+      await exporterExcel(formData);
+    } catch (err) {
+      console.error('Erreur export Excel:', err);
+    }
+  };
+
+  // Utiliser les données de l'API ou des données vides par défaut
+  const activityData = rapport?.donneesGraphique || {
+    labels: [t('reports:loading')],
     datasets: [
       {
-        label: 'Demandes créées',
-        data: [45, 52, 48, 61, 55, 67, 58, 72, 65, 80],
+        label: t('reports:requestsCreated'),
+        data: [0],
         backgroundColor: 'rgba(59, 130, 246, 0.7)',
       },
       {
-        label: 'Demandes résolues',
-        data: [38, 48, 44, 58, 52, 62, 55, 68, 60, 75],
+        label: t('reports:requestsResolved'),
+        data: [0],
         backgroundColor: 'rgba(16, 185, 129, 0.7)',
       }
     ]
   };
 
-  const consultantPerformanceData = {
-    labels: ['Alain RAKOTO', 'Andria ZILY', 'Marie LAURENT', 'Paul MARTIN', 'Sophie DUBOIS'],
+  const satisfactionData = rapport?.satisfaction ? {
+    labels: Object.keys(rapport.satisfaction.repartition),
     datasets: [{
-      label: 'Tickets résolus',
-      data: [45, 38, 52, 41, 35],
+      data: Object.values(rapport.satisfaction.repartition),
       backgroundColor: [
-        'rgba(59, 130, 246, 0.7)',
-        'rgba(16, 185, 129, 0.7)',
-        'rgba(245, 158, 11, 0.7)',
-        'rgba(239, 68, 68, 0.7)',
-        'rgba(139, 92, 246, 0.7)'
+        'rgba(16, 185, 129, 0.8)',
+        'rgba(59, 130, 246, 0.8)',
+        'rgba(245, 158, 11, 0.8)',
+        'rgba(239, 68, 68, 0.8)',
+        'rgba(107, 114, 128, 0.8)'
       ]
     }]
-  };
-
-  const satisfactionData = {
-    labels: ['Très satisfait', 'Satisfait', 'Neutre', 'Insatisfait', 'Très insatisfait'],
+  } : {
+    labels: [
+      t('reports:verySatisfied'),
+      t('reports:satisfied'),
+      t('reports:neutral'),
+      t('reports:unsatisfied'),
+      t('reports:veryUnsatisfied')
+    ],
     datasets: [{
-      data: [45, 35, 12, 6, 2],
+      data: [0, 0, 0, 0, 0],
       backgroundColor: [
         'rgba(16, 185, 129, 0.8)',
         'rgba(59, 130, 246, 0.8)',
@@ -52,19 +147,36 @@ export default function Rapports() {
     }]
   };
 
-  const stats = [
-    { label: 'Total demandes', value: '324', trend: '+12%', color: '#3b82f6' },
-    { label: 'Taux de résolution', value: '87%', trend: '+5%', color: '#10b981' },
-    { label: 'Temps moyen réponse', value: '2.5h', trend: '-15%', color: '#f59e0b' },
-    { label: 'Satisfaction client', value: '4.3/5', trend: '+0.3', color: '#8b5cf6' }
-  ];
+  const consultantPerformanceData = rapport?.performancesConsultants ? {
+    labels: rapport.performancesConsultants.map(c => c.consultantNom),
+    datasets: [{
+      label: t('reports:ticketsResolved'),
+      data: rapport.performancesConsultants.map(c => c.ticketsClotures),
+      backgroundColor: [
+        'rgba(59, 130, 246, 0.7)',
+        'rgba(16, 185, 129, 0.7)',
+        'rgba(245, 158, 11, 0.7)',
+        'rgba(239, 68, 68, 0.7)',
+        'rgba(139, 92, 246, 0.7)'
+      ]
+    }]
+  } : {
+    labels: [t('reports:loading')],
+    datasets: [{
+      label: t('reports:ticketsResolved'),
+      data: [0],
+      backgroundColor: ['rgba(59, 130, 246, 0.7)']
+    }]
+  };
+
+  const stats = formatStats(rapport?.statistiques, t);
 
   return (
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
     }}>
-      <NavBar role="admin" />
+      <NavBar role="ADMIN" />
 
       <div style={{ padding: '40px 60px' }}>
         <h1 style={{
@@ -73,221 +185,90 @@ export default function Rapports() {
           marginBottom: '30px',
           fontWeight: 'bold'
         }}>
-          Rapports et Statistiques
+          {t('reports:reportsAndStatistics')}
         </h1>
 
-        <div style={{
-          background: 'white',
-          padding: '30px',
-          borderRadius: '15px',
-          marginBottom: '30px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
+        {error && (
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px',
-            marginBottom: '20px'
+            background: '#fee2e2',
+            color: '#dc2626',
+            padding: '15px',
+            borderRadius: '10px',
+            marginBottom: '20px',
+            border: '1px solid #fecaca'
           }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                Type de rapport:
-              </label>
-              <select
-                value={typeRapport}
-                onChange={(e) => setTypeRapport(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  border: '1px solid #ddd',
-                  fontSize: '16px'
-                }}
-              >
-                <option value="activite">Activité générale</option>
-                <option value="performance">Performance consultants</option>
-                <option value="satisfaction">Satisfaction client</option>
-                <option value="credits">Utilisation crédits</option>
-              </select>
-            </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                Date début:
-              </label>
-              <input
-                type="date"
-                value={dateDebut}
-                onChange={(e) => setDateDebut(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  border: '1px solid #ddd',
-                  fontSize: '16px'
-                }}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                Date fin:
-              </label>
-              <input
-                type="date"
-                value={dateFin}
-                onChange={(e) => setDateFin(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  border: '1px solid #ddd',
-                  fontSize: '16px'
-                }}
-              />
-            </div>
+            {error}
           </div>
+        )}
+
+        <RapportForm
+          formData={formData}
+          onFormChange={handleFormChange}
+          onGenererRapport={handleGenererRapport}
+          loading={loading}
+        />
+
+        {/* Bouton reset */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
           <button
+            onClick={handleReset}
             style={{
-              background: '#10b981',
+              background: '#6b7280',
               color: 'white',
-              padding: '12px 30px',
-              borderRadius: '10px',
+              padding: '8px 16px',
+              borderRadius: '8px',
               border: 'none',
               cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: '600'
+              fontSize: '14px',
+              fontWeight: '500'
             }}
           >
-            Générer le rapport
+            📅 {t('reports:showCurrentMonth')}
           </button>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '20px',
-          marginBottom: '30px'
-        }}>
-          {stats.map((stat, idx) => (
-            <div key={idx} style={{
-              background: 'white',
-              padding: '25px',
-              borderRadius: '15px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-              borderLeft: `5px solid ${stat.color}`
-            }}>
-              <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-                {stat.label}
-              </div>
-              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#333', marginBottom: '8px' }}>
-                {stat.value}
-              </div>
-              <div style={{
-                fontSize: '14px',
-                color: stat.trend.startsWith('+') || stat.trend.startsWith('-') && !stat.label.includes('Temps') ? '#10b981' : '#ef4444'
-              }}>
-                {stat.trend} ce mois
-              </div>
-            </div>
-          ))}
-        </div>
+        <StatistiquesCards stats={stats} />
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr',
-          gap: '20px',
-          marginBottom: '30px'
-        }}>
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '20px', fontWeight: '600' }}>
-              Évolution de l'activité
-            </h3>
-            <Bar
-              data={activityData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 2
-              }}
-            />
-          </div>
-
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '20px', fontWeight: '600' }}>
-              Satisfaction client
-            </h3>
-            <Doughnut
-              data={satisfactionData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                  legend: {
-                    position: 'bottom'
-                  }
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        <div style={{
-          background: 'white',
-          padding: '30px',
-          borderRadius: '15px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
-          <h3 style={{ marginBottom: '20px', fontSize: '20px', fontWeight: '600' }}>
-            Performance des consultants
-          </h3>
-          <Bar
-            data={consultantPerformanceData}
-            options={{
-              indexAxis: 'y',
-              responsive: true,
-              maintainAspectRatio: true,
-              aspectRatio: 2
-            }}
-          />
-        </div>
+        <Graphiques
+          activityData={activityData}
+          satisfactionData={satisfactionData}
+          consultantPerformanceData={consultantPerformanceData}
+        />
 
         <div style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
           <button
+            onClick={handleExportPDF}
+            disabled={!rapport}
             style={{
-              background: '#3b82f6',
+              background: !rapport ? '#9ca3af' : '#3b82f6',
               color: 'white',
               padding: '12px 30px',
               borderRadius: '10px',
               border: 'none',
-              cursor: 'pointer',
+              cursor: !rapport ? 'not-allowed' : 'pointer',
               fontSize: '16px',
-              fontWeight: '600'
+              fontWeight: '600',
+              opacity: !rapport ? 0.6 : 1
             }}
           >
-            Exporter en PDF
+            {t('reports:exportPDF')}
           </button>
           <button
+            onClick={handleExportExcel}
+            disabled={!rapport}
             style={{
-              background: '#10b981',
+              background: !rapport ? '#9ca3af' : '#10b981',
               color: 'white',
               padding: '12px 30px',
               borderRadius: '10px',
               border: 'none',
-              cursor: 'pointer',
+              cursor: !rapport ? 'not-allowed' : 'pointer',
               fontSize: '16px',
-              fontWeight: '600'
+              fontWeight: '600',
+              opacity: !rapport ? 0.6 : 1
             }}
           >
-            Exporter en Excel
+            {t('reports:exportExcel')}
           </button>
         </div>
       </div>

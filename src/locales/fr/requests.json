@@ -1,0 +1,11 @@
+{
+  "myRequests": "Mes demandes",
+  "newRequest": "Nouvelle demande",
+  "filters": {
+    "status": "État :",
+    "ticketReference": "Référence ticket :",
+    "product": "Produit :",
+    "startDate": "Date début :",
+    "endDate": "Date fin :"
+  }
+}

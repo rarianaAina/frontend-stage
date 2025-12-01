@@ -1,13 +1,14 @@
-// components/dashboard/CreditsTable.tsx
 import { useCreditsHoraires } from '../../hooks/dashboard/useCreditsHoraires';
 import { useCreditsResumes } from '../../hooks/dashboard/useCreditsResumes';
 import { useProduits } from '../../hooks/demandes/useProduits';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 export const CreditsTable = () => {
   const companyId = localStorage.getItem('companyId') || '';
   const { produits, loading: loadingProduits } = useProduits();
   const { credits, loading: loadingCredits } = useCreditsHoraires(produits, companyId);
   const creditsResumes = useCreditsResumes(produits, credits);
+  const { t } = useAppTranslation(['common', 'dashboard']);
 
   const loading = loadingProduits || loadingCredits;
 
@@ -20,7 +21,7 @@ export const CreditsTable = () => {
         textAlign: 'center',
         color: '#666'
       }}>
-        Chargement des crédits horaires...
+        {t('dashboard:loadingCredits')}
       </div>
     );
   }
@@ -35,7 +36,7 @@ export const CreditsTable = () => {
         color: '#666',
         fontStyle: 'italic'
       }}>
-        Aucun produit disponible
+        {t('dashboard:noProductsAvailable')}
       </div>
     );
   }
@@ -47,7 +48,7 @@ export const CreditsTable = () => {
         marginBottom: '15px',
         color: '#333'
       }}>
-        Crédits Horaires
+        {t('dashboard:hourlyCredits')}
       </h3>
       
       <table style={{
@@ -60,10 +61,18 @@ export const CreditsTable = () => {
       }}>
         <thead>
           <tr style={{ background: '#f8f9fa' }}>
-            <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Produit</th>
-            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>Disponible</th>
-            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>Consommé</th>
-            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>Reste</th>
+            <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>
+              {t('dashboard:product')}
+            </th>
+            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>
+              {t('dashboard:available')}
+            </th>
+            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>
+              {t('dashboard:consumed')}
+            </th>
+            <th style={{ padding: '12px', textAlign: 'center', borderBottom: '1px solid #dee2e6' }}>
+              {t('dashboard:remaining')}
+            </th>
           </tr>
         </thead>
         <tbody>

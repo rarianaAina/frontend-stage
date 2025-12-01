@@ -10,6 +10,10 @@ import adminFR from '../locales/fr/admin.json';
 import authFR from '../locales/fr/auth.json';
 import dashboardFR from '../locales/fr/dashboard.json';
 import templatesFR from '../locales/fr/templates.json';
+import syncFR from '../locales/fr/sync.json';
+import userFR from '../locales/fr/users.json';
+import reportFR from '../locales/fr/reports.json';
+import solutionFR from '../locales/fr/solution.json';
 
 import commonEN from '../locales/en/common.json';
 import ticketsEN from '../locales/en/tickets.json';
@@ -18,6 +22,10 @@ import adminEN from '../locales/en/admin.json';
 import authEN from '../locales/en/auth.json';
 import dashboardEN from '../locales/en/dashboard.json';
 import templatesEN from '../locales/en/templates.json';
+import syncEN from '../locales/en/sync.json';
+import userEN from '../locales/en/users.json';
+import reportEN from '../locales/en/reports.json';
+import solutionEN from '../locales/fr/solution.json';
 
 import commonMG from '../locales/mg/common.json';
 import ticketsMG from '../locales/mg/tickets.json';
@@ -26,6 +34,10 @@ import adminMG from '../locales/mg/admin.json';
 import authMG from '../locales/mg/auth.json';
 import dashboardMG from '../locales/mg/dashboard.json';
 import templatesMG from '../locales/mg/templates.json';
+import syncMG from '../locales/mg/sync.json';
+import userMG from '../locales/mg/users.json';
+import reportMG from '../locales/mg/reports.json';
+import solutionMG from '../locales/fr/solution.json';
 
 const resources = {
   fr: {
@@ -35,7 +47,11 @@ const resources = {
     admin: adminFR,
     auth: authFR,
     dashboard: dashboardFR,
-    templates: templatesFR
+    templates: templatesFR,
+    sync: syncFR,
+    users: userFR,
+    reports: reportFR,
+    solution: solutionFR
   },
   en: {
     common: commonEN,
@@ -44,7 +60,11 @@ const resources = {
     admin: adminEN,
     auth: authEN,
     dashboard: dashboardEN,
-    templates: templatesEN
+    templates: templatesEN,
+    sync: syncEN,
+    users: userEN,
+    reports: reportEN,
+    solution: solutionEN
   },
   mg: {
     common: commonMG,
@@ -53,7 +73,11 @@ const resources = {
     admin: adminMG,
     auth: authMG,
     dashboard: dashboardMG,
-    templates: templatesMG
+    templates: templatesMG,
+    sync: syncMG,
+    users: userMG,
+    reports: reportMG,
+    solution: solutionMG
   }
 };
 

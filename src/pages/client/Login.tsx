@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { useVerificationCode } from '../../hooks/auth/useVerificationCode';
 import { LoginForm } from '../../components/login/loginForm';
+import { ForgotPassword } from '../../components/login/ForgotPassword';
 import { VerificationForm } from '../../components/login/VerificationForm';
 import { HeroSection } from '../../components/login/HeroSection';
 import { LoginResponse } from '../../types/auth';
 import { useAppTranslation } from '../../hooks/translation/useTranslation';
-import { LanguageSwitcher } from '../../components/LanguageSwitcher';
+import { LanguageSwitcher } from '../../components/common/LanguageSwitcher';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [showVerification, setShowVerification] = useState<boolean>(false);
+  const [currentView, setCurrentView] = useState<'login' | 'verification' | 'forgot-password'>('login');
   const [currentUser, setCurrentUser] = useState<LoginResponse | null>(null);
 
   const { login, verifyCode, regenerateCode, loading, error, setError } = useAuth();
@@ -21,18 +22,14 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     
-    // Rediriger immédiatement vers la vérification
-    // sans attendre la réponse de l'API
-    setShowVerification(true);
+    setCurrentView('verification');
     
     const result = await login(email, password);
     
     if (result.success && result.requiresVerification && result.user) {
       setCurrentUser(result.user);
-      // Le formulaire de vérification est déjà affiché à ce stade
     } else if (!result.success) {
-      // Si la connexion échoue, revenir à la page de login
-      setShowVerification(false);
+      setCurrentView('login');
     }
   };
 
@@ -55,17 +52,52 @@ const Login: React.FC = () => {
     const result = await regenerateCode();
     if (result.success) {
       console.log(t('auth:codeRegenerated'));
-      // Optionnel: Afficher un message de succès à l'utilisateur
     } else {
       setError(result.error || t('auth:regenerateError'));
     }
   };
 
   const handleBackToLogin = (): void => {
-    setShowVerification(false);
+    setCurrentView('login');
     setError('');
     resetCode();
     setCurrentUser(null);
+  };
+
+  const handleShowForgotPassword = (): void => {
+    setCurrentView('forgot-password');
+    setError('');
+  };
+
+
+  // Dans Login.tsx - ajoutez cette fonction
+  const handleForgotPassword = async (email: string): Promise<void> => {
+    try {
+      const response = await fetch('http://localhost:8086/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Erreur lors de la demande de réinitialisation');
+      }
+      
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+      
+      // Succès - le message est déjà géré dans le composant ForgotPassword
+      return;
+      
+    } catch (error) {
+      console.error('Erreur forgot password:', error);
+      throw error;
+    }
   };
 
   const handleFillCredentials = (email: string, password: string): void => {
@@ -74,7 +106,7 @@ const Login: React.FC = () => {
     setError('');
   };
 
-  if (showVerification) {
+  if (currentView === 'verification') {
     return (
       <div style={{
         minHeight: '100vh',
@@ -85,7 +117,6 @@ const Login: React.FC = () => {
         padding: '20px',
         position: 'relative'
       }}>
-        {/* Language Switcher en haut à droite pour la page de vérification */}
         <div style={{
           position: 'absolute',
           top: '20px',
@@ -108,6 +139,37 @@ const Login: React.FC = () => {
     );
   }
 
+  if (currentView === 'forgot-password') {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
+        padding: '20px',
+        position: 'relative'
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          zIndex: 10
+        }}>
+          <LanguageSwitcher />
+        </div>
+
+        <ForgotPassword
+          email={email}
+          setEmail={setEmail}
+          onBackToLogin={handleBackToLogin}
+          onSendResetLink={handleForgotPassword}
+          loading={loading}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -118,7 +180,6 @@ const Login: React.FC = () => {
       padding: '40px 80px',
       position: 'relative'
     }}>
-      {/* Language Switcher en haut à droite */}
       <div style={{
         position: 'absolute',
         top: '20px',
@@ -128,41 +189,6 @@ const Login: React.FC = () => {
         <LanguageSwitcher />
       </div>
 
-      {/* Logo Optimada jaune à gauche */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '40px',
-        zIndex: 10,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px'
-      }}>
-        {/* <div style={{
-          width: '50px',
-          height: '50px',
-          background: '#FFD700', // Jaune Optimada
-          borderRadius: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#000',
-          fontWeight: 'bold',
-          fontSize: '20px',
-          boxShadow: '0 4px 12px rgba(255, 215, 0, 0.3)'
-        }}>
-          O
-        </div> */}
-        {/* <span style={{
-          fontSize: '24px',
-          fontWeight: 'bold',
-          color: 'white',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-        }}>
-          OPTIMADA
-        </span> */}
-      </div>
-      
       <HeroSection />
       
       <LoginForm
@@ -174,6 +200,7 @@ const Login: React.FC = () => {
         onLogin={handleLogin}
         loading={loading}
         onFillCredentials={handleFillCredentials}
+        onShowForgotPassword={handleShowForgotPassword}
       />
     </div>
   );

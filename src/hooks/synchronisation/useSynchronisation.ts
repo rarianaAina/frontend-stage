@@ -1,4 +1,3 @@
-// src/hooks/useSynchronisation.ts
 import { useState, useEffect, useCallback } from 'react';
 import { synchronisationService } from '../../services/synchronisationService';
 

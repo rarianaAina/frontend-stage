@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useTicketDetails } from '../../hooks/ticket/useTicketDetails';
 import { 
   ticketService, 
@@ -10,8 +10,9 @@ import {
   AutreDateData, 
   interactionService, 
   InteractionCreateDTO,
-  Solution 
+   
 } from '../../services/ticketServiceCH';
+import { Solution } from '../../types/solution/solution'
 import { TicketHeader } from '../../components/ticket/TicketHeader';
 import { DemandesIntervention } from '../../components/ticket/DemandesIntervention';
 import { InteractionsPJ } from '../../components/ticket/InteractionsPJ';

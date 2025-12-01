@@ -2,11 +2,9 @@ import React from 'react';
 import { useSynchronisationStatus } from '../../../hooks/dashboard/admin/useSynchronisationStatuts';
 import { SyncStatusCard } from './SyncStatusCard';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
-import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 export const SynchronisationStatus: React.FC = () => {
   const { statuts, loading, error, refetch } = useSynchronisationStatus();
-  const { t } = useAppTranslation(['common', 'dashboard', 'sync']);
 
   if (loading) {
     return (
@@ -19,9 +17,7 @@ export const SynchronisationStatus: React.FC = () => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <LoadingSpinner size="small" />
-          <span style={{ color: '#6b7280' }}>
-            {t('sync:loadingSyncStatus')}
-          </span>
+          <span style={{ color: '#6b7280' }}>Chargement des statuts de synchronisation...</span>
         </div>
       </div>
     );
@@ -39,9 +35,7 @@ export const SynchronisationStatus: React.FC = () => {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h3 style={{ color: '#dc2626', margin: '0 0 5px 0' }}>
-              {t('sync:loadingError')}
-            </h3>
+            <h3 style={{ color: '#dc2626', margin: '0 0 5px 0' }}>Erreur de chargement</h3>
             <p style={{ color: '#6b7280', margin: 0 }}>{error}</p>
           </div>
           <button
@@ -56,7 +50,7 @@ export const SynchronisationStatus: React.FC = () => {
               fontSize: '14px'
             }}
           >
-            {t('common:retry')}
+            Réessayer
           </button>
         </div>
       </div>
@@ -83,7 +77,7 @@ export const SynchronisationStatus: React.FC = () => {
           color: '#1f2937',
           margin: 0
         }}>
-          📊 {t('sync:crmSyncStatus')}
+          📊 État des Synchronisations CRM
         </h2>
         <button
           onClick={refetch}
@@ -100,7 +94,7 @@ export const SynchronisationStatus: React.FC = () => {
             gap: '5px'
           }}
         >
-          🔄 {t('sync:refresh')}
+          🔄 Actualiser
         </button>
       </div>
 
@@ -131,7 +125,7 @@ export const SynchronisationStatus: React.FC = () => {
           margin: 0,
           textAlign: 'center'
         }}>
-          💡 {t('sync:scheduledSyncInfo')}
+          💡 Les synchronisations planifiées s'exécutent automatiquement selon la configuration cron
         </p>
       </div>
     </div>

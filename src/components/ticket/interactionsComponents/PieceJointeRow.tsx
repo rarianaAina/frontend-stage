@@ -1,4 +1,5 @@
 import { PieceJointe } from '../../../services/ticketServiceCH';
+import dayjs from "dayjs";
 
 interface PieceJointeRowProps {
   pieceJointe: PieceJointe;
@@ -16,7 +17,10 @@ export const PieceJointeRow = ({ pieceJointe }: PieceJointeRowProps) => {
   return (
     <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
       <TableCell>
-        {new Date(pieceJointe.date).toLocaleDateString('fr-FR')}
+        {dayjs(pieceJointe.date).format("DD/MM/YYYY")}
+      </TableCell>
+      <TableCell>
+        {pieceJointe.commentaires}
       </TableCell>
       <TableCell>
         <a 

@@ -1,9 +1,13 @@
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
+
 interface ErrorStateProps {
   message: string;
   onRetry?: () => void;
 }
 
 export const ErrorState = ({ message, onRetry }: ErrorStateProps) => {
+  const { t } = useAppTranslation(['common']);
+
   return (
     <div style={{ 
       textAlign: 'center', 
@@ -26,9 +30,10 @@ export const ErrorState = ({ message, onRetry }: ErrorStateProps) => {
             cursor: 'pointer'
           }}
         >
-          Réessayer
+          {t('common:retry')}
         </button>
       )}
     </div>
   );
 };
+

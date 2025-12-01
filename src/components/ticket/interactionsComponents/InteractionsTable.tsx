@@ -1,20 +1,34 @@
-import { Interaction, Solution } from '../../../services/ticketServiceCH';
+import { useState } from 'react';
+import { Interaction } from '../../../services/ticketServiceCH';
 import { InteractionRow } from './InteractionRow';
-import { SolutionRow } from './SolutionRow'; // Nouveau composant
+import { SolutionRow } from './SolutionRow';
 import { getInteractionColor } from '../utils/interactionUtils';
+import { Solution } from '../../../types/solution/solution';
+import ModalDetailsSolution from './ModalDetailsSolution'; // Import du modal
 
 interface InteractionsTableProps {
   interactions: Interaction[];
-  solutions?: Solution[]; // Ajout des solutions
+  solutions?: Solution[];
   onNouvelleInteraction?: () => void;
 }
 
 export const InteractionsTable = ({ 
   interactions, 
-  solutions = [], // Valeur par défaut
+  solutions = [],
   onNouvelleInteraction 
 }: InteractionsTableProps) => {
+  const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   
+  // Fonction pour ouvrir le modal
+  const handleVoirDetailsSolution = (solution: Solution) => {
+    setSelectedSolution(solution);
+  };
+
+  // Fonction pour fermer le modal
+  const handleCloseModal = () => {
+    setSelectedSolution(null);
+  };
+
   // Combiner interactions et solutions pour l'affichage
   const allElements = [
     ...interactions.map(interaction => ({ 
@@ -24,7 +38,7 @@ export const InteractionsTable = ({
     ...solutions.map(solution => ({ 
       ...solution, 
       type: 'solution',
-      typeInteractionLibelle: 'Solution', // Forcer le type pour le badge
+      typeInteractionLibelle: 'Solution',
       dateCreation: solution.dateCreation,
       message: solution.description || solution.titre
     }))
@@ -47,6 +61,73 @@ export const InteractionsTable = ({
 
   return (
     <div>
+      {/* Modal pour les détails de la solution */}
+      {selectedSolution && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: '#2d3748',
+            padding: '30px',
+            borderRadius: '15px',
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '20px'
+            }}>
+              <h3 style={{ color: 'white', margin: 0 }}>Détails de la solution</h3>
+              <button
+                onClick={handleCloseModal}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '20px',
+                  cursor: 'pointer'
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <ModalDetailsSolution 
+              solution={selectedSolution} 
+              onClose={handleCloseModal} 
+            />
+            <div style={{ textAlign: 'right', marginTop: '20px' }}>
+              <button
+                onClick={handleCloseModal}
+                style={{
+                  background: '#6dd5ed',
+                  color: 'white',
+                  padding: '10px 20px',
+                  borderRadius: '20px',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tableau des interactions et solutions */}
       <div style={{
         background: 'white',
         borderRadius: '10px',
@@ -60,8 +141,8 @@ export const InteractionsTable = ({
               <TableHeader>Type</TableHeader>
               <TableHeader>Date</TableHeader>
               <TableHeader>Contenu</TableHeader>
-              {/* <TableHeader>Zone/Statut</TableHeader> */}
               <TableHeader>PJ</TableHeader>
+              <TableHeader>Actions</TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +155,8 @@ export const InteractionsTable = ({
               ) : (
                 <SolutionRow 
                   key={`solution-${element.id}`} 
-                  solution={element as Solution} 
+                  solution={element as Solution}
+                  onVoirDetails={handleVoirDetailsSolution} // Passez la fonction
                 />
               )
             ))}
@@ -85,7 +167,7 @@ export const InteractionsTable = ({
   );
 };
 
-// Composant TableHeader réutilisable (inchangé)
+// Composant TableHeader (inchangé)
 const TableHeader = ({ children }: { children: React.ReactNode }) => (
   <th style={{ 
     padding: '12px', 

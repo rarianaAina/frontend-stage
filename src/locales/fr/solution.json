@@ -1,0 +1,10 @@
+{
+    "solutionOK": "Solution OK",
+    "solutionKO": "Solution KO",
+    "solutionValidated": "Solution validée avec succès",
+    "solutionRejected": "Solution rejetée avec succès",
+    "ticketClosed": "Ticket clôturé avec succès",
+    "explainIssue": "Expliquez le problème rencontré",
+    "commentPlaceholder": "Décrivez pourquoi cette solution ne fonctionne pas...",
+    "submitIssue": "Soumettre le problème"
+}

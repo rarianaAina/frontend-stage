@@ -1,8 +1,12 @@
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
+
 interface LoadingStateProps {
   message?: string;
 }
 
-export const LoadingState = ({ message = 'Chargement...' }: LoadingStateProps) => {
+export const LoadingState = ({ message }: LoadingStateProps) => {
+  const { t } = useAppTranslation(['common']);
+
   return (
     <div style={{ 
       textAlign: 'center', 
@@ -12,7 +16,7 @@ export const LoadingState = ({ message = 'Chargement...' }: LoadingStateProps) =
       borderRadius: '15px',
       boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
     }}>
-      {message}
+      {message || t('common:loading')}
     </div>
   );
 };

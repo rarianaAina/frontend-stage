@@ -41,3 +41,25 @@ export interface DemoUser {
   password: string;
   role: string;
 }
+
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+export interface ResetPasswordFormData {
+  newPassword: string;
+  confirmPassword: string;
+}

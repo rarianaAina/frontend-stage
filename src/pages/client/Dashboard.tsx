@@ -1,19 +1,18 @@
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useDashboard } from '../../hooks/dashboard/useDashboard';
 import { StatisticsCard } from '../../components/dashboard/StatisticsCard';
 import { TicketsChart } from '../../components/dashboard/TicketsChart';
 import { CreditsTable } from '../../components/dashboard/CreditsTable';
 import { LoadingState } from '../../components/dashboard/LoadingState';
 import { ErrorState } from '../../components/dashboard/ErrorState';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 export default function Dashboard() {
   const { dashboardData, loading, error, refetch } = useDashboard();
+  const { t } = useAppTranslation(['common', 'dashboard']);
 
   const handleStatisticClick = (statistic: any) => {
-    // Navigation ou filtre basé sur la statistique cliquée
     console.log('Statistique cliquée:', statistic);
-    // Exemple: navigation vers la page des tickets avec filtre
-    // navigate(`/mes-demandes?filter=${statistic.label}`);
   };
 
   if (loading) {
@@ -24,7 +23,7 @@ export default function Dashboard() {
       }}>
         <NavBar role="CLIENT" />
         <div style={{ padding: '40px 60px' }}>
-          <LoadingState message="Chargement de votre tableau de bord..." />
+          <LoadingState message={t('dashboard:loadingDashboard')} />
         </div>
       </div>
     );
@@ -53,7 +52,7 @@ export default function Dashboard() {
         <NavBar role="CLIENT" />
         <div style={{ padding: '40px 60px' }}>
           <ErrorState 
-            message="Aucune donnée disponible" 
+            message={t('dashboard:noDataAvailable')} 
             onRetry={refetch} 
           />
         </div>
@@ -78,18 +77,18 @@ export default function Dashboard() {
           {/* Colonne de gauche - Statistiques */}
           <div>
             <StatisticsCard
-              title="Répartition par statut :"
+              title={t('dashboard:statusDistribution')}
               statistics={dashboardData.repartitionStatut}
               onStatisticClick={handleStatisticClick}
             />
 
             <StatisticsCard
-              title="Durée de traitement :"
+              title={t('dashboard:processingTime')}
               statistics={dashboardData.dureeTraitement}
             />
 
             <StatisticsCard
-              title="Répartition par produit :"
+              title={t('dashboard:productDistribution')}
               statistics={dashboardData.repartitionProduit}
               onStatisticClick={handleStatisticClick}
             />
@@ -99,13 +98,11 @@ export default function Dashboard() {
           <div>
             <TicketsChart 
               chartData={dashboardData.chartData}
-              title="Évolution des tickets"
+              title={t('dashboard:ticketsEvolution')}
               height={400}
             />
 
-            <CreditsTable 
-              credits={dashboardData.creditsHoraires}
-            />
+            <CreditsTable />
           </div>
         </div>
       </div>

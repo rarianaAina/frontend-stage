@@ -1,15 +1,33 @@
 import React from 'react';
+import { useContactsWithDetails } from '../../hooks/contacts/useCOntactWithDetails';
 
 interface Contact {
-  nom: string;
-  email: string;
+  userId: number;
+  userFullName: string;
+  email?: string;
+  telephone?: string;
+  parcName?: string;
+  parcId?: number;
 }
 
 const ContactsTab: React.FC = () => {
-  const contacts: Contact[] = [
-    { nom: 'Test', email: 'test@optimada.mg' },
-    { nom: 'Test2', email: 'test2@optimada.mg' },
-  ];
+  const { contacts, loading, error } = useContactsWithDetails();
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '40px' }}>
+        <div>Chargement des contacts...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>
+        <div>Erreur: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -22,22 +40,31 @@ const ContactsTab: React.FC = () => {
       }}>
         Mes contacts
       </h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ borderBottom: '2px solid #ddd' }}>
-            <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Nom</th>
-            <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Adresse email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map((contact, idx) => (
-            <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '12px' }}>{contact.nom}</td>
-              <td style={{ padding: '12px' }}>{contact.email}</td>
+      
+      {contacts.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <p>Aucun contact trouvé pour votre entreprise.</p>
+        </div>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #ddd' }}>
+              <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Nom</th>
+              <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Adresse email</th>
+              {/* <th style={{ padding: '12px', textAlign: 'left', fontSize: '18px' }}>Téléphone</th> */}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {contacts.map((contact, idx) => (
+              <tr key={contact.userId} style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '12px' }}>{contact.userFullName}</td>
+                <td style={{ padding: '12px' }}>{contact.email || 'Non renseigné'}</td>
+                {/* <td style={{ padding: '12px' }}>{contact.telephone || 'Non renseigné'}</td> */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

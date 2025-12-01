@@ -1,6 +1,6 @@
-// components/utilisateurs/FormulaireCreationUtilisateur.tsx
 import { useState } from 'react';
 import { NouvelUtilisateur } from '../../types/utilisateur';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 interface Props {
   onSubmit: (utilisateur: NouvelUtilisateur) => void;
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Props) {
+  const { t } = useAppTranslation(['common', 'users']);
   const [formData, setFormData] = useState<NouvelUtilisateur>({
     identifiant: '',
     nom: '',
@@ -35,7 +36,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Identifiant :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:username')}:
+        </label>
         <input
           type="text"
           value={formData.identifiant}
@@ -45,7 +48,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
         />
       </div>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Nom :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:lastName')}:
+        </label>
         <input
           type="text"
           value={formData.nom}
@@ -55,7 +60,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
         />
       </div>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Prénom(s) :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:firstName')}:
+        </label>
         <input
           type="text"
           value={formData.prenom}
@@ -65,7 +72,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
         />
       </div>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Email :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:email')}:
+        </label>
         <input
           type="email"
           value={formData.email}
@@ -75,7 +84,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
         />
       </div>
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Mot de passe :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:password')}:
+        </label>
         <input
           type="password"
           value={formData.motDePasse}
@@ -85,7 +96,9 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
         />
       </div>
       <div style={{ marginBottom: '30px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>*Téléphone :</label>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+          *{t('users:phone')}:
+        </label>
         <input
           type="tel"
           value={formData.telephone}
@@ -110,7 +123,7 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
             fontWeight: '600'
           }}
         >
-          Annuler
+          {t('common:cancel')}
         </button>
         <button
           type="submit"
@@ -126,7 +139,7 @@ export default function FormulaireCreationUtilisateur({ onSubmit, onCancel }: Pr
             fontWeight: '600'
           }}
         >
-          Créer l'utilisateur
+          {t('users:createUser')}
         </button>
       </div>
     </form>

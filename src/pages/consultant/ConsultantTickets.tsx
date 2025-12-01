@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
-import FilterBar from '../../components/FilterBar';
+import NavBar from '../../components/common/NavBar';
+import FilterBar from '../../components/common/FilterBar';
 
 export default function ConsultantTickets() {
   const navigate = useNavigate();

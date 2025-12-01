@@ -69,7 +69,7 @@ export const RelanceModal = ({
       </div>
       <div style={{ marginBottom: '20px' }}>
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-          Niveau :
+          Type :
         </label>
         <select 
           style={{ 
@@ -82,7 +82,7 @@ export const RelanceModal = ({
           onChange={(e) => setData({...data, niveau: e.target.value})}
           disabled={loading}
         >
-          <option value="Relance">Relance</option>
+          {/* <option value="Relance">Relance</option> */}
           <option value="Message">Message</option>
         </select>
       </div>

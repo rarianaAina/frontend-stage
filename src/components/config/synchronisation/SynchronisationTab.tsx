@@ -1,4 +1,3 @@
-// src/components/synchronisation/SynchronisationTab.tsx
 import React from 'react';
 import { SynchronisationCompanies } from './SynchronisationCompanies';
 import { SynchronisationCreditsHoraires } from './SynchronisationCreditsHoraires';

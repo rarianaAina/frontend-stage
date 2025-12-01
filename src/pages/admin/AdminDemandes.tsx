@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useAdminTickets } from '../../hooks/ticket/useAdminTicket';
 import { TicketFiltres } from '../../services/adminTicketService';
 import { FiltresTickets } from '../../components/ticket/admin/FiltresTickets';
@@ -50,24 +50,24 @@ export default function AdminDemandes() {
 
   const getStatusColor = (etat: string) => {
     switch (etat) {
-      case '1': return '#3b82f6'; // Nouveau - Bleu
-      case '2': return '#10b981'; // En cours - Vert
-      case '3': return '#f59e0b'; // En attente - Orange
-      case '4': return '#f59e0b'; // En attente client - Orange
-      case '5': return '#8b5cf6'; // Planifié - Violet
-      case '6': return '#6b7280'; // Résolu - Gris
-      case '7': return '#000000'; // Clôturé - Noir
-      default: return '#6b7280'; // Inconnu - Gris
+      case '1': return '#3b82f6';
+      case '2': return '#10b981';
+      case '3': return '#f59e0b';
+      case '4': return '#f59e0b';
+      case '5': return '#8b5cf6';
+      case '6': return '#6b7280';
+      case '7': return '#000000';
+      default: return '#6b7280';
     }
   };
 
   const getNiveauColor = (prioriteTicketId: string) => {
     switch (prioriteTicketId) {
-      case '4': return '#ef4444'; // Urgent - Rouge
-      case '3': return '#f59e0b'; // Haute - Orange
-      case '2': return '#3b82f6'; // Normale - Bleu
-      case '1': return '#10b981'; // Basse - Vert
-      default: return '#6b7280'; // Inconnu - Gris
+      case '4': return '#ef4444';
+      case '3': return '#f59e0b';
+      case '2': return '#3b82f6';
+      case '1': return '#10b981';
+      default: return '#6b7280';
     }
   };
 
@@ -194,7 +194,7 @@ export default function AdminDemandes() {
                       </td>
                       <td className="table-cell">
                         <button
-                          onClick={() => navigate(`/admin/demande/${ticket.id}`)}
+                          onClick={() => navigate(`/admin/ticket/${ticket.id}`)}
                           className="details-button"
                         >
                           {t('common:details')}

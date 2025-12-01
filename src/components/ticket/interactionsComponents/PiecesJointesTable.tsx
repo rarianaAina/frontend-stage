@@ -33,6 +33,7 @@ export const PiecesJointesTable = ({ piecesJointes }: PiecesJointesTableProps) =
         <thead>
           <tr style={{ background: '#f8f9fa' }}>
             <TableHeader>Date</TableHeader>
+            <TableHeader>Commentaires</TableHeader>
             <TableHeader>Fichier</TableHeader>
             <TableHeader center>Actions</TableHeader>
           </tr>

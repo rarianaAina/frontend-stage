@@ -1,4 +1,3 @@
-// src/pages/admin/AdminDashboard.tsx
 import React from 'react';
 import { Pie, Line, Bar } from 'react-chartjs-2';
 import { 
@@ -12,7 +11,7 @@ import {
   Tooltip, 
   Legend 
 } from 'chart.js';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useAdminDashboard } from '../../hooks/dashboard/admin/useAdminDashboard';
 import { LoadingState } from '../../components/dashboard/admin/LoadingState';
 import { ErrorState } from '../../components/dashboard/admin/ErrorState';

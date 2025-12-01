@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { GeneralTab } from '../../components/config/GeneralTab';
 import { EmailTab } from '../../components/config/EmailTab';
 import { WorkflowTab } from '../../components/config/WorkflowTab';
@@ -8,6 +8,7 @@ import { TabConfig } from '../../types/config';
 import { WhatsAppTab } from '../../components/config/whatsapp/WhatsAppTab';
 import { TemplateTabContent } from '../../components/config/template/TemplateTabContent';
 import { useTemplate } from '../../hooks/admin/config/template/useTemplateConfig';
+import { SchedulingManager } from '../../components/config/sheduling/SchedulingManager';
 
 const Configurations: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('email');
@@ -28,6 +29,11 @@ const Configurations: React.FC = () => {
       label: 'Configuration templates', 
       component: () => <TemplateTabContent {...templateHook} />
     },
+    { 
+      id: 'scheduling', 
+      label: 'Planification', 
+      component: SchedulingManager 
+    }
   ];
 
   const renderActiveTab = () => {

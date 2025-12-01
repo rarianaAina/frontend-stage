@@ -1,18 +1,19 @@
-import React from 'react';
-import { useProduits } from '../../hooks/demandes/useProduits';
+import { usePriorites } from '../../../hooks/demandes/usePriorites';
 
-interface SelectProduitProps {
+interface SelectPrioriteProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
 }
 
-export const SelectProduit: React.FC<SelectProduitProps> = ({ 
+export const SelectPriorite: React.FC<SelectPrioriteProps> = ({ 
   value, 
   onChange, 
   required = false 
 }) => {
-  const { produits, loading, error } = useProduits();
+  const { priorites, loading, error } = usePriorites();
+
+  console.log('Données des priorités :', priorites);
 
   return (
     <div style={{ marginBottom: '25px' }}>
@@ -22,7 +23,7 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Logiciel/Application :
+        *Niveau de priorité :
       </label>
       <select
         value={value}
@@ -36,41 +37,30 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
           background: 'white'
         }}
         required={required}
-        disabled={loading}
       >
         <option value="">
-          {loading ? 'Chargement des produits...' : 'Liste déroulante des produits'}
+          {loading ? 'Chargement des priorités...' : 'Sélectionnez la priorité'}
         </option>
-        
         {error ? (
           <option value="" disabled>
             Erreur de chargement
           </option>
         ) : (
-          produits.map((produit) => (
-            <option key={produit.parcId} value={produit.parcId}> {/* CHANGEMENT ICI : utiliser parcName comme valeur */}
-              {produit.parcName}
+          priorites.map((priorite) => (
+            <option key={priorite.id} value={priorite.id}>
+              {priorite.libelle}
             </option>
           ))
         )}
       </select>
-      
-      {/* Messages d'état */}
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des produits...
+          Chargement des priorités...
         </p>
       )}
-      
       {error && (
         <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
           {error}
-        </p>
-      )}
-      
-      {!loading && !error && produits.length === 0 && (
-        <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Aucun produit disponible
         </p>
       )}
     </div>

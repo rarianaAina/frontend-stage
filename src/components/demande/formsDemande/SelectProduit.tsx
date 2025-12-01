@@ -1,20 +1,19 @@
-import { useTypes } from '../../hooks/demandes/useTypes';
+import React from 'react';
+import { useProduits } from '../../../hooks/demandes/useProduits';
 
-interface SelectTypeProps {
+interface SelectProduitProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
 }
 
-export const SelectType: React.FC<SelectTypeProps> = ({ 
+export const SelectProduit: React.FC<SelectProduitProps> = ({ 
   value, 
   onChange, 
   required = false 
 }) => {
-  const { types, loading, error } = useTypes();
+  const { produits, loading, error } = useProduits();
 
-  console.log('Données des types :', types);
-  
   return (
     <div style={{ marginBottom: '25px' }}>
       <label style={{
@@ -23,7 +22,7 @@ export const SelectType: React.FC<SelectTypeProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Type de demande :
+        *Logiciel/Application :
       </label>
       <select
         value={value}
@@ -37,30 +36,41 @@ export const SelectType: React.FC<SelectTypeProps> = ({
           background: 'white'
         }}
         required={required}
+        disabled={loading}
       >
         <option value="">
-          {loading ? 'Chargement des types...' : 'Sélectionnez le type'}
+          {loading ? 'Chargement des produits...' : 'Liste déroulante des produits'}
         </option>
+        
         {error ? (
           <option value="" disabled>
             Erreur de chargement
           </option>
         ) : (
-          types.map((type) => (
-            <option key={type.id} value={type.id}>
-              {type.libelle}
+          produits.map((produit) => (
+            <option key={produit.parcId} value={produit.parcId}> {/* CHANGEMENT ICI : utiliser parcName comme valeur */}
+              {produit.parcName}
             </option>
           ))
         )}
       </select>
+      
+      {/* Messages d'état */}
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des types...
+          Chargement des produits...
         </p>
       )}
+      
       {error && (
         <p style={{ fontSize: '14px', color: '#e53e3e', marginTop: '5px' }}>
           {error}
+        </p>
+      )}
+      
+      {!loading && !error && produits.length === 0 && (
+        <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
+          Aucun produit disponible
         </p>
       )}
     </div>

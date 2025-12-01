@@ -1,8 +1,9 @@
 import { StatisticItem } from '../../types/dashboard';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 interface StatisticsCardProps {
   title: string;
-  statistics?: StatisticItem[]; // Rendre optionnel
+  statistics?: StatisticItem[];
   onStatisticClick?: (statistic: StatisticItem) => void;
 }
 
@@ -11,7 +12,8 @@ export const StatisticsCard = ({
   statistics, 
   onStatisticClick 
 }: StatisticsCardProps) => {
-  // Garde contre les données undefined/null
+  const { t } = useAppTranslation(['common']);
+
   if (!statistics || !Array.isArray(statistics)) {
     return (
       <div style={{
@@ -30,7 +32,7 @@ export const StatisticsCard = ({
           {title}
         </h3>
         <div style={{ color: '#666', fontStyle: 'italic' }}>
-          Aucune donnée disponible
+          {t('common:noDataAvailable')}
         </div>
       </div>
     );
@@ -61,7 +63,7 @@ export const StatisticsCard = ({
               marginBottom: '12px', 
               color: '#2563eb', 
               textDecoration: 'none',
-              cursor: onStatisticClick ? 'pointer' : 'default',
+              cursor: 'default', // Curseur toujours en mode par défaut
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'

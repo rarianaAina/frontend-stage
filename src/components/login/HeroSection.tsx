@@ -34,7 +34,7 @@ export const HeroSection: React.FC = () => {
         gap: '15px',
         flexWrap: 'wrap'
       }}>
-        {['feature1', 'feature2', 'feature3'].map((feature, index) => (
+        {['feature2', 'feature3'].map((feature, index) => (
           <div
             key={feature}
             style={{

@@ -1,4 +1,5 @@
 import { api } from '../lib/api';
+import type { Solution } from '../types/solution/solution';
 
 export interface Ticket {
   id: number;
@@ -28,20 +29,6 @@ export interface InteractionCreateDTO {
   interventionId?: number;
 }
 
-export interface Solution {
-  id: number; 
-  titre: string;
-  description: string;
-  zone: string;
-  statut: string;
-  etape: string;
-  reference: string;
-  dateCreation: string;
-  dateMiseAJour: string;
-  dateCloture: string | null;
-  cloture: boolean;
-}
-
 export interface Interaction {
   id: number;
   typeInteractionLibelle: string;
@@ -54,6 +41,7 @@ export interface PieceJointe {
   id: number;
   date: string;
   nomFichier: string;
+  commentaires: string;
 }
 
 export interface RelanceData {
@@ -64,6 +52,7 @@ export interface RelanceData {
 export interface PJData {
   fichier: File | null;
   commentaires: string;
+  utilisateurId: number;
 }
 
 export interface ClotureData {
@@ -145,8 +134,8 @@ export const ticketService = {
     const formData = new FormData();
     if (data.fichier) formData.append('fichier', data.fichier);
     formData.append('commentaires', data.commentaires);
-    
-    const response = await api.post(`/tickets/${ticketId}/pieces-jointes`, formData, {
+    formData.append('utilisateurId', data.utilisateurId.toString());
+    const response = await api.post(`/pieces-jointes/${ticketId}/rajouter`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return response.data;

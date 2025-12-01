@@ -1,20 +1,20 @@
-import { usePriorites } from '../../hooks/demandes/usePriorites';
+import { useTypes } from '../../../hooks/demandes/useTypes';
 
-interface SelectPrioriteProps {
+interface SelectTypeProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
 }
 
-export const SelectPriorite: React.FC<SelectPrioriteProps> = ({ 
+export const SelectType: React.FC<SelectTypeProps> = ({ 
   value, 
   onChange, 
   required = false 
 }) => {
-  const { priorites, loading, error } = usePriorites();
+  const { types, loading, error } = useTypes();
 
-  console.log('Données des priorités :', priorites);
-
+  console.log('Données des types :', types);
+  
   return (
     <div style={{ marginBottom: '25px' }}>
       <label style={{
@@ -23,7 +23,7 @@ export const SelectPriorite: React.FC<SelectPrioriteProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Niveau de priorité :
+        *Type de demande :
       </label>
       <select
         value={value}
@@ -39,23 +39,23 @@ export const SelectPriorite: React.FC<SelectPrioriteProps> = ({
         required={required}
       >
         <option value="">
-          {loading ? 'Chargement des priorités...' : 'Sélectionnez la priorité'}
+          {loading ? 'Chargement des types...' : 'Sélectionnez le type'}
         </option>
         {error ? (
           <option value="" disabled>
             Erreur de chargement
           </option>
         ) : (
-          priorites.map((priorite) => (
-            <option key={priorite.id} value={priorite.id}>
-              {priorite.libelle}
+          types.map((type) => (
+            <option key={type.id} value={type.id}>
+              {type.libelle}
             </option>
           ))
         )}
       </select>
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des priorités...
+          Chargement des types...
         </p>
       )}
       {error && (

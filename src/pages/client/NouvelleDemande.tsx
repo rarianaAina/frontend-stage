@@ -1,12 +1,11 @@
-// pages/NouvelleDemande.tsx
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/common/NavBar';
 import { useNouvelleDemande } from '../../hooks/demandes/useNouvelleDemande';
-import { SelectProduit } from '../../components/formsDemande/SelectProduit';
-import { SelectPriorite } from '../../components/formsDemande/SelectPriorite';
-import { InputFichiers } from '../../components/formsDemande/InputFichiers';
-import { SelectType } from '../../components/formsDemande/SelectType';
+import { SelectProduit } from '../../components/demande/formsDemande/SelectProduit';
+import { SelectPriorite } from '../../components/demande/formsDemande/SelectPriorite';
+import { InputFichiers } from '../../components/demande/formsDemande/InputFichiers';
+import { SelectType } from '../../components/demande/formsDemande/SelectType';
 
 export default function NouvelleDemande() {
   const location = useLocation();
@@ -86,17 +85,7 @@ export default function NouvelleDemande() {
             Nouvelle demande
           </h2>
 
-          {/* Debug info */}
-          <div style={{ 
-            background: '#f8f9fa', 
-            padding: '10px', 
-            borderRadius: '5px', 
-            marginBottom: '10px',
-            fontSize: '12px',
-            color: '#666'
-          }}>
-            Debug: Produit ID = "{logicielId}", Produit Nom = "{logiciel}"
-          </div>
+
 
           <form onSubmit={handleSubmit}>
             {/* Raison */}

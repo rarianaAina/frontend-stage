@@ -37,5 +37,19 @@
     "normal": "Antonony",
     "high": "Avony",
     "urgent": "Maika"
-  }
+  },
+  "loadingTicketDetails": "Fampidirana ny antsipirihan'ny fangatahana...",
+  "ticketNotFound": "Tsy nahita fangatahana",
+  "clientInfo": "Antsipirihan'ny Mpanjifa",
+  "contactName": "Anaran'ny mpandray anjara",
+  "phone": "Finday",
+  "ticketInfo": "Antsipirihan'ny Fangatahana",
+  "category": "Sokajy",
+  "assignedAgent": "Mpiasa nomena anjara asa",
+  "source": "Loharanom-baovao",
+  "lastUpdate": "Fanavaozana farany",
+  "attachments": "Rakitra mpiara",
+  "solutions": "Vahaolana",
+  "interactions": "Fifampiresahana",
+  "createdOn": "Noforonina ny"
 }

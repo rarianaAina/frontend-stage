@@ -1,4 +1,3 @@
-// hooks/dashboard/useProduitsAvecCH.ts
 import { useMemo } from 'react';
 import { CreditHoraire } from '../../types/dashboard';
 
@@ -6,6 +5,8 @@ interface Produit {
   parcId: string;
   parcName: string;
   dateObtention?: string;
+  userId?: number;
+  userFullName?: string;
 }
 
 interface ProduitAvecCH extends Produit {

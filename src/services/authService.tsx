@@ -1,10 +1,14 @@
 import { api } from '../lib/api';
+import { ForgotPasswordRequest, ResetPasswordRequest, ApiResponse } from '../types/auth';
+
 import { 
   LoginRequest, 
   LoginResponse, 
   CodeValidationRequest, 
   CodeValidationResponse 
 } from '../types/auth';
+
+const API_BASE_URL = 'http://localhost:8086/api/auth';
 
 class AuthService {
   async login(email: string, password: string): Promise<{ success: boolean; data?: LoginResponse }> {
@@ -22,6 +26,21 @@ class AuthService {
     }
     
     throw new Error('Login failed');
+  }
+
+  async forgotPassword(email: string): Promise<ApiResponse> {
+    const response = await api.post<ApiResponse>('/auth/forgot-password', { email });
+    return response.data;
+  }
+
+  async validateResetToken(token: string): Promise<ApiResponse> {
+    const response = await api.post<ApiResponse>('/auth/validate-reset-token', { token });
+    return response.data;
+  }
+
+  async resetPassword(request: ResetPasswordRequest): Promise<ApiResponse> {
+    const response = await api.post<ApiResponse>('/auth/reset-password', request);
+    return response.data;
   }
 
   async verifyCode(code: string): Promise<CodeValidationResponse> {

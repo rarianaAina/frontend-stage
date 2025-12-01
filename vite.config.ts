@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',  // Permet d'écouter sur toutes les interfaces réseau
-    port: 5173,        // Le port que tu utilises
+    port: 5174,        // Le port que tu utilises
   },
 })

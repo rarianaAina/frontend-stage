@@ -1,4 +1,4 @@
-import NavBar from '../NavBar';
+import NavBar from '../common/NavBar';
 
 interface LoadingStateProps {
   userRole: string;

@@ -1,0 +1,20 @@
+[
+  {
+    "code": "fr",
+    "name": "FR", 
+    "flag": "🇫🇷",
+    "fullName": "Français"
+  },
+  {
+    "code": "en",
+    "name": "EN",
+    "flag": "🇺🇸", 
+    "fullName": "English"
+  },
+  {
+    "code": "mg", 
+    "name": "MG",
+    "flag": "🇲🇬",
+    "fullName": "Malagasy"
+  }
+]
