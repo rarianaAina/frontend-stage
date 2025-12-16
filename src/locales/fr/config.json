@@ -1,30 +1,30 @@
 {
   "whatsapp": {
     "title": "Configuration WhatsApp Business API",
-    "configName": "Nom de la configuration",
-    "apiUrl": "URL de l'API",
+    "configName": "Nom de configuration",
+    "apiUrl": "URL API",
     "apiKey": "Clé API 360dialog",
-    "apiKeyHelp": "Clé API fournie par 360dialog (doit être chiffrée)",
-    "phoneId": "ID du numéro de téléphone",
+    "apiKeyHelp": "Clé API fournie par 360dialog (devrait être chiffrée)",
+    "phoneId": "ID numéro de téléphone",
     "phoneIdHelp": "ID du numéro WhatsApp Business configuré dans 360dialog",
-    "businessId": "ID du compte Business (optionnel)",
+    "businessId": "ID compte professionnel (optionnel)",
     "webhookUrl": "URL Webhook (optionnel)",
     "webhookUrlHelp": "URL où votre application reçoit les statuts des messages",
     "webhookToken": "Token Webhook (optionnel)",
     "description": "Description (optionnel)",
     "activeConfig": "Configuration active",
-    "saveSuccess": "Configuration WhatsApp sauvegardée avec succès!",
+    "saveSuccess": "Configuration WhatsApp sauvegardée avec succès !",
     "saveError": "Erreur lors de la sauvegarde",
-    "testSuccess": "Test réussi! Configuration WhatsApp validée.",
+    "testSuccess": "Test réussi ! Configuration WhatsApp validée.",
     "testError": "Échec du test",
     "testFirstSave": "Veuillez d'abord sauvegarder la configuration avant de tester",
     "guideTitle": "💡 Guide de configuration 360dialog",
     "guideText": "Pour configurer WhatsApp Business API :",
-    "guideStep1": "Créer un compte sur 360dialog",
-    "guideStep2": "Obtenir votre Clé API depuis le dashboard 360dialog",
-    "guideStep3": "Configurer un numéro WhatsApp Business",
-    "guideStep4": "Récupérer l'ID du numéro de téléphone depuis 360dialog",
-    "guideStep5": "Pour les webhooks, configurer l'URL de callback dans les paramètres 360dialog",
+    "guideStep1": "Créez un compte sur 360dialog",
+    "guideStep2": "Obtenez votre clé API depuis le tableau de bord 360dialog",
+    "guideStep3": "Configurez un numéro WhatsApp Business",
+    "guideStep4": "Récupérez l'ID du numéro depuis 360dialog",
+    "guideStep5": "Pour les webhooks, configurez l'URL de callback dans les paramètres 360dialog",
     "guideStep6": "Le token webhook doit correspondre à celui configuré dans 360dialog"
   },
   "smtp": {
@@ -33,8 +33,44 @@
     "port": "Port",
     "email": "Email (utilisateur)",
     "password": "Mot de passe (App Password)",
-    "passwordHelp": "Pour Gmail, utilisez un App Password et non votre mot de passe principal",
-    "testEmail": "Tester l'envoi d'email"
+    "passwordHelp": "Pour Gmail, utilisez un App Password au lieu de votre mot de passe principal",
+    "testEmail": "Test d'envoi d'email",
+    "fields": {
+      "host": "Serveur SMTP :",
+      "port": "Port :",
+      "username": "Email (utilisateur) :",
+      "password": "Mot de passe (App Password) :"
+    },
+    "placeholders": {
+      "host": "smtp.gmail.com",
+      "username": "votre@email.com",
+      "password": "Votre mot de passe d'application"
+    },
+    "hints": {
+      "password": "Pour Gmail, utilisez un <strong>App Password</strong> et non votre mot de passe principal"
+    },
+    "buttons": {
+      "save": "Sauvegarder",
+      "saving": "Sauvegarde...",
+      "test": "Tester la configuration",
+      "testing": "Test en cours...",
+      "reload": "Recharger"
+    },
+    "guide": {
+      "title": "Guide de configuration",
+      "gmailTitle": "Pour Gmail :",
+      "server": "Serveur :",
+      "port": "Port :",
+      "twoFactor": "Activer la validation en 2 étapes sur votre compte Google",
+      "generatePassword": "Générer un <strong>App Password</strong> dans les paramètres de sécurité Google",
+      "useAppPassword": "Utiliser l'App Password au lieu de votre mot de passe principal"
+    },
+    "loading": "Chargement de la configuration SMTP...",
+    "loadError": "Erreur chargement paramètres SMTP",
+    "saveSuccess": "✅ Configuration SMTP sauvegardée avec succès !",
+    "saveError": "❌ Erreur lors de la sauvegarde",
+    "testSuccess": "✅ Test réussi ! Email de test envoyé avec succès.",
+    "testError": "❌ Échec du test"
   },
   "general": {
     "title": "Paramètres généraux",
@@ -42,5 +78,84 @@
     "language": "Langue",
     "timezone": "Fuseau horaire",
     "dateFormat": "Format de date"
+  },
+  "sync": {
+    "title": "État des Synchronisations CRM",
+    "refreshButton": "Actualiser",
+    "loading": "Chargement des statuts de synchronisation...",
+    "error": {
+      "title": "Erreur de chargement",
+      "retryButton": "Réessayer"
+    },
+    "footer": {
+      "note": "💡 Les synchronisations planifiées s'exécutent automatiquement selon la configuration cron"
+    },
+    "status": {
+      "success": "Succès",
+      "error": "Erreur",
+      "pending": "En attente",
+      "running": "En cours",
+      "lastSync": "Dernière synchronisation",
+      "nextSync": "Prochaine synchronisation",
+      "manualSync": "Synchronisation manuelle",
+      "enabled": "Activé",
+      "disabled": "Désactivé"
+    },
+    "types": {
+      "salesforce": "Salesforce",
+      "hubspot": "HubSpot",
+      "zendesk": "Zendesk",
+      "freshdesk": "Freshdesk",
+      "dynamics": "Dynamics 365",
+      "pipedrive": "Pipedrive"
+    }
+  },
+    "workflow": {
+    "title": "Configuration des Workflows de Notification",
+    "loading": "Chargement...",
+    "error": "Erreur : Workflow non chargé",
+    "fields": {
+      "notificationType": "Type de notification :",
+      "workflowSteps": "Étapes du workflow"
+    },
+    "buttons": {
+      "addStep": "Ajouter une étape",
+      "save": "Sauvegarder le workflow",
+      "saving": "Sauvegarde en cours...",
+      "reload": "Recharger",
+      "delete": "Supprimer",
+      "deleteStep": "Supprimer l'étape",
+      "moveUp": "Déplacer vers le haut",
+      "moveDown": "Déplacer vers le bas"
+    },
+    "messages": {
+      "noUsers": "Aucun utilisateur interne disponible. Veuillez créer des utilisateurs avec les rôles 2 ou 3 d'abord.",
+      "noNotificationType": "Type de notification non trouvé.",
+      "noSteps": "Aucune étape configurée pour ce workflow. Cliquez sur 'Ajouter une étape' pour commencer.",
+      "noUsersInApp": "Aucun utilisateur interne trouvé. Pour configurer un workflow, vous devez d'abord créer des utilisateurs avec les rôles 2 ou 3.",
+      "selectUser": "Sélectionnez un utilisateur",
+      "step": "Étape",
+      "userToNotify": "Utilisateur à notifier :",
+      "creatorNotification": "• Le créateur du ticket recevra toujours une notification automatiquement",
+      "additionalNotification": "• Ce workflow configure les notifications supplémentaires pour les utilisateurs internes",
+      "saveInstructions": "• Les modifications sont sauvegardées uniquement quand vous cliquez sur 'Sauvegarder le workflow'"
+    },
+    "alerts": {
+      "noUsers": "Aucun utilisateur interne disponible. Veuillez d'abord créer des utilisateurs.",
+      "selectUser": "Veuillez sélectionner un utilisateur pour toutes les étapes.",
+      "saveSuccess": "Workflow sauvegardé avec succès !",
+      "saveError": "Erreur lors de la sauvegarde du workflow"
+    },
+    "info": {
+      "attention": "Attention",
+      "information": "Information"
+    },
+    "placeholders": {
+      "selectUser": "Sélectionnez un utilisateur"
+    }
+  },
+  "synchronisation": {
+    "title": "Gestion des Synchronisations CRM",
+    "description": "Contrôlez manuellement les synchronisations entre votre application et le CRM. Chaque synchronisation peut être démarrée, arrêtée et surveillée individuellement."
   }
 }

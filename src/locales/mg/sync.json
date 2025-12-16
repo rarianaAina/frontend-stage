@@ -14,5 +14,34 @@
   "tickets": "Tikety",
   "solutions": "Vahaolana",
   "solutionTicketLinks": "Rohidian'ny vahaolana sy tikety",
-  "lastSync": "Fifanarahana farany"
+  "lastSync": "Fifanarahana farany",
+      "title": "Toe-javatra ny Fifanarahana CRM",
+    "refreshButton": "Havaozina",
+    "loading": "Andramana ny toetry ny fifanarahana...",
+    "error": {
+      "title": "Hadisoana nandritra ny fanoratana",
+      "retryButton": "Andramana indray"
+    },
+    "footer": {
+      "note": "Mandeha ho azy ny fifanarahana voalahatra araka ny fametrahana ny cron"
+    },
+    "status": {
+      "success": "Nahomby",
+      "error": "Hadisoana",
+      "pending": "Miandry",
+      "running": "Mandeha",
+      "lastSync": "Fifanarahana farany",
+      "nextSync": "Fifanarahana manaraka",
+      "manualSync": "Fifanarahana tanana",
+      "enabled": "Azo ampiasaina",
+      "disabled": "Tsy azo ampiasaina"
+    },
+    "types": {
+      "salesforce": "Salesforce",
+      "hubspot": "HubSpot",
+      "zendesk": "Zendesk",
+      "freshdesk": "Freshdesk",
+      "dynamics": "Dynamics 365",
+      "pipedrive": "Pipedrive"
+    }
 }

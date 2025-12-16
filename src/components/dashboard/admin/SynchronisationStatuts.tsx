@@ -2,22 +2,21 @@ import React from 'react';
 import { useSynchronisationStatus } from '../../../hooks/dashboard/admin/useSynchronisationStatuts';
 import { SyncStatusCard } from './SyncStatusCard';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
+import '../../../styles/admin/configurations/Synchronisations.css';
 
 export const SynchronisationStatus: React.FC = () => {
   const { statuts, loading, error, refetch } = useSynchronisationStatus();
+  const { t } = useAppTranslation(['common', 'sync']);
 
   if (loading) {
     return (
-      <div style={{
-        background: 'white',
-        borderRadius: '15px',
-        padding: '25px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        marginBottom: '30px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="sync-loading-container">
+        <div className="sync-loading-content">
           <LoadingSpinner size="small" />
-          <span style={{ color: '#6b7280' }}>Chargement des statuts de synchronisation...</span>
+          <span className="sync-loading-text">
+            {t('sync:loading') || 'Chargement des statuts de synchronisation...'}
+          </span>
         </div>
       </div>
     );
@@ -25,32 +24,19 @@ export const SynchronisationStatus: React.FC = () => {
 
   if (error) {
     return (
-      <div style={{
-        background: 'white',
-        borderRadius: '15px',
-        padding: '25px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        marginBottom: '30px',
-        border: '1px solid #fecaca'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="sync-error-container">
+        <div className="sync-error-content">
           <div>
-            <h3 style={{ color: '#dc2626', margin: '0 0 5px 0' }}>Erreur de chargement</h3>
-            <p style={{ color: '#6b7280', margin: 0 }}>{error}</p>
+            <h3 className="sync-error-title">
+              {t('sync:error.title') || 'Erreur de chargement'}
+            </h3>
+            <p className="sync-error-message">{error}</p>
           </div>
           <button
             onClick={refetch}
-            style={{
-              background: '#ef4444',
-              color: 'white',
-              border: 'none',
-              padding: '8px 16px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
+            className="sync-retry-button"
           >
-            Réessayer
+            {t('sync:error.retryButton') || 'Réessayer'}
           </button>
         </div>
       </div>
@@ -58,51 +44,20 @@ export const SynchronisationStatus: React.FC = () => {
   }
 
   return (
-    <div style={{
-      background: 'white',
-      borderRadius: '15px',
-      padding: '25px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      marginBottom: '30px'
-    }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '20px'
-      }}>
-        <h2 style={{ 
-          fontSize: '20px', 
-          fontWeight: '600', 
-          color: '#1f2937',
-          margin: 0
-        }}>
-          📊 État des Synchronisations CRM
+    <div className="sync-status-container">
+      <div className="sync-header">
+        <h2 className="sync-title">
+          📊 {t('sync:title') || 'État des Synchronisations CRM'}
         </h2>
         <button
           onClick={refetch}
-          style={{
-            background: 'transparent',
-            border: '1px solid #d1d5db',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '12px',
-            color: '#6b7280',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px'
-          }}
+          className="sync-refresh-button"
         >
-          🔄 Actualiser
+          🔄 {t('sync:refreshButton') || 'Actualiser'}
         </button>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '15px'
-      }}>
+      <div className="sync-grid">
         {Object.entries(statuts).map(([key, statut]) => (
           <SyncStatusCard 
             key={key}
@@ -112,20 +67,9 @@ export const SynchronisationStatus: React.FC = () => {
         ))}
       </div>
 
-      <div style={{
-        marginTop: '20px',
-        padding: '15px',
-        background: '#f8fafc',
-        borderRadius: '8px',
-        border: '1px solid #e2e8f0'
-      }}>
-        <p style={{ 
-          fontSize: '12px', 
-          color: '#64748b', 
-          margin: 0,
-          textAlign: 'center'
-        }}>
-          💡 Les synchronisations planifiées s'exécutent automatiquement selon la configuration cron
+      <div className="sync-footer">
+        <p className="sync-footer-text">
+          💡 {t('sync:footer.note') || 'Les synchronisations planifiées s\'exécutent automatiquement selon la configuration cron'}
         </p>
       </div>
     </div>

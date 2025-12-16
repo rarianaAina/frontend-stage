@@ -86,7 +86,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       }}>
         {/* Logo PNG */}
         <img 
-          src="/src/dist/img/Logooo.png"
+          src="/Logo.png"
           alt="OPTIMADA"
           style={{
             width: '310px', // Taille adaptée pour cette position

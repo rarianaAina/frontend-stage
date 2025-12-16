@@ -1,0 +1,53 @@
+{
+
+    "title": "Mpitantana fandaharam-potoana",
+    "selectOrCreate": "Safidio fametrahana ao amin'ny lisitra na mamorona vaovao",
+    "details": {
+      "basicInfo": "Fampahalalana fototra",
+      "description": "Famariparitana",
+      "noDescription": "Tsy misy famaritana",
+      "scheduleType": "Karazana fandaharam-potoana",
+      "displayName": "Anarana aseho",
+      "cronExpression": "Expression Cron",
+      "metadata": "Metadata",
+      "createdDate": "Daty namoronana",
+      "lastModified": "Fanovana farany",
+      "lastModifiedBy": "Novain'ny",
+      "scheduleParams": "Paramètres fandaharam-potoana"
+    },
+    "form": {
+      "createTitle": "Mamorona fametrahana vaovao",
+      "editTitle": "Ovay ny fametrahana",
+      "jobName": "Anaran'ny asa",
+      "jobNamePlaceholder": "Ampidiro ny anaran'ny asa...",
+      "jobDescription": "Famariparitana ny asa",
+      "jobDescriptionPlaceholder": "Ampidiro ny famaritana ny asa...",
+      "frequency": "Hatetika",
+      "hour": "Ora",
+      "minute": "Minitra",
+      "dayOfWeek": "Andro amin'ny herinandro",
+      "dayOfMonth": "Andro amin'ny volana",
+      "customCron": "Expression Cron manokana",
+      "enabled": "Azo ampiasaina",
+      "cronHelp": "Endrika : segondra minitra ora andro volana andro-herinandro",
+      "errors": {
+        "jobNameRequired": "Ilaina ny anaran'ny asa",
+        "customCronRequired": "Ilaina ny expression cron manokana"
+      }
+    },
+    "list": {
+      "title": "Fametrahana",
+      "new": "Vaovao",
+      "empty": "Tsy nahita fametrahana"
+    },
+    "status": {
+      "title": "Toe-javatra fandaharam-potoana",
+      "totalJobs": "Total asa",
+      "activeJobs": "Asa mavitrika",
+      "inactiveJobs": "Asa tsy mavitrika",
+      "lastChecked": "Fijerena farany",
+      "jobsList": "Lisitra ny asa",
+      "activeJobsText": "{{active}} mavitrika amin'ny {{total}} total"
+    },
+    "reloadCache": "Avereno alo ny cache"
+  }

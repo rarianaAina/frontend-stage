@@ -1,0 +1,52 @@
+{
+    "title": "Scheduling Manager",
+    "selectOrCreate": "Select a configuration from the list or create a new one",
+    "details": {
+      "basicInfo": "Basic Information",
+      "description": "Description",
+      "noDescription": "No description",
+      "scheduleType": "Schedule Type",
+      "displayName": "Display Name",
+      "cronExpression": "Cron Expression",
+      "metadata": "Metadata",
+      "createdDate": "Created Date",
+      "lastModified": "Last Modified",
+      "lastModifiedBy": "Last Modified By",
+      "scheduleParams": "Schedule Parameters"
+    },
+    "form": {
+      "createTitle": "Create New Configuration",
+      "editTitle": "Edit Configuration",
+      "jobName": "Job Name",
+      "jobNamePlaceholder": "Enter job name...",
+      "jobDescription": "Job Description",
+      "jobDescriptionPlaceholder": "Enter job description...",
+      "frequency": "Frequency",
+      "hour": "Hour",
+      "minute": "Minute",
+      "dayOfWeek": "Day of Week",
+      "dayOfMonth": "Day of Month",
+      "customCron": "Custom Cron Expression",
+      "enabled": "Enabled",
+      "cronHelp": "Format: second minute hour day month day-of-week",
+      "errors": {
+        "jobNameRequired": "Job name is required",
+        "customCronRequired": "Custom cron expression is required"
+      }
+    },
+    "list": {
+      "title": "Configurations",
+      "new": "New",
+      "empty": "No configurations found"
+    },
+    "status": {
+      "title": "Scheduling Status",
+      "totalJobs": "Total Jobs",
+      "activeJobs": "Active Jobs",
+      "inactiveJobs": "Inactive Jobs",
+      "lastChecked": "Last checked",
+      "jobsList": "Jobs List",
+      "activeJobsText": "{{active}} active of {{total}} total"
+    },
+    "reloadCache": "Reload Cache"
+  }

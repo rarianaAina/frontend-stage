@@ -6,12 +6,13 @@ import { SelectProduit } from '../../components/demande/formsDemande/SelectProdu
 import { SelectPriorite } from '../../components/demande/formsDemande/SelectPriorite';
 import { InputFichiers } from '../../components/demande/formsDemande/InputFichiers';
 import { SelectType } from '../../components/demande/formsDemande/SelectType';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
+import '../../styles/NouvelleDemande.css';
 
 export default function NouvelleDemande() {
   const location = useLocation();
   const [raison, setRaison] = useState('');
-  const [logiciel, setLogiciel] = useState('');
-  const [logicielId, setLogicielId] = useState(''); // Nouvel état pour stocker l'ID
+  const [logicielId, setLogicielId] = useState('');
   const [description, setDescription] = useState('');
   const [niveau, setNiveau] = useState('');
   const [type, setType] = useState('');
@@ -23,15 +24,13 @@ export default function NouvelleDemande() {
   const utilisateurId = localStorage.getItem('userId') || '';
   const company = companyId;
   const utilisateur = utilisateurId;
+  
+  const { t } = useAppTranslation(['common', 'requests', 'newRequest']);
 
-  // Récupérer le produit depuis le state de navigation
   useEffect(() => {
     if (location.state?.produitSelectionne) {
       console.log('Produit ID présélectionné:', location.state.produitSelectionne);
-      setLogicielId(location.state.produitSelectionne); // Stocker l'ID
-      
-      // Optionnel: si vous voulez aussi afficher le nom dans le select
-      // Vous devrez peut-être adapter SelectProduit pour gérer cela
+      setLogicielId(location.state.produitSelectionne);
     }
   }, [location.state]);
 
@@ -39,10 +38,9 @@ export default function NouvelleDemande() {
     e.preventDefault();
     
     try {
-      // Utiliser logicielId au lieu de logiciel pour l'envoi
       await soumettreDemande({
         raison,
-        logiciel: logicielId, // CHANGEMENT ICI : envoyer l'ID au lieu du nom
+        logiciel: logicielId,
         type,
         company,
         utilisateur,
@@ -56,93 +54,51 @@ export default function NouvelleDemande() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(180deg, #c8f7dc 0%, #e0f2fe 50%, #ddd6fe 100%)',
-    }}>
+    <div className="nouvelle-demande-container">
       <NavBar role="CLIENT" />
 
-      <div style={{
-        padding: '40px 60px',
-        display: 'flex',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          background: 'rgba(200, 240, 180, 0.7)',
-          padding: '50px',
-          borderRadius: '30px',
-          maxWidth: '700px',
-          width: '100%',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)'
-        }}>
-          <h2 style={{
-            textAlign: 'center',
-            fontSize: '36px',
-            color: '#17a2b8',
-            marginBottom: '40px',
-            fontWeight: 'bold'
-          }}>
-            Nouvelle demande
+      <div className="nouvelle-demande-content">
+        <div className="nouvelle-demande-form-container">
+          <h2 className="nouvelle-demande-title">
+            {t('newRequest:title') || 'Nouvelle demande'}
           </h2>
-
-
 
           <form onSubmit={handleSubmit}>
             {/* Raison */}
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                fontWeight: '600',
-                color: '#333'
-              }}>
-                *Raison :
+            <div className="form-field">
+              <label className="form-label">
+                {t('newRequest:reason.label') || '*Raison :'}
               </label>
               <input
                 type="text"
                 value={raison}
                 onChange={(e) => setRaison(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '16px'
-                }}
+                className="form-input"
                 required
+                placeholder={t('newRequest:reason.placeholder') || 'Saisissez la raison de votre demande'}
               />
             </div>
 
             {/* Produit */}
             <SelectProduit 
-              value={logicielId} // CHANGEMENT ICI : utiliser l'ID comme valeur
-              onChange={setLogicielId} // CHANGEMENT ICI : mettre à jour l'ID
+              value={logicielId}
+              onChange={setLogicielId}
               required
+              label={t('newRequest:product.label') || 'Produit :'}
+              placeholder={t('newRequest:product.placeholder') || 'Sélectionnez un produit'}
             />
 
             {/* Description */}
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                fontWeight: '600',
-                color: '#333'
-              }}>
-                *Description :
+            <div className="form-field">
+              <label className="form-label">
+                {t('newRequest:description.label') || '*Description :'}
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 18px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '16px',
-                  minHeight: '120px',
-                  resize: 'vertical'
-                }}
+                className="form-textarea"
                 required
+                placeholder={t('newRequest:description.placeholder') || 'Décrivez votre problème ou demande en détail...'}
               />
             </div>
 
@@ -151,44 +107,40 @@ export default function NouvelleDemande() {
               value={niveau}
               onChange={setNiveau}
               required
+              label={t('newRequest:priority.label') || 'Priorité :'}
+              placeholder={t('newRequest:priority.placeholder') || 'Sélectionnez une priorité'}
             />
 
+            {/* Type */}
             <SelectType 
               value={type}
               onChange={setType}
               required
+              label={t('newRequest:type.label') || 'Type :'}
+              placeholder={t('newRequest:type.placeholder') || 'Sélectionnez un type'}
             />
 
             {/* Fichiers */}
-            <InputFichiers onChange={setFichiers} />
+            <InputFichiers 
+              onChange={setFichiers}
+              label={t('newRequest:files.label') || 'Fichiers joints :'}
+              description={t('newRequest:files.description') || 'Ajoutez des fichiers (images, documents) pour illustrer votre demande'}
+            />
 
             {/* Conditions */}
-            <div style={{ marginBottom: '30px' }}>
-              <label style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '10px',
-                cursor: 'pointer'
-              }}>
+            <div className="conditions-container">
+              <label className="conditions-label">
                 <input
                   type="checkbox"
                   checked={accepteConditions}
                   onChange={(e) => setAccepteConditions(e.target.checked)}
-                  style={{
-                    marginTop: '4px',
-                    width: '18px',
-                    height: '18px',
-                    cursor: 'pointer'
-                  }}
+                  className="conditions-checkbox"
                   required
                 />
-                <span style={{ fontSize: '14px', color: '#333', lineHeight: '1.5' }}>
-                  J'accepte les termes de la{' '}
-                  <a href="#" style={{ color: '#2563eb', textDecoration: 'underline' }}>
-                    Politique de confidentialité
-                  </a>{' '}
-                  et autorise que mes données personnelles soient traitées dans
-                  la mesure nécessaire à mon abonnement
+                <span className="conditions-text">
+                  {t('newRequest:conditions.text', {
+                    privacyPolicy: t('newRequest:conditions.privacyPolicy') || 'Politique de confidentialité'
+                  }) || `J'accepte les termes de la ${t('newRequest:conditions.privacyPolicy') || 'Politique de confidentialité'} et autorise que mes données personnelles soient traitées dans la mesure nécessaire à mon abonnement`}
                 </span>
               </label>
             </div>
@@ -196,20 +148,12 @@ export default function NouvelleDemande() {
             {/* Bouton de soumission */}
             <button
               type="submit"
-              style={{
-                width: '100%',
-                background: loading ? '#9ca3af' : '#10b981',
-                color: 'white',
-                padding: '14px',
-                borderRadius: '25px',
-                border: 'none',
-                fontSize: '18px',
-                fontWeight: '600',
-                cursor: loading ? 'not-allowed' : 'pointer'
-              }}
+              className="submit-button"
               disabled={loading}
             >
-              {loading ? 'Soumission en cours...' : 'Soumettre'}
+              {loading 
+                ? (t('newRequest:submit.loading') || 'Soumission en cours...')
+                : (t('newRequest:submit.label') || 'Soumettre')}
             </button>
           </form>
         </div>

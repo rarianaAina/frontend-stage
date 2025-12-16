@@ -14,5 +14,34 @@
   "tickets": "Tickets",
   "solutions": "Solutions",
   "solutionTicketLinks": "Solution-Ticket Links",
-  "lastSync": "Last sync"
+  "lastSync": "Last sync",
+    "title": "CRM Synchronization Status",
+    "refreshButton": "Refresh",
+    "loading": "Loading synchronization status...",
+    "error": {
+      "title": "Loading Error",
+      "retryButton": "Retry"
+    },
+    "footer": {
+      "note": "💡 Scheduled synchronizations run automatically according to cron configuration"
+    },
+    "status": {
+      "success": "Success",
+      "error": "Error",
+      "pending": "Pending",
+      "running": "Running",
+      "lastSync": "Last Synchronization",
+      "nextSync": "Next Synchronization",
+      "manualSync": "Manual Synchronization",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "types": {
+      "salesforce": "Salesforce",
+      "hubspot": "HubSpot",
+      "zendesk": "Zendesk",
+      "freshdesk": "Freshdesk",
+      "dynamics": "Dynamics 365",
+      "pipedrive": "Pipedrive"
+    }
 }

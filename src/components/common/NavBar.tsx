@@ -27,7 +27,7 @@ export default function NavBar({ role }: NavBarProps) {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '20px 40px',
-      background: '#4ed9f1ff',
+      background: '#bce7f1ff',
       position: 'fixed',
       top: 0,
       left: 0,

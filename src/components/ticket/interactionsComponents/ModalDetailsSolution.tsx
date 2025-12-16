@@ -66,9 +66,11 @@ export default function ModalDetailsSolution({ solution, onClose, onSolutionRepo
       width: '90vw',
       maxWidth: '550px',
       minWidth: '180px',
-      maxHeight: '90vh',
+      //maxHeight: '1200vh',
+      height: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      //zoom: 0.
     }}>
       {/* Messages d'erreur et succès */}
       <MessageAlert error={error} success={success} />
@@ -102,7 +104,7 @@ export default function ModalDetailsSolution({ solution, onClose, onSolutionRepo
       {/* Contenu des onglets */}
       <div style={{
         minHeight: '400px',
-        maxHeight: '70vh',
+        height: '100%',
         overflowY: 'auto',
         overflowX: 'hidden',
         flex: 1

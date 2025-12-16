@@ -1,17 +1,23 @@
 import { useTypes } from '../../../hooks/demandes/useTypes';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface SelectTypeProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
 export const SelectType: React.FC<SelectTypeProps> = ({ 
   value, 
   onChange, 
-  required = false 
+  required = false,
+  label,
+  placeholder
 }) => {
   const { types, loading, error } = useTypes();
+  const { t } = useAppTranslation(['common', 'newRequest']);
 
   console.log('Données des types :', types);
   
@@ -23,7 +29,7 @@ export const SelectType: React.FC<SelectTypeProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Type de demande :
+        {label || t('newRequest:type.label') || 'Type de demande :'}
       </label>
       <select
         value={value}
@@ -37,13 +43,16 @@ export const SelectType: React.FC<SelectTypeProps> = ({
           background: 'white'
         }}
         required={required}
+        disabled={loading}
       >
         <option value="">
-          {loading ? 'Chargement des types...' : 'Sélectionnez le type'}
+          {loading 
+            ? (t('common:loading') || 'Chargement...')
+            : (placeholder || t('newRequest:type.placeholder') || 'Sélectionnez le type')}
         </option>
         {error ? (
           <option value="" disabled>
-            Erreur de chargement
+            {t('common:loadingError') || 'Erreur de chargement'}
           </option>
         ) : (
           types.map((type) => (
@@ -55,7 +64,7 @@ export const SelectType: React.FC<SelectTypeProps> = ({
       </select>
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des types...
+          {t('common:loading') || 'Chargement...'}
         </p>
       )}
       {error && (

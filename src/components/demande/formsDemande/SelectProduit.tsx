@@ -1,18 +1,24 @@
 import React from 'react';
 import { useProduits } from '../../../hooks/demandes/useProduits';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface SelectProduitProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
 export const SelectProduit: React.FC<SelectProduitProps> = ({ 
   value, 
   onChange, 
-  required = false 
+  required = false,
+  label,
+  placeholder
 }) => {
   const { produits, loading, error } = useProduits();
+  const { t } = useAppTranslation(['common', 'newRequest']);
 
   return (
     <div style={{ marginBottom: '25px' }}>
@@ -22,7 +28,7 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Logiciel/Application :
+        {label || t('newRequest:product.label') || 'Logiciel/Application :'}
       </label>
       <select
         value={value}
@@ -39,16 +45,18 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
         disabled={loading}
       >
         <option value="">
-          {loading ? 'Chargement des produits...' : 'Liste déroulante des produits'}
+          {loading 
+            ? (t('common:loading') || 'Chargement...')
+            : (placeholder || t('newRequest:product.placeholder') || 'Liste déroulante des produits')}
         </option>
         
         {error ? (
           <option value="" disabled>
-            Erreur de chargement
+            {t('common:loadingError') || 'Erreur de chargement'}
           </option>
         ) : (
           produits.map((produit) => (
-            <option key={produit.parcId} value={produit.parcId}> {/* CHANGEMENT ICI : utiliser parcName comme valeur */}
+            <option key={produit.parcId} value={produit.parcId}>
               {produit.parcName}
             </option>
           ))
@@ -58,7 +66,7 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
       {/* Messages d'état */}
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des produits...
+          {t('common:loading') || 'Chargement...'}
         </p>
       )}
       
@@ -70,7 +78,7 @@ export const SelectProduit: React.FC<SelectProduitProps> = ({
       
       {!loading && !error && produits.length === 0 && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Aucun produit disponible
+          {t('newRequest:product.noProducts') || 'Aucun produit disponible'}
         </p>
       )}
     </div>

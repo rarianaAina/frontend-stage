@@ -6,6 +6,42 @@
     "ticketReference": "Référence ticket :",
     "product": "Produit :",
     "startDate": "Date début :",
-    "endDate": "Date fin :"
-  }
+    "endDate": "Date fin :",
+    "referencePlaceholder": "Entrez la référence du ticket"
+  },
+  "table": {
+    "ticketReference": "Référence ticket",
+    "product": "Produit",
+    "description": "Description",
+    "level": "Niveau",
+    "submissionDate": "Date de soumission",
+    "closingDate": "Date de clôture",
+    "status": "État",
+    "actions": "Actions",
+    "details": "Détails"
+  },
+  "priority": {
+    "faible": "Faible",
+    "moyenne": "Moyenne",
+    "haute": "Haute",
+    "critique": "Critique"
+  },
+  "status": {
+    "ouvert": "Ouvert",
+    "encours": "En cours",
+    "enattente": "En attente",
+    "resolu": "Résolu",
+    "cloture": "Clôturé",
+    "open": "Ouvert",
+    "inProgress": "En cours",
+    "pending": "En attente",
+    "resolved": "Résolu",
+    "closed": "Clôturé"
+  },
+  "pagination": {
+    "itemsPerPage": "Éléments par page:",
+    "pageInfo": "Page {{currentPage}} sur {{totalPages}}",
+    "totalItems": "éléments au total"
+  },
+  "noTicketsFound": "Aucun ticket trouvé"
 }

@@ -15,10 +15,14 @@ body {
   min-height: 100vh;
 }
 
-#scale-wrapper {
+/* #scale-wrapper {
   transform: scale(0.95);
   transform-origin: top center;
   width: 100%;
+} */
+
+#scale-wrapper {
+  zoom: 0.80;
 }
 
 button {

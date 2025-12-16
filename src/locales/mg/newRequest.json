@@ -1,0 +1,35 @@
+{
+    "title": "Fangatahana Vaovao",
+    "reason": {
+      "label": "*Antony:",
+      "placeholder": "Ampidiro ny anton'ny fangatahanao"
+    },
+    "product": {
+      "label": "*Vokatra:",
+      "placeholder": "Safidio vokatra"
+    },
+    "description": {
+      "label": "*Famariparitana:",
+      "placeholder": "Lazavao ny olanao na ny fangatahanao amin'ny antsipiriany..."
+    },
+    "priority": {
+      "label": "*Zava-dehibe:",
+      "placeholder": "Safidio ny haavon'ny zava-dehibe"
+    },
+    "type": {
+      "label": "*Karazana:",
+      "placeholder": "Safidio karazana"
+    },
+    "files": {
+      "label": "Rakitra Miraika:",
+      "description": "Ampio rakitra (sary, taratasy) hanazavana ny fangatahanao"
+    },
+    "conditions": {
+      "text": "Manaiky aho ny fepetra momba ny {{privacyPolicy}} ary manome alalana ny handraisana ny angon-drakitro ho an'ny fampiasana ilaina amin'ny famandrihana",
+      "privacyPolicy": "Politika momba ny fiainana manokana"
+    },
+    "submit": {
+      "label": "Alefa",
+      "loading": "Alefa eto an-toerana..."
+    }
+  }

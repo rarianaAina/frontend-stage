@@ -28,7 +28,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   };
 
   return (
-    <AuthLayout title="auth:forgotPassword" showLogo={true}>
+    <AuthLayout title="auth:forgotPassword" showLogo={false}>
       <MessageAlert 
         message={message} 
         type={message.includes('Error') ? 'error' : message ? 'success' : 'info'}

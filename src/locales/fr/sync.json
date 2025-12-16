@@ -14,5 +14,15 @@
   "tickets": "Tickets",
   "solutions": "Solutions",
   "solutionTicketLinks": "Liaisons solutions-tickets",
-  "lastSync": "Dernière sync"
+  "lastSync": "Dernière sync",
+  "title": "État des Synchronisations CRM",
+  "refreshButton": "Actualiser",
+  "loading": "Chargement des statuts de synchronisation...",
+  "error": {
+    "title": "Erreur de chargement",
+    "retryButton": "Réessayer"
+  },
+  "footer": {
+    "note": "Les synchronisations planifiées s'exécutent automatiquement selon la configuration cron"
+  }
 }

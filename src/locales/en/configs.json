@@ -1,0 +1,87 @@
+{
+  "config": {
+    "email": {
+      "title": "SMTP Configuration",
+      "loading": "Loading SMTP configuration...",
+      "loadError": "Error loading SMTP settings",
+      "saveSuccess": "✅ SMTP configuration saved successfully!",
+      "saveError": "❌ Error saving configuration",
+      "testSuccess": "✅ Test successful! Test email sent successfully.",
+      "testError": "❌ Test failed",
+      "fields": {
+        "host": "SMTP Server:",
+        "port": "Port:",
+        "username": "Email (username):",
+        "password": "Password (App Password):"
+      },
+      "placeholders": {
+        "host": "smtp.gmail.com",
+        "username": "your@email.com",
+        "password": "Your application password"
+      },
+      "hints": {
+        "password": "For Gmail, use an <strong>App Password</strong> and not your main password"
+      },
+      "buttons": {
+        "save": "Save",
+        "saving": "Saving...",
+        "test": "Test Configuration",
+        "testing": "Testing...",
+        "reload": "Reload"
+      },
+      "guide": {
+        "title": "Configuration Guide",
+        "gmailTitle": "For Gmail:",
+        "server": "Server:",
+        "port": "Port:",
+        "twoFactor": "Enable 2-step verification on your Google account",
+        "generatePassword": "Generate an <strong>App Password</strong> in Google security settings",
+        "useAppPassword": "Use the App Password instead of your main password"
+      }
+    }
+  },
+    "workflow": {
+    "title": "Notification Workflow Configuration",
+    "loading": "Loading...",
+    "error": "Error: Workflow not loaded",
+    "fields": {
+      "notificationType": "Notification type:",
+      "workflowSteps": "Workflow steps"
+    },
+    "buttons": {
+      "addStep": "Add a step",
+      "save": "Save workflow",
+      "saving": "Saving...",
+      "reload": "Reload",
+      "delete": "Delete",
+      "deleteStep": "Delete step",
+      "moveUp": "Move up",
+      "moveDown": "Move down"
+    },
+    "messages": {
+      "noUsers": "No internal users available. Please create users with roles 2 or 3 first.",
+      "noNotificationType": "Notification type not found.",
+      "noSteps": "No steps configured for this workflow. Click 'Add a step' to start.",
+      "noUsersInApp": "No internal users found. To configure a workflow, you must first create users with roles 2 or 3.",
+      "selectUser": "Select a user",
+      "step": "Step",
+      "userToNotify": "User to notify:",
+      "creatorNotification": "• The ticket creator will always receive a notification automatically",
+      "additionalNotification": "• This workflow configures additional notifications for internal users",
+      "saveInstructions": "• Changes are saved only when you click 'Save workflow'"
+    },
+    "alerts": {
+      "noUsers": "No internal users available. Please first create users.",
+      "selectUser": "Please select a user for all steps.",
+      "saveSuccess": "Workflow saved successfully!",
+      "saveError": "Error saving workflow"
+    },
+    "info": {
+      "attention": "Attention",
+      "information": "Information"
+    },
+    "placeholders": {
+      "selectUser": "Select a user"
+    }
+  }
+}

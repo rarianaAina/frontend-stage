@@ -14,6 +14,9 @@ import syncFR from '../locales/fr/sync.json';
 import userFR from '../locales/fr/users.json';
 import reportFR from '../locales/fr/reports.json';
 import solutionFR from '../locales/fr/solution.json';
+import requestsFR from '../locales/fr/requests.json';
+import newRequestFR from '../locales/fr/newRequest.json';
+import schedulingFR from '../locales/fr/scheduling.json';
 
 import commonEN from '../locales/en/common.json';
 import ticketsEN from '../locales/en/tickets.json';
@@ -26,6 +29,9 @@ import syncEN from '../locales/en/sync.json';
 import userEN from '../locales/en/users.json';
 import reportEN from '../locales/en/reports.json';
 import solutionEN from '../locales/fr/solution.json';
+import requestsEN from '../locales/en/requests.json';
+import newRequestEN from '../locales/en/newRequest.json';
+import schedulingEN from '../locales/en/scheduling.json';
 
 import commonMG from '../locales/mg/common.json';
 import ticketsMG from '../locales/mg/tickets.json';
@@ -38,6 +44,9 @@ import syncMG from '../locales/mg/sync.json';
 import userMG from '../locales/mg/users.json';
 import reportMG from '../locales/mg/reports.json';
 import solutionMG from '../locales/fr/solution.json';
+import requestsMG from '../locales/mg/requests.json';
+import newRequestMG from '../locales/mg/newRequest.json';
+import schedulingMG from '../locales/mg/scheduling.json';
 
 const resources = {
   fr: {
@@ -51,7 +60,10 @@ const resources = {
     sync: syncFR,
     users: userFR,
     reports: reportFR,
-    solution: solutionFR
+    solution: solutionFR,
+    requests: requestsFR,
+    newRequest: newRequestFR,
+    scheduling: schedulingFR
   },
   en: {
     common: commonEN,
@@ -64,7 +76,10 @@ const resources = {
     sync: syncEN,
     users: userEN,
     reports: reportEN,
-    solution: solutionEN
+    solution: solutionEN,
+    requests: requestsEN,
+    newRequest: newRequestEN,
+    scheduling: schedulingEN
   },
   mg: {
     common: commonMG,
@@ -77,7 +92,10 @@ const resources = {
     sync: syncMG,
     users: userMG,
     reports: reportMG,
-    solution: solutionMG
+    solution: solutionMG,
+    requests: requestsMG,
+    newRequest: newRequestMG,
+    scheduling: schedulingMG
   }
 };
 

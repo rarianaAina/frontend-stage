@@ -114,7 +114,7 @@ const Login: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
-        padding: '20px',
+        padding: '200px',
         position: 'relative'
       }}>
         <div style={{
@@ -177,7 +177,7 @@ const Login: React.FC = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
-      padding: '40px 80px',
+      padding: '120px',
       position: 'relative'
     }}>
       <div style={{

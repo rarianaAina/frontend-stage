@@ -1,0 +1,47 @@
+{
+    "myRequests": "Ny Fangatahako",
+    "newRequest": "Fangatahana Vaovao",
+    "filters": {
+      "status": "Toetra:",
+      "ticketReference": "Fanondroana tikety:",
+      "product": "Vokatra:",
+      "startDate": "Daty fanombohana:",
+      "endDate": "Daty farany:",
+      "referencePlaceholder": "Ampidiro ny fanondroana tikety"
+    },
+    "table": {
+      "ticketReference": "Fanondroana Tikety",
+      "product": "Vokatra",
+      "description": "Famariparitana",
+      "level": "Ambaratonga",
+      "submissionDate": "Daty fandefasana",
+      "closingDate": "Daty fanakatonana",
+      "status": "Toetra",
+      "actions": "Asa",
+      "details": "Antsipiriany"
+    },
+    "priority": {
+      "faible": "Kely",
+      "moyenne": "Antonony",
+      "haute": "Avobe",
+      "critique": "Tena Zava-dehibe"
+    },
+    "status": {
+      "ouvert": "Mikatona",
+      "encours": "Mandeha",
+      "enattente": "Miandry",
+      "resolu": "Vahana",
+      "cloture": "Voahidy",
+      "open": "Misokatra",
+      "inProgress": "An-dàlana",
+      "pending": "Eo am-piandrasana",
+      "resolved": "Voahavaha",
+      "closed": "Mihidy"
+    },
+    "pagination": {
+      "itemsPerPage": "Zavatra isaky ny pejy:",
+      "pageInfo": "Pejy {{currentPage}} amin'ny {{totalPages}}",
+      "totalItems": "zavatra misy"
+    },
+    "noTicketsFound": "Tsy nahita tikety"
+}

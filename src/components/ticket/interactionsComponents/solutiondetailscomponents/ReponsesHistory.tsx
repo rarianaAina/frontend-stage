@@ -37,7 +37,8 @@ export default function ReponsesHistory({ solution, onReponsesLoaded }: Props) {
         justifyContent: 'space-between', 
         alignItems: 'center',
         marginBottom: '20px',
-        width: '100%'
+        width: '100%',
+        height: '100%'
       }}>
         <h4 style={{ margin: 0, color: '#6dd5ed' }}>
           Historique des réponses ({reponses.length})
@@ -90,7 +91,8 @@ export default function ReponsesHistory({ solution, onReponsesLoaded }: Props) {
           maxHeight: '400px', 
           overflowY: 'auto',
           overflowX: 'hidden',
-          width: '100%'
+          width: '100%',
+          height: '100%'
         }}>
           {reponses.map((reponse) => (
             <ReponseItem key={reponse.id} reponse={reponse} />

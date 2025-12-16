@@ -20,7 +20,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%)',
+      background: 'none',
       padding: '20px'
     }}>
       <div style={{

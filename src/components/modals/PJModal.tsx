@@ -130,7 +130,7 @@ export const PJModal = ({ isOpen, onClose, reference, onAjouterPJ }: PJModalProp
       </div>
 
       {/* Debug info */}
-      <div style={{ 
+      {/* <div style={{ 
         marginBottom: '10px', 
         padding: '10px', 
         background: '#f8f9fa', 
@@ -140,7 +140,7 @@ export const PJModal = ({ isOpen, onClose, reference, onAjouterPJ }: PJModalProp
       }}>
         <strong>Debug:</strong> utilisateurId = {data.utilisateurId} 
         {data.utilisateurId === 0 && ' ⚠️ (ID non défini)'}
-      </div>
+      </div> */}
 
       <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
         <button className="btn-primary" onClick={handleSubmit}>Valider</button>

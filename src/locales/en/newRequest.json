@@ -1,0 +1,35 @@
+{
+    "title": "New Request",
+    "reason": {
+      "label": "*Reason:",
+      "placeholder": "Enter the reason for your request"
+    },
+    "product": {
+      "label": "*Product:",
+      "placeholder": "Select a product"
+    },
+    "description": {
+      "label": "*Description:",
+      "placeholder": "Describe your problem or request in detail..."
+    },
+    "priority": {
+      "label": "*Priority:",
+      "placeholder": "Select a priority level"
+    },
+    "type": {
+      "label": "*Type:",
+      "placeholder": "Select a type"
+    },
+    "files": {
+      "label": "Attached Files:",
+      "description": "Add files (images, documents) to illustrate your request"
+    },
+    "conditions": {
+      "text": "I accept the terms of the {{privacyPolicy}} and authorize that my personal data be processed as necessary for my subscription",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "submit": {
+      "label": "Submit",
+      "loading": "Submitting..."
+    }
+  }

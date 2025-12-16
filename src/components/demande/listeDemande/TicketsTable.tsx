@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react';
 import { Ticket } from '../../../types/ticket';
 import { DescriptionAvecVoirPlus } from './DescriptionAvecVoirPlus';
 import { getPrioriteText, getCouleurPriorite, getStatutText, getCouleurStatut } from '../../../utils/ticketUtils';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface TicketsTableProps {
   tickets: Ticket[];
@@ -16,6 +17,7 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
   const navigate = useNavigate();
   const [sortField, setSortField] = useState<SortField>('dateCreation');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const { t } = useAppTranslation(['common', 'requests']);
 
   const sortedTickets = useMemo(() => {
     const sorted = [...tickets];
@@ -42,8 +44,16 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
 
       // Tri spécifique pour les états (texte)
       if (sortField === 'etat') {
-        aValue = getStatutText(aValue);
-        bValue = getStatutText(bValue);
+        // Utilisez les textes traduits pour le tri
+        const statutA = getStatutText(aValue);
+        const statutB = getStatutText(bValue);
+        
+        // Création des clés de traduction (en minuscules et sans espaces)
+        const translationKeyA = `requests:status.${statutA.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+        const translationKeyB = `requests:status.${statutB.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+        
+        aValue = t(translationKeyA) || statutA;
+        bValue = t(translationKeyB) || statutB;
       }
 
       // Comparaison
@@ -53,7 +63,7 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
     });
 
     return sorted;
-  }, [tickets, sortField, sortDirection]);
+  }, [tickets, sortField, sortDirection, t]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -67,7 +77,11 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', margin: '40px' }}>Chargement...</div>;
+    return (
+      <div style={{ textAlign: 'center', margin: '40px' }}>
+        {t('common:loading') || 'Chargement...'}
+      </div>
+    );
   }
 
   if (tickets.length === 0) {
@@ -80,10 +94,24 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
         borderRadius: '15px',
         boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
       }}>
-        Aucun ticket trouvé
+        {t('requests:noTicketsFound') || 'Aucun ticket trouvé'}
       </div>
     );
   }
+
+  // Fonction pour obtenir le texte traduit des priorités
+  const getTranslatedPrioriteText = (prioriteTicketId: number) => {
+    const prioriteText = getPrioriteText(prioriteTicketId);
+    const translationKey = `requests:priority.${prioriteText.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+    return t(translationKey) || prioriteText;
+  };
+
+  // Fonction pour obtenir le texte traduit des statuts
+  const getTranslatedStatutText = (etat: string) => {
+    const statutText = getStatutText(etat);
+    const translationKey = `requests:status.${statutText.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+    return t(translationKey) || statutText;
+  };
 
   return (
     <div style={{ background: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)' }}>
@@ -94,40 +122,44 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('reference')}
             >
-              Référence ticket
+              {t('requests:table.ticketReference') || 'Référence ticket'}
             </th>
             <th 
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('produitNom')}
             >
-              Produit
+              {t('requests:table.product') || 'Produit'}
             </th>
-            <th style={{ padding: '8px 12px', textAlign: 'left' }}>Description</th>
+            <th style={{ padding: '8px 12px', textAlign: 'left' }}>
+              {t('requests:table.description') || 'Description'}
+            </th>
             <th 
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('prioriteTicketId')}
             >
-              Niveau
+              {t('requests:table.level') || 'Niveau'}
             </th>
             <th 
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('dateCreation')}
             >
-              Date de soumission
+              {t('requests:table.submissionDate') || 'Date de soumission'}
             </th>
             <th 
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('dateCloture')}
             >
-              Date de clôture
+              {t('requests:table.closingDate') || 'Date de clôture'}
             </th>
             <th 
               style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer' }}
               onClick={() => handleSort('etat')}
             >
-              Etat
+              {t('requests:table.status') || 'État'}
             </th>
-            <th style={{ padding: '8px 12px', textAlign: 'left' }}>Actions</th>
+            <th style={{ padding: '8px 12px', textAlign: 'left' }}>
+              {t('requests:table.actions') || 'Actions'}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -155,7 +187,7 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>
-                  {getPrioriteText(ticket.prioriteTicketId)}
+                  {getTranslatedPrioriteText(ticket.prioriteTicketId)}
                 </span>
               </td>
               <td style={{ padding: '8px 12px' }}>
@@ -204,7 +236,7 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>
-                  {getStatutText(ticket.etat)}
+                  {getTranslatedStatutText(ticket.etat)}
                 </span>
               </td>
               <td style={{ padding: '8px 12px' }}>
@@ -220,7 +252,7 @@ export const TicketsTable = ({ tickets, loading }: TicketsTableProps) => {
                     fontSize: '14px'
                   }}
                 >
-                  Détails
+                  {t('requests:table.details') || 'Détails'}
                 </button>
               </td>
             </tr>

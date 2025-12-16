@@ -48,7 +48,9 @@ export default function SolutionDetails({ solution }: Props) {
   };
 
   return (
-    <div>
+    <div style={{
+        height: '100%'
+    }}>
       {/* Informations générales */}
       <div style={{ 
         display: 'grid',

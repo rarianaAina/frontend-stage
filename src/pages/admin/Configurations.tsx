@@ -21,8 +21,8 @@ const Configurations: React.FC = () => {
     { id: 'general', label: 'Général', component: GeneralTab },
     { id: 'whatsapp', label: 'Whatsapp', component: WhatsAppTab },
     { id: 'workflow', label: 'Workflow Notifications', component: WorkflowTab },
-    { id: 'sla', label: 'SLA', component: () => <div>Configuration SLA</div> },
-    { id: 'credits', label: 'Crédits', component: () => <div>Gestion des crédits</div> },
+    // { id: 'sla', label: 'SLA', component: () => <div>Configuration SLA</div> },
+    // { id: 'credits', label: 'Crédits', component: () => <div>Gestion des crédits</div> },
     { id: 'backup', label: 'Synchronisation', component: SynchronisationTab },
     { 
       id: 'template', 

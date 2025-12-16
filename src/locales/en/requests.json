@@ -1,0 +1,47 @@
+ {
+    "myRequests": "My Requests",
+    "newRequest": "New Request",
+    "filters": {
+      "status": "Status:",
+      "ticketReference": "Ticket Reference:",
+      "product": "Product:",
+      "startDate": "Start Date:",
+      "endDate": "End Date:",
+      "referencePlaceholder": "Enter ticket reference"
+    },
+    "table": {
+      "ticketReference": "Ticket Reference",
+      "product": "Product",
+      "description": "Description",
+      "level": "Level",
+      "submissionDate": "Submission Date",
+      "closingDate": "Closing Date",
+      "status": "Status",
+      "actions": "Actions",
+      "details": "Details"
+    },
+    "priority": {
+      "faible": "Low",
+      "moyenne": "Medium",
+      "haute": "High",
+      "critique": "Critical"
+    },
+    "status": {
+      "ouvert": "Open",
+      "encours": "In Progress",
+      "enattente": "Pending",
+      "resolu": "Resolved",
+      "cloture": "Closed",
+      "open": "Open",
+      "inProgress": "In progress",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "pagination": {
+      "itemsPerPage": "Items per page:",
+      "pageInfo": "Page {{currentPage}} of {{totalPages}}",
+      "totalItems": "total items"
+    },
+    "noTicketsFound": "No tickets found"
+  }

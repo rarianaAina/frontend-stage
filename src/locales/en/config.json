@@ -34,7 +34,43 @@
     "email": "Email (username)",
     "password": "Password (App Password)",
     "passwordHelp": "For Gmail, use an App Password instead of your main password",
-    "testEmail": "Test email sending"
+    "testEmail": "Test email sending",
+    "fields": {
+      "host": "SMTP Server:",
+      "port": "Port:",
+      "username": "Email (username):",
+      "password": "Password (App Password):"
+    },
+    "placeholders": {
+      "host": "smtp.gmail.com",
+      "username": "your@email.com",
+      "password": "Your application password"
+    },
+    "hints": {
+      "password": "For Gmail, use an <strong>App Password</strong> and not your main password"
+    },
+    "buttons": {
+      "save": "Save",
+      "saving": "Saving...",
+      "test": "Test Configuration",
+      "testing": "Testing...",
+      "reload": "Reload"
+    },
+    "guide": {
+      "title": "Configuration Guide",
+      "gmailTitle": "For Gmail:",
+      "server": "Server:",
+      "port": "Port:",
+      "twoFactor": "Enable 2-step verification on your Google account",
+      "generatePassword": "Generate an <strong>App Password</strong> in Google security settings",
+      "useAppPassword": "Use the App Password instead of your main password"
+    },
+    "loading": "Loading SMTP configuration...",
+    "loadError": "Error loading SMTP settings",
+    "saveSuccess": "✅ SMTP configuration saved successfully!",
+    "saveError": "❌ Error saving configuration",
+    "testSuccess": "✅ Test successful! Test email sent successfully.",
+    "testError": "❌ Test failed"
   },
   "general": {
     "title": "General Settings",
@@ -42,5 +78,40 @@
     "language": "Language",
     "timezone": "Timezone",
     "dateFormat": "Date format"
+  },
+  "sync": {
+    "title": "CRM Synchronization Status",
+    "refreshButton": "Refresh",
+    "loading": "Loading synchronization status...",
+    "error": {
+      "title": "Loading Error",
+      "retryButton": "Retry"
+    },
+    "footer": {
+      "note": "💡 Scheduled synchronizations run automatically according to cron configuration"
+    },
+    "status": {
+      "success": "Success",
+      "error": "Error",
+      "pending": "Pending",
+      "running": "Running",
+      "lastSync": "Last Synchronization",
+      "nextSync": "Next Synchronization",
+      "manualSync": "Manual Synchronization",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "types": {
+      "salesforce": "Salesforce",
+      "hubspot": "HubSpot",
+      "zendesk": "Zendesk",
+      "freshdesk": "Freshdesk",
+      "dynamics": "Dynamics 365",
+      "pipedrive": "Pipedrive"
+    }
+  },
+  "synchronisation": {
+    "title": "CRM Synchronization Management",
+    "description": "Manually control synchronizations between your application and CRM. Each synchronization can be started, stopped and monitored individually."
   }
 }

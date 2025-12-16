@@ -1,8 +1,18 @@
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
+
 interface InputFichiersProps {
   onChange: (fichiers: FileList | null) => void;
+  label?: string;
+  description?: string;
 }
 
-export const InputFichiers: React.FC<InputFichiersProps> = ({ onChange }) => {
+export const InputFichiers: React.FC<InputFichiersProps> = ({ 
+  onChange,
+  label,
+  description 
+}) => {
+  const { t } = useAppTranslation(['common', 'newRequest']);
+
   return (
     <div style={{ marginBottom: '25px' }}>
       <label style={{
@@ -11,7 +21,7 @@ export const InputFichiers: React.FC<InputFichiersProps> = ({ onChange }) => {
         fontWeight: '600',
         color: '#333'
       }}>
-        *Pièces jointes
+        {label || t('newRequest:files.label') || 'Pièces jointes'}
       </label>
       <input
         type="file"
@@ -27,7 +37,7 @@ export const InputFichiers: React.FC<InputFichiersProps> = ({ onChange }) => {
         }}
       />
       <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-        (PDF, DOCX, JPEG - 20 Mo max)
+        {description || t('newRequest:files.description') || '(PDF, DOCX, JPEG - 20 Mo max)'}
       </p>
     </div>
   );

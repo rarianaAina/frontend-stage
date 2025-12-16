@@ -1,4 +1,5 @@
 import { PaginationInfo } from '../../../types/ticket';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface PaginationProps {
   pagination: PaginationInfo;
@@ -11,6 +12,8 @@ export const Pagination = ({
   onPageChange, 
   onPageSizeChange 
 }: PaginationProps) => {
+  const { t } = useAppTranslation(['common', 'requests']);
+
   const goToPage = (page: number) => {
     if (page >= 0 && page < pagination.totalPages) {
       onPageChange(page);
@@ -127,7 +130,7 @@ export const Pagination = ({
         gap: '10px'
       }}>
         <label style={{ fontSize: '14px', fontWeight: 'bold' }}>
-          Éléments par page:
+          {t('requests:pagination.itemsPerPage') || 'Éléments par page:'}
         </label>
         <select
           value={pagination.pageSize}
@@ -164,8 +167,11 @@ export const Pagination = ({
             fontSize: '12px',
             color: '#666'
           }}>
-            Page {pagination.currentPage + 1} sur {pagination.totalPages} 
-            {pagination.totalElements > 0 && ` - ${pagination.totalElements} éléments au total`}
+            {t('requests:pagination.pageInfo', {
+              currentPage: pagination.currentPage + 1,
+              totalPages: pagination.totalPages
+            }) || `Page ${pagination.currentPage + 1} sur ${pagination.totalPages}`}
+            {pagination.totalElements > 0 && ` - ${pagination.totalElements} ${t('requests:pagination.totalItems') || 'éléments au total'}`}
           </div>
         </>
       )}

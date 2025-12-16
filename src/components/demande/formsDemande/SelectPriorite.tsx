@@ -1,17 +1,23 @@
 import { usePriorites } from '../../../hooks/demandes/usePriorites';
+import { useAppTranslation } from '../../../hooks/translation/useTranslation';
 
 interface SelectPrioriteProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
 export const SelectPriorite: React.FC<SelectPrioriteProps> = ({ 
   value, 
   onChange, 
-  required = false 
+  required = false,
+  label,
+  placeholder
 }) => {
   const { priorites, loading, error } = usePriorites();
+  const { t } = useAppTranslation(['common', 'newRequest']);
 
   console.log('Données des priorités :', priorites);
 
@@ -23,7 +29,7 @@ export const SelectPriorite: React.FC<SelectPrioriteProps> = ({
         fontWeight: '600',
         color: '#333'
       }}>
-        *Niveau de priorité :
+        {label || t('newRequest:priority.label') || 'Niveau de priorité :'}
       </label>
       <select
         value={value}
@@ -37,13 +43,16 @@ export const SelectPriorite: React.FC<SelectPrioriteProps> = ({
           background: 'white'
         }}
         required={required}
+        disabled={loading}
       >
         <option value="">
-          {loading ? 'Chargement des priorités...' : 'Sélectionnez la priorité'}
+          {loading 
+            ? (t('common:loading') || 'Chargement...')
+            : (placeholder || t('newRequest:priority.placeholder') || 'Sélectionnez la priorité')}
         </option>
         {error ? (
           <option value="" disabled>
-            Erreur de chargement
+            {t('common:loadingError') || 'Erreur de chargement'}
           </option>
         ) : (
           priorites.map((priorite) => (
@@ -55,7 +64,7 @@ export const SelectPriorite: React.FC<SelectPrioriteProps> = ({
       </select>
       {loading && (
         <p style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-          Chargement des priorités...
+          {t('common:loading') || 'Chargement...'}
         </p>
       )}
       {error && (

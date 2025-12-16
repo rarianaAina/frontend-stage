@@ -1,0 +1,35 @@
+ {
+    "title": "Nouvelle demande",
+    "reason": {
+      "label": "*Raison :",
+      "placeholder": "Saisissez la raison de votre demande"
+    },
+    "product": {
+      "label": "*Produit :",
+      "placeholder": "Sélectionnez un produit"
+    },
+    "description": {
+      "label": "*Description :",
+      "placeholder": "Décrivez votre problème ou demande en détail..."
+    },
+    "priority": {
+      "label": "*Priorité :",
+      "placeholder": "Sélectionnez une priorité"
+    },
+    "type": {
+      "label": "*Type :",
+      "placeholder": "Sélectionnez un type"
+    },
+    "files": {
+      "label": "Fichiers joints :",
+      "description": "Ajoutez des fichiers (images, documents) pour illustrer votre demande"
+    },
+    "conditions": {
+      "text": "J'accepte les termes de la {{privacyPolicy}} et autorise que mes données personnelles soient traitées dans la mesure nécessaire à mon abonnement",
+      "privacyPolicy": "Politique de confidentialité"
+    },
+    "submit": {
+      "label": "Soumettre",
+      "loading": "Soumission en cours..."
+    }
+  }

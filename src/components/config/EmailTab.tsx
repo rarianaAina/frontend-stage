@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SmtpSettings } from '../../types/config';
 import { configService } from '../../services/configService';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
+import '../../styles/admin/configurations/Email.css';
 
 export const EmailTab: React.FC = () => {
   const [formData, setFormData] = useState<SmtpSettings>({
@@ -13,6 +15,9 @@ export const EmailTab: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
   const [message, setMessage] = useState<string>('');
+  const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+
+  const { t } = useAppTranslation(['common', 'config']);
 
   useEffect(() => {
     loadSettings();
@@ -23,7 +28,7 @@ export const EmailTab: React.FC = () => {
       const settings = await configService.getSmtpSettings();
       setFormData(settings);
     } catch (error) {
-      console.error('Erreur chargement paramètres SMTP:', error);
+      console.error(t('config:smtp.loadError') || 'Erreur chargement paramètres SMTP:', error);
     } finally {
       setLoading(false);
     }
@@ -33,17 +38,21 @@ export const EmailTab: React.FC = () => {
     e.preventDefault();
     setSaving(true);
     setMessage('');
+    setMessageType('');
     
     try {
       const success = await configService.saveSmtpSettings(formData);
       if (success) {
-        setMessage('✅ Configuration SMTP sauvegardée avec succès!');
+        setMessage(t('config:smtp.saveSuccess') || 'Configuration SMTP sauvegardée avec succès!');
+        setMessageType('success');
       } else {
-        setMessage('❌ Erreur lors de la sauvegarde');
+        setMessage(t('config:smtp.saveError') || 'Erreur lors de la sauvegarde');
+        setMessageType('error');
       }
     } catch (error: any) {
-      console.error('Erreur sauvegarde paramètres SMTP:', error);
-      setMessage('❌ Erreur lors de la sauvegarde: ' + error.message);
+      console.error(t('config:smtp.saveError') || 'Erreur sauvegarde paramètres SMTP:', error);
+      setMessage(`${t('config:smtp.saveError') || 'Erreur lors de la sauvegarde'}: ${error.message}`);
+      setMessageType('error');
     } finally {
       setSaving(false);
     }
@@ -52,13 +61,16 @@ export const EmailTab: React.FC = () => {
   const handleTest = async () => {
     setTesting(true);
     setMessage('');
+    setMessageType('');
     
     try {
       await configService.testSmtpSettings(formData);
-      setMessage('✅ Test réussi! Email de test envoyé avec succès.');
+      setMessage(t('config:smtp.testSuccess') || 'Test réussi! Email de test envoyé avec succès.');
+      setMessageType('success');
     } catch (error: any) {
-      console.error('Erreur test SMTP:', error);
-      setMessage('❌ Échec du test: ' + error.message);
+      console.error(t('config:smtp.testError') || 'Erreur test SMTP:', error);
+      setMessage(`${t('config:smtp.testError') || 'Échec du test'}: ${error.message}`);
+      setMessageType('error');
     } finally {
       setTesting(false);
     }
@@ -66,66 +78,44 @@ export const EmailTab: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{
-        background: 'white',
-        padding: '30px',
-        borderRadius: '15px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        textAlign: 'center'
-      }}>
-        <div>Chargement de la configuration SMTP...</div>
+      <div className="email-tab-loading">
+        <div>{t('config:smtp.loading') || 'Chargement de la configuration SMTP...'}</div>
       </div>
     );
   }
 
+  const isTestDisabled = testing || !formData.host || !formData.username || !formData.password;
+
   return (
-    <div style={{
-      background: 'white',
-      padding: '30px',
-      borderRadius: '15px',
-      boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-    }}>
-      <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#333' }}>
-        Configuration SMTP
+    <div className="email-tab-container">
+      <h2 className="email-tab-title">
+        {t('config:smtp.title') || 'Configuration SMTP'}
       </h2>
 
       {message && (
-        <div style={{
-          padding: '12px 16px',
-          borderRadius: '8px',
-          marginBottom: '20px',
-          background: message.includes('✅') ? '#d1fae5' : '#fee2e2',
-          color: message.includes('✅') ? '#065f46' : '#991b1b',
-          border: `1px solid ${message.includes('✅') ? '#a7f3d0' : '#fecaca'}`
-        }}>
+        <div className={messageType === 'success' ? 'message-success' : 'message-error'}>
           {message}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Serveur SMTP:
+      <form onSubmit={handleSubmit} className="email-form">
+        <div className="form-group">
+          <label className="form-label">
+            {t('config:smtp.fields.host') || 'Serveur SMTP:'}
           </label>
           <input
             type="text"
             value={formData.host}
             onChange={(e) => setFormData({ ...formData, host: e.target.value })}
-            placeholder="smtp.gmail.com"
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '10px',
-              border: '1px solid #ddd',
-              fontSize: '16px'
-            }}
+            placeholder={t('config:smtp.placeholders.host') || 'smtp.gmail.com'}
+            className="form-input"
             required
           />
         </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Port:
+        <div className="form-group">
+          <label className="form-label">
+            {t('config:smtp.fields.port') || 'Port:'}
           </label>
           <input
             type="number"
@@ -133,136 +123,90 @@ export const EmailTab: React.FC = () => {
             onChange={(e) => setFormData({ ...formData, port: parseInt(e.target.value) })}
             min="1"
             max="65535"
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '10px',
-              border: '1px solid #ddd',
-              fontSize: '16px'
-            }}
+            className="form-input"
             required
           />
         </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Email (utilisateur):
+        <div className="form-group">
+          <label className="form-label">
+            {t('config:smtp.fields.username') || 'Email (utilisateur):'}
           </label>
           <input
             type="email"
             value={formData.username}
             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-            placeholder="votre@email.com"
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '10px',
-              border: '1px solid #ddd',
-              fontSize: '16px'
-            }}
+            placeholder={t('config:smtp.placeholders.username') || 'votre@email.com'}
+            className="form-input"
             required
           />
         </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Mot de passe (App Password):
+        <div className="form-group">
+          <label className="form-label">
+            {t('config:smtp.fields.password') || 'Mot de passe (App Password):'}
           </label>
           <input
             type="password"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            placeholder="Votre mot de passe d'application"
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '10px',
-              border: '1px solid #ddd',
-              fontSize: '16px'
-            }}
+            placeholder={t('config:smtp.placeholders.password') || 'Votre mot de passe d\'application'}
+            className="form-input"
             required
           />
-          <small style={{ color: '#666', fontSize: '14px', marginTop: '5px', display: 'block' }}>
-            Pour Gmail, utilisez un <strong>App Password</strong> et non votre mot de passe principal
+          <small className="form-hint">
+            {t('config:smtp.hints.password') || 'Pour Gmail, utilisez un <strong>App Password</strong> et non votre mot de passe principal'}
           </small>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <div className="buttons-container">
           <button
             type="submit"
             disabled={saving}
-            style={{
-              background: saving ? '#9ca3af' : '#10b981',
-              color: 'white',
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: saving ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              fontWeight: '600',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className="btn btn-primary"
           >
             {saving ? '⏳' : '💾'}
-            {saving ? ' Sauvegarde...' : ' Sauvegarder'}
+            {saving 
+              ? t('config:smtp.buttons.saving') || 'Sauvegarde...'
+              : t('config:smtp.buttons.save') || 'Sauvegarder'
+            }
           </button>
 
           <button
             type="button"
             onClick={handleTest}
-            disabled={testing || !formData.host || !formData.username || !formData.password}
-            style={{
-              background: testing || !formData.host || !formData.username || !formData.password ? '#9ca3af' : '#3b82f6',
-              color: 'white',
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: testing || !formData.host || !formData.username || !formData.password ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              fontWeight: '600',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            disabled={isTestDisabled}
+            className="btn btn-secondary"
           >
             {testing ? '⏳' : '🔧'}
-            {testing ? ' Test en cours...' : ' Tester la configuration'}
+            {testing 
+              ? t('config:smtp.buttons.testing') || 'Test en cours...'
+              : t('config:smtp.buttons.test') || 'Tester la configuration'
+            }
           </button>
 
           <button
             type="button"
             onClick={loadSettings}
-            style={{
-              background: '#6b7280',
-              color: 'white',
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: '600',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
+            className="btn btn-tertiary"
           >
-            🔄 Recharger
+            🔄 {t('config:smtp.buttons.reload') || 'Recharger'}
           </button>
         </div>
       </form>
 
-      <div style={{ marginTop: '30px', padding: '20px', background: '#f0f9ff', borderRadius: '10px' }}>
-        <h4 style={{ margin: '0 0 12px 0', color: '#0369a1' }}>💡 Guide de configuration</h4>
-        <div style={{ fontSize: '14px', color: '#0369a1', lineHeight: '1.5' }}>
-          <p><strong>Pour Gmail :</strong></p>
-          <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
-            <li>Serveur: <code>smtp.gmail.com</code></li>
-            <li>Port: <code>587</code></li>
-            <li>Activer la validation en 2 étapes sur votre compte Google</li>
-            <li>Générer un <strong>App Password</strong> dans les paramètres de sécurité Google</li>
-            <li>Utiliser l'App Password au lieu de votre mot de passe principal</li>
+      <div className="guide-container">
+        <h4 className="guide-title">
+          💡 {t('config:smtp.guide.title') || 'Guide de configuration'}
+        </h4>
+        <div className="guide-content">
+          <p><strong>{t('config:smtp.guide.gmailTitle') || 'Pour Gmail :'}</strong></p>
+          <ul className="guide-list">
+            <li>{t('config:smtp.guide.server') || 'Serveur:'} <code className="code-text">smtp.gmail.com</code></li>
+            <li>{t('config:smtp.guide.port') || 'Port:'} <code className="code-text">587</code></li>
+            <li>{t('config:smtp.guide.twoFactor') || 'Activer la validation en 2 étapes sur votre compte Google'}</li>
+            <li>{t('config:smtp.guide.generatePassword') || 'Générer un <strong>App Password</strong> dans les paramètres de sécurité Google'}</li>
+            <li>{t('config:smtp.guide.useAppPassword') || 'Utiliser l\'App Password au lieu de votre mot de passe principal'}</li>
           </ul>
         </div>
       </div>

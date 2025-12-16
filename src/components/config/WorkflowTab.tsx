@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { WorkflowConfig, WorkflowStep } from '../../types/config';
 import { workflowService } from '../../services/workflowService';
 import { toast } from 'react-toastify';
+import { useAppTranslation } from '../../hooks/translation/useTranslation';
 
 export const WorkflowTab: React.FC = () => {
   const [workflows, setWorkflows] = useState<WorkflowConfig[]>([]);
@@ -11,9 +12,9 @@ export const WorkflowTab: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [localWorkflow, setLocalWorkflow] = useState<WorkflowConfig | null>(null);
-  
-
   const [tempIdCounter, setTempIdCounter] = useState(-1);
+
+  const { t } = useAppTranslation(['common', 'config']);
 
   useEffect(() => {
     loadData();
@@ -46,7 +47,7 @@ export const WorkflowTab: React.FC = () => {
       };
       setLocalWorkflow(initialWorkflow);
     } catch (error) {
-      console.error('Erreur lors du chargement des données:', error);
+      console.error(t('config:workflow.loadError') || 'Erreur lors du chargement des données:', error);
     } finally {
       setLoading(false);
     }
@@ -55,27 +56,24 @@ export const WorkflowTab: React.FC = () => {
   const addStep = () => {
     if (!localWorkflow) return;
 
-    // Vérifier qu'un utilisateur est disponible
     if (availableUsers.length === 0) {
-      alert('Aucun utilisateur interne disponible. Veuillez d\'abord créer des utilisateurs.');
+      alert(t('config:workflow.alerts.noUsers') || 'Aucun utilisateur interne disponible. Veuillez d\'abord créer des utilisateurs.');
       return;
     }
 
-    // Vérifier qu'un type de notification est trouvé
     const typeNotification = notificationTypes.find(t => t.code === selectedWorkflow);
     if (!typeNotification) {
-      alert('Type de notification non trouvé.');
+      alert(t('config:workflow.messages.noNotificationType') || 'Type de notification non trouvé.');
       return;
     }
 
     const newStep: WorkflowStep = {
-      id: tempIdCounter, // ID temporaire négatif
+      id: tempIdCounter,
       ordre: localWorkflow.steps.length + 1,
       utilisateurId: availableUsers[0].id,
       typeNotificationId: typeNotification.id
     };
 
-    // Décrémenter le compteur d'IDs temporaires
     setTempIdCounter(prev => prev - 1);
 
     const updatedWorkflow = {
@@ -108,59 +106,33 @@ export const WorkflowTab: React.FC = () => {
     setLocalWorkflow(updatedWorkflow);
   };
 
-  const moveStepUp = (index: number) => {
-    if (!localWorkflow || index === 0) return;
-
-    const updatedSteps = [...localWorkflow.steps];
-    // Échanger les étapes
-    [updatedSteps[index], updatedSteps[index - 1]] = [updatedSteps[index - 1], updatedSteps[index]];
-    // Mettre à jour les ordres
-    const reorderedSteps = updatedSteps.map((step, i) => ({ ...step, ordre: i + 1 }));
-
-    setLocalWorkflow({ ...localWorkflow, steps: reorderedSteps });
-  };
-
-  const moveStepDown = (index: number) => {
-    if (!localWorkflow || index === localWorkflow.steps.length - 1) return;
-
-    const updatedSteps = [...localWorkflow.steps];
-    // Échanger les étapes
-    [updatedSteps[index], updatedSteps[index + 1]] = [updatedSteps[index + 1], updatedSteps[index]];
-    // Mettre à jour les ordres
-    const reorderedSteps = updatedSteps.map((step, i) => ({ ...step, ordre: i + 1 }));
-
-    setLocalWorkflow({ ...localWorkflow, steps: reorderedSteps });
-  };
-
   const saveWorkflow = async () => {
-      if (!localWorkflow) return;
+    if (!localWorkflow) return;
 
-      // Validation des données - PERMETTRE LES WORKFLOWS SANS ÉTAPES
-      const invalidSteps = localWorkflow.steps.filter(step => 
-          step.utilisateurId === 0 || !step.utilisateurId
-      );
-      
-      if (invalidSteps.length > 0) {
-          alert('Veuillez sélectionner un utilisateur pour toutes les étapes.');
-          return;
-      }
+    const invalidSteps = localWorkflow.steps.filter(step => 
+      step.utilisateurId === 0 || !step.utilisateurId
+    );
+    
+    if (invalidSteps.length > 0) {
+      alert(t('config:workflow.alerts.selectUser') || 'Veuillez sélectionner un utilisateur pour toutes les étapes.');
+      return;
+    }
 
-      setSaving(true);
-      try {
-          const success = await workflowService.saveWorkflow(localWorkflow);
-          if (success) {
-              // Recharger les données fraîches du serveur
-              await loadData();
-              toast.success('Workflow sauvegardé avec succès !');
-          } else {
-              alert('Erreur lors de la sauvegarde du workflow');
-          }
-      } catch (error: any) {
-          console.error('Erreur lors de la sauvegarde:', error);
-          alert(error.message || 'Erreur lors de la sauvegarde du workflow');
-      } finally {
-          setSaving(false);
+    setSaving(true);
+    try {
+      const success = await workflowService.saveWorkflow(localWorkflow);
+      if (success) {
+        await loadData();
+        toast.success(t('config:workflow.alerts.saveSuccess') || 'Workflow sauvegardé avec succès !');
+      } else {
+        alert(t('config:workflow.alerts.saveError') || 'Erreur lors de la sauvegarde du workflow');
       }
+    } catch (error: any) {
+      console.error(t('config:workflow.alerts.saveError') || 'Erreur lors de la sauvegarde:', error);
+      alert(error.message || t('config:workflow.alerts.saveError') || 'Erreur lors de la sauvegarde du workflow');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleWorkflowTypeChange = (newType: string) => {
@@ -168,11 +140,11 @@ export const WorkflowTab: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return <div>{t('config:workflow.loading') || 'Chargement...'}</div>;
   }
 
   if (!localWorkflow) {
-    return <div>Erreur: Workflow non chargé</div>;
+    return <div>{t('config:workflow.error') || 'Erreur : Workflow non chargé'}</div>;
   }
 
   return (
@@ -183,13 +155,12 @@ export const WorkflowTab: React.FC = () => {
       boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
     }}>
       <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#333' }}>
-        Configuration des Workflows de Notification
+        {t('config:workflow.title') || 'Configuration des Workflows de Notification'}
       </h2>
 
-      {/* Section de sélection du type de notification */}
       <div style={{ marginBottom: '30px' }}>
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-          Type de notification:
+          {t('config:workflow.fields.notificationType') || 'Type de notification :'}
         </label>
         <select
           value={selectedWorkflow}
@@ -210,11 +181,10 @@ export const WorkflowTab: React.FC = () => {
         </select>
       </div>
 
-      {/* Section des étapes du workflow */}
       <div style={{ marginBottom: '30px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h3 style={{ fontSize: '18px', margin: 0, color: '#333' }}>
-            Étapes du workflow ({localWorkflow.steps.length})
+            {t('config:workflow.fields.workflowSteps') || 'Étapes du workflow'} ({localWorkflow.steps.length})
           </h3>
           <button
             onClick={addStep}
@@ -234,7 +204,7 @@ export const WorkflowTab: React.FC = () => {
             }}
           >
             <span>+</span>
-            <span>Ajouter une étape</span>
+            <span>{t('config:workflow.buttons.addStep') || 'Ajouter une étape'}</span>
           </button>
         </div>
         
@@ -247,8 +217,7 @@ export const WorkflowTab: React.FC = () => {
             background: '#fafafa'
           }}>
             <p style={{ color: '#666', fontStyle: 'italic', margin: 0 }}>
-              Aucune étape configurée pour ce workflow.<br/>
-              Cliquez sur "Ajouter une étape" pour commencer.
+              {t('config:workflow.messages.noSteps') || 'Aucune étape configurée pour ce workflow.<br/>Cliquez sur "Ajouter une étape" pour commencer.'}
             </p>
           </div>
         ) : (
@@ -264,7 +233,6 @@ export const WorkflowTab: React.FC = () => {
                   boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}
               >
-                {/* En-tête de l'étape avec contrôles */}
                 <div style={{ 
                   display: 'flex', 
                   justifyContent: 'space-between', 
@@ -275,16 +243,15 @@ export const WorkflowTab: React.FC = () => {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span style={{
-                        background: '#3b82f6',
-                        color: 'white',
-                        padding: '4px 8px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: '600'
-                        }}>
-                        Étape {step.ordre}
+                      background: '#3b82f6',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      {t('config:workflow.messages.step') || 'Étape'} {step.ordre}
                     </span>
-                    
                   </div>
                   
                   <button
@@ -304,11 +271,10 @@ export const WorkflowTab: React.FC = () => {
                     }}
                   >
                     <span>×</span>
-                    <span>Supprimer</span>
+                    <span>{t('config:workflow.buttons.delete') || 'Supprimer'}</span>
                   </button>
                 </div>
                 
-                {/* Contenu de l'étape */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px' }}>
                   <div>
                     <label style={{ 
@@ -318,7 +284,7 @@ export const WorkflowTab: React.FC = () => {
                       fontWeight: '600',
                       color: '#374151'
                     }}>
-                      Utilisateur à notifier:
+                      {t('config:workflow.messages.userToNotify') || 'Utilisateur à notifier :'}
                     </label>
                     <select
                       value={step.utilisateurId}
@@ -332,7 +298,7 @@ export const WorkflowTab: React.FC = () => {
                         background: 'white'
                       }}
                     >
-                      <option value={0}>Sélectionnez un utilisateur</option>
+                      <option value={0}>{t('config:workflow.placeholders.selectUser') || 'Sélectionnez un utilisateur'}</option>
                       {availableUsers.map(user => (
                         <option key={user.id} value={user.id}>
                           {user.nom} ({user.email})
@@ -341,7 +307,6 @@ export const WorkflowTab: React.FC = () => {
                     </select>
                   </div>
                   
-                  {/* Input ordre caché mais présent pour la logique */}
                   <input
                     type="hidden"
                     value={step.ordre}
@@ -353,7 +318,6 @@ export const WorkflowTab: React.FC = () => {
         )}
       </div>
 
-      {/* Section des actions */}
       <div style={{ 
         display: 'flex', 
         gap: '12px', 
@@ -361,26 +325,29 @@ export const WorkflowTab: React.FC = () => {
         paddingTop: '20px',
         borderTop: '1px solid #e5e7eb'
       }}>
-      <button
-        onClick={saveWorkflow}
-        disabled={saving}
-        style={{
-          background: saving ? '#9ca3af' : '#10b981',
-          color: 'white',
-          padding: '12px 24px',
-          borderRadius: '8px',
-          border: 'none',
-          cursor: saving ? 'not-allowed' : 'pointer',
-          fontSize: '14px',
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
-        }}
-      >
-        {saving ? '⏳' : '💾'}
-        {saving ? ' Sauvegarde en cours...' : ' Sauvegarder le workflow'}
-      </button>
+        <button
+          onClick={saveWorkflow}
+          disabled={saving}
+          style={{
+            background: saving ? '#9ca3af' : '#10b981',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: saving ? 'not-allowed' : 'pointer',
+            fontSize: '14px',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+        >
+          {saving ? '⏳' : '💾'}
+          {saving 
+            ? t('config:workflow.buttons.saving') || 'Sauvegarde en cours...'
+            : t('config:workflow.buttons.save') || 'Sauvegarder le workflow'
+          }
+        </button>
 
         <button
           onClick={loadData}
@@ -398,11 +365,10 @@ export const WorkflowTab: React.FC = () => {
             gap: '6px'
           }}
         >
-          🔄 Recharger
+          🔄 {t('config:workflow.buttons.reload') || 'Recharger'}
         </button>
       </div>
 
-      {/* Messages d'information */}
       {availableUsers.length === 0 && (
         <div style={{ 
           marginTop: '20px', 
@@ -414,11 +380,11 @@ export const WorkflowTab: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ color: '#dc2626', fontSize: '16px' }}>⚠️</span>
             <h4 style={{ margin: 0, color: '#dc2626', fontSize: '14px', fontWeight: '600' }}>
-              Attention
+              {t('config:workflow.info.attention') || 'Attention'}
             </h4>
           </div>
           <p style={{ margin: 0, fontSize: '14px', color: '#dc2626', lineHeight: '1.4' }}>
-            Aucun utilisateur interne trouvé. Pour configurer un workflow, vous devez d'abord créer des utilisateurs avec les rôles 2 ou 3.
+            {t('config:workflow.messages.noUsersInApp') || 'Aucun utilisateur interne trouvé. Pour configurer un workflow, vous devez d\'abord créer des utilisateurs avec les rôles 2 ou 3.'}
           </p>
         </div>
       )}
@@ -433,18 +399,18 @@ export const WorkflowTab: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <span style={{ color: '#0369a1', fontSize: '16px' }}>💡</span>
           <h4 style={{ margin: 0, color: '#0369a1', fontSize: '14px', fontWeight: '600' }}>
-            Information
+            {t('config:workflow.info.information') || 'Information'}
           </h4>
         </div>
         <div style={{ fontSize: '14px', color: '#0369a1', lineHeight: '1.5' }}>
           <p style={{ margin: '0 0 8px 0' }}>
-            • Le créateur du ticket recevra toujours une notification automatiquement
+            {t('config:workflow.messages.creatorNotification') || '• Le créateur du ticket recevra toujours une notification automatiquement'}
           </p>
           <p style={{ margin: '0 0 8px 0' }}>
-            • Ce workflow configure les notifications supplémentaires pour les utilisateurs internes
+            {t('config:workflow.messages.additionalNotification') || '• Ce workflow configure les notifications supplémentaires pour les utilisateurs internes'}
           </p>
           <p style={{ margin: 0 }}>
-            • Les modifications sont sauvegardées uniquement quand vous cliquez sur "Sauvegarder le workflow"
+            {t('config:workflow.messages.saveInstructions') || '• Les modifications sont sauvegardées uniquement quand vous cliquez sur "Sauvegarder le workflow"'}
           </p>
         </div>
       </div>

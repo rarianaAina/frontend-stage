@@ -1,4 +1,3 @@
-// TemplateTabContent.tsx - Version simplifiée
 import React from 'react';
 import { NotificationTemplate } from '../../../types/template';
 import { useAppTranslation } from '../../../hooks/translation/useTranslation';

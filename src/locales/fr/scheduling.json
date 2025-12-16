@@ -1,0 +1,52 @@
+{
+    "title": "Gestionnaire de Planification",
+    "selectOrCreate": "Sélectionnez une configuration dans la liste ou créez-en une nouvelle",
+    "details": {
+      "basicInfo": "Informations de base",
+      "description": "Description",
+      "noDescription": "Aucune description",
+      "scheduleType": "Type de planification",
+      "displayName": "Nom d'affichage",
+      "cronExpression": "Expression Cron",
+      "metadata": "Métadonnées",
+      "createdDate": "Date de création",
+      "lastModified": "Dernière modification",
+      "lastModifiedBy": "Modifié par",
+      "scheduleParams": "Paramètres de planification"
+    },
+    "form": {
+      "createTitle": "Créer une nouvelle configuration",
+      "editTitle": "Modifier la configuration",
+      "jobName": "Nom du job",
+      "jobNamePlaceholder": "Entrez le nom du job...",
+      "jobDescription": "Description du job",
+      "jobDescriptionPlaceholder": "Entrez la description du job...",
+      "frequency": "Fréquence",
+      "hour": "Heure",
+      "minute": "Minute",
+      "dayOfWeek": "Jour de la semaine",
+      "dayOfMonth": "Jour du mois",
+      "customCron": "Expression Cron personnalisée",
+      "enabled": "Activé",
+      "cronHelp": "Format : seconde minute heure jour mois jour-de-la-semaine",
+      "errors": {
+        "jobNameRequired": "Le nom du job est obligatoire",
+        "customCronRequired": "L'expression cron personnalisée est obligatoire"
+      }
+    },
+    "list": {
+      "title": "Configurations",
+      "new": "Nouveau",
+      "empty": "Aucune configuration trouvée"
+    },
+    "status": {
+      "title": "Statut de planification",
+      "totalJobs": "Total des jobs",
+      "activeJobs": "Jobs actifs",
+      "inactiveJobs": "Jobs inactifs",
+      "lastChecked": "Dernière vérification",
+      "jobsList": "Liste des jobs",
+      "activeJobsText": "{{active}} actifs sur {{total}} au total"
+    },
+    "reloadCache": "Recharger le cache"
+  }

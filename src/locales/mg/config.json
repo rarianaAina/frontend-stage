@@ -3,44 +3,159 @@
     "title": "Fametrahana WhatsApp Business API",
     "configName": "Anaran'ny fametrahana",
     "apiUrl": "URL API",
-    "apiKey": "Fanalahidy API 360dialog",
-    "apiKeyHelp": "Fanalahidy API omen'i 360dialog (tokony hosoratana)",
-    "phoneId": "ID laharana finday",
-    "phoneIdHelp": "ID laharana WhatsApp Business napetraka ao amin'ny 360dialog",
-    "businessId": "ID kaonty orinasa (tsy maintsy)",
-    "webhookUrl": "URL Webhook (tsy maintsy)",
-    "webhookUrlHelp": "URL alehan'ny satitan'ny hafatra",
-    "webhookToken": "Token Webhook (tsy maintsy)",
-    "description": "Famariparitana (tsy maintsy)",
+    "apiKey": "360dialog API Key",
+    "apiKeyHelp": "API key omen'ny 360dialog (tokony hosoratana)",
+    "phoneId": "ID nomeraon'ny telefaona",
+    "phoneIdHelp": "ID nomeraon'ny WhatsApp Business voalamina ao amin'ny 360dialog",
+    "businessId": "ID kaonty raharaham-barotra (tsy voatery)",
+    "webhookUrl": "URL Webhook (tsy voatery)",
+    "webhookUrlHelp": "URL izay alehan'ny hafatrao ny sata",
+    "webhookToken": "Webhook token (tsy voatery)",
+    "description": "Famariparitana (tsy voatery)",
     "activeConfig": "Fametrahana mavitrika",
-    "saveSuccess": "Tafiditra soa aman-tsara ny fametrahana WhatsApp!",
-    "saveError": "Nisy olana nandritra ny fitahirizana",
+    "saveSuccess": "Voatahiry soa aman-tsara ny fametrahana WhatsApp!",
+    "saveError": "Hadisoana nandritra ny fitahirizana",
     "testSuccess": "Nahomby ny fitsapana! Voamarina ny fametrahana WhatsApp.",
     "testError": "Tsy nahomby ny fitsapana",
-    "testFirstSave": "Ampidiro aloha ny fametrahana vao manao fitsapana",
-    "guideTitle": "💡 Torolalana fametrahana 360dialog",
-    "guideText": "Hanamboarana WhatsApp Business API:",
+    "testFirstSave": "Tehirizo aloha ny fametrahana alohan'ny hanaovana fitsapana",
+    "guideTitle": "💡 Torolàlana fametrahana 360dialog",
+    "guideText": "Hanamboatra WhatsApp Business API:",
     "guideStep1": "Mamorona kaonty ao amin'ny 360dialog",
-    "guideStep2": "Alao ny Fanalahidy API ao amin'ny dashboard 360dialog",
-    "guideStep3": "Hametraka laharana WhatsApp Business",
-    "guideStep4": "Alao ny ID laharana finday ao amin'ny 360dialog",
+    "guideStep2": "Alao ny API Key-nao avy ao amin'ny dashboard 360dialog",
+    "guideStep3": "Amboary nomeraon'ny WhatsApp Business iray",
+    "guideStep4": "Alao ny ID nomerao avy ao amin'ny 360dialog",
     "guideStep5": "Ho an'ny webhooks, amboary ny URL callback ao amin'ny paramètres 360dialog",
-    "guideStep6": "Tokony hifanaraka amin'ny an'ny 360dialog ny token webhook"
+    "guideStep6": "Tokony hitovy amin'ny voalamina ao amin'ny 360dialog ny token webhook"
   },
   "smtp": {
     "title": "Fametrahana SMTP",
     "server": "Mpanompo SMTP",
     "port": "Seranana",
-    "email": "Mailaka (mpampiasa)",
+    "email": "Email (mpampiasa)",
     "password": "Tenimiafina (App Password)",
     "passwordHelp": "Ho an'ny Gmail, ampiasao App Password fa tsy ny tenimiafina fototra",
-    "testEmail": "Andrana fandefasana mailaka"
+    "testEmail": "Fandefasana mailaka fitsapana",
+    "fields": {
+      "host": "Mpanompo SMTP:",
+      "port": "Seranana:",
+      "username": "Email (mpampiasa):",
+      "password": "Tenimiafina (App Password):"
+    },
+    "placeholders": {
+      "host": "smtp.gmail.com",
+      "username": "ny@mailaka-nao.com",
+      "password": "Ny tenimiafina fampiharana-nao"
+    },
+    "hints": {
+      "password": "Ho an'ny Gmail, ampiasao <strong>App Password</strong> ary tsy ny tenimiafina fototra"
+    },
+    "buttons": {
+      "save": "Tehirizo",
+      "saving": "Tehirizana...",
+      "test": "Andramana ny fametrahana",
+      "testing": "Fitsapana...",
+      "reload": "Avereno alo"
+    },
+    "guide": {
+      "title": "Torolàlana fametrahana",
+      "gmailTitle": "Ho an'ny Gmail:",
+      "server": "Mpanompo:",
+      "port": "Seranana:",
+      "twoFactor": "Alehoy ny fanamarinana 2 dingana amin'ny kaonty Google-nao",
+      "generatePassword": "Mamorona <strong>App Password</strong> ao amin'ny paramètres fiarovana Google",
+      "useAppPassword": "Ampiasao ny App Password fa tsy ny tenimiafina fototra"
+    },
+    "loading": "Andramana ny fametrahana SMTP...",
+    "loadError": "Hadisoana nandritra ny fanoratana ny paramètres SMTP",
+    "saveSuccess": "✅ Voatahiry soa aman-tsara ny fametrahana SMTP!",
+    "saveError": "❌ Hadisoana nandritra ny fitahirizana",
+    "testSuccess": "✅ Nahomby ny fitsapana! Nalefa soa aman-tsara ny mailaka fitsapana.",
+    "testError": "❌ Tsy nahomby ny fitsapana"
   },
   "general": {
-    "title": "Fanovana ankapobeny",
+    "title": "Paramètres ankapobeny",
     "companyName": "Anaran'ny orinasa",
     "language": "Fiteny",
-    "timezone": "Faritra ora",
+    "timezone": "Fizaran-tany",
     "dateFormat": "Endrika daty"
+  },
+  "sync": {
+    "title": "Toe-javatra ny Fifanarahana CRM",
+    "refreshButton": "Havaozina",
+    "loading": "Andramana ny toetry ny fifanarahana...",
+    "error": {
+      "title": "Hadisoana nandritra ny fanoratana",
+      "retryButton": "Andramana indray"
+    },
+    "footer": {
+      "note": "💡 Mandeha ho azy ny fifanarahana voalahatra araka ny fametrahana ny cron"
+    },
+    "status": {
+      "success": "Nahomby",
+      "error": "Hadisoana",
+      "pending": "Miandry",
+      "running": "Mandeha",
+      "lastSync": "Fifanarahana farany",
+      "nextSync": "Fifanarahana manaraka",
+      "manualSync": "Fifanarahana tanana",
+      "enabled": "Azo ampiasaina",
+      "disabled": "Tsy azo ampiasaina"
+    },
+    "types": {
+      "salesforce": "Salesforce",
+      "hubspot": "HubSpot",
+      "zendesk": "Zendesk",
+      "freshdesk": "Freshdesk",
+      "dynamics": "Dynamics 365",
+      "pipedrive": "Pipedrive"
+    }
+  },
+    "workflow": {
+    "title": "Fametrahana ny Workflows fampahafantarana",
+    "loading": "Andramana...",
+    "error": "Hadisoana : Tsy voatarika ny Workflow",
+    "fields": {
+      "notificationType": "Karazana fampahafantarana :",
+      "workflowSteps": "Dingana amin'ny workflow"
+    },
+    "buttons": {
+      "addStep": "Hanampy dingana",
+      "save": "Tehirizo ny workflow",
+      "saving": "Tehirizana...",
+      "reload": "Avereno alo",
+      "delete": "Fafao",
+      "deleteStep": "Fafao ny dingana",
+      "moveUp": "Afindra miakatra",
+      "moveDown": "Afindra midina"
+    },
+    "messages": {
+      "noUsers": "Tsy misy mpampiasa anatiny misy. Mamorona mialoha mpampiasa misy anjara asa 2 na 3.",
+      "noNotificationType": "Tsy hita ny karazana fampahafantarana.",
+      "noSteps": "Tsy misy dingana voalamina amin'ity workflow ity. Kitiho 'Hanampy dingana' hanombohana.",
+      "noUsersInApp": "Tsy nahita mpampiasa anatiny. Hanamboatra workflow, tsy maintsy mamorona mialoha mpampiasa misy anjara asa 2 na 3.",
+      "selectUser": "Safidio mpampiasa",
+      "step": "Dingana",
+      "userToNotify": "Mpampiasa hampahafantarana :",
+      "creatorNotification": "• Ny mpamorona ticket dia hahazo fampahafantarana mandrakariva ho azy",
+      "additionalNotification": "• Ity workflow ity dia manamboatra fampahafantarana fanampiny ho an'ny mpampiasa anatiny",
+      "saveInstructions": "• Ny fanovana dia voatahiry rehefa kitiho 'Tehirizo ny workflow' fotsiny"
+    },
+    "alerts": {
+      "noUsers": "Tsy misy mpampiasa anatiny misy. Mamorona mialoha mpampiasa.",
+      "selectUser": "Safidio mpampiasa ho an'ny dingana rehetra.",
+      "saveSuccess": "Voatahiry soa aman-tsara ny workflow !",
+      "saveError": "Hadisoana nandritra ny fitahirizana ny workflow"
+    },
+    "info": {
+      "attention": "Fanamarihana",
+      "information": "Fampahafantarana"
+    },
+    "placeholders": {
+      "selectUser": "Safidio mpampiasa"
+    }
+  },
+  "synchronisation": {
+    "title": "Fitantanana ny Fifanarahana CRM",
+    "description": "Fehezo tanana ny fifanarahana eo amin'ny fampiharana-nao sy ny CRM. Afaoka azo atomboka, ajanona ary ambara tsirairay avy ny fifanarahana tsirairay."
   }
 }
